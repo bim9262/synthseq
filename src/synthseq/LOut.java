@@ -1,0 +1,51 @@
+package synthseq;
+import java.io.File;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+
+public class LOut {
+	private SourceDataLine soundLine;
+	private byte[] buffer;
+	private int bytes = 0;
+	public LOut() throws LineUnavailableException {
+		int channels = 2;
+		AudioFormat audioFormat = new AudioFormat(44100, 16, channels, true,
+				false);
+		buffer = new byte[4 * 1024 * channels];
+		DataLine.Info info = new DataLine.Info(SourceDataLine.class,
+				audioFormat);
+		soundLine = (SourceDataLine) AudioSystem.getLine(info);
+		soundLine.open(audioFormat);
+		soundLine.start();
+	}
+	public static Clip getClip(File f) throws Exception {
+		AudioInputStream sound = AudioSystem.getAudioInputStream(f);
+		DataLine.Info info = new DataLine.Info(Clip.class, sound.getFormat());
+		Clip clip = (Clip) AudioSystem.getLine(info);
+		clip.open(sound);
+		return clip;
+	}
+	private void write(double d) {
+		short s = (short) (d * Short.MAX_VALUE);
+		buffer[bytes++] = (byte) (s & 0xff);
+		buffer[bytes++] = (byte) ((s >> 8) & 0xff);
+		if (bytes == buffer.length) {
+			soundLine.write(buffer, 0, buffer.length);
+			bytes = 0;
+		}
+	}
+	public void writeM(double d) {
+		write(d);
+		write(d);
+	}
+	public void writeS(double d1, double d2) {
+		write(d1);
+		write(d2);
+	}
+}

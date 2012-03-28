@@ -9,10 +9,8 @@ public class String implements Readable {
 	private int tension = 0;
 	private double damper = .999;
 	private double defDamper = .999;
-	private double freq;
 
 	public String(double freq) {
-		this.freq = freq;
 		int len = (int) (44100 / freq);
 		buffer = new double[len - tension];
 		last = len;
@@ -51,13 +49,5 @@ public class String implements Readable {
 
 	private double peek() {
 		return buffer[first];
-	}
-
-	@Override
-	public void shiftFreq(float f) {
-		freq += f;
-		int len = (int) (44100 / freq);
-		buffer = new double[len - tension];
-		last = len;
 	}
 }

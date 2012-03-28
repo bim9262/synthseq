@@ -38,9 +38,4 @@ public class Modulator implements Readable {
 	public void setWobble(float x) {
 		wobbleFreq = x;
 	}
-
-	public void shiftFreq(float f) {
-		p.shiftFreq(f);
-	}
-
 }

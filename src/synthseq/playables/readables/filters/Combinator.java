@@ -29,9 +29,4 @@ public class Combinator implements Readable {
 		for (Readable p : elements)
 			p.stop();
 	}
-
-	public void shiftFreq(float f) {
-		for (Readable p : elements)
-			p.shiftFreq(f);
-	}
 }

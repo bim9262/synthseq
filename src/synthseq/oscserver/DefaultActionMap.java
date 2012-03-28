@@ -1,6 +1,5 @@
 package synthseq.oscserver;
 
-import java.util.Scanner;
 
 
 public class DefaultActionMap implements ActionMap {

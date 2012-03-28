@@ -25,8 +25,14 @@ public class ClojureListener {
 				BufferedReader commandInput = new BufferedReader(
 						new InputStreamReader(sock.getInputStream()));
 				while (true) {
-					Object out = clojure.lang.Compiler.load(new StringReader(
+					Object out;
+					try{
+						out = clojure.lang.Compiler.load(new StringReader(
+					
 							commandInput.readLine()));
+					}catch(Exception e){
+						out = e;
+					}
 					output.println(out);
 					output.flush();
 				}

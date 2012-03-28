@@ -1,4 +1,4 @@
-package synthseq;
+package synthseq.synthesizer;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -35,7 +35,7 @@ class GPanel extends JPanel {
 			ys[x] = y;
 		}
 		x++;
-		if (x >= 406) {
+		if (x >= 400) {
 			x = 0;
 			repaint();
 		}

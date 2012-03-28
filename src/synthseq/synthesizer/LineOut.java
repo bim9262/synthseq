@@ -1,4 +1,4 @@
-package synthseq;
+package synthseq.synthesizer;
 import java.io.File;
 
 import javax.sound.sampled.AudioFormat;
@@ -9,11 +9,11 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-public class LOut {
+public class LineOut {
 	private SourceDataLine soundLine;
 	private byte[] buffer;
 	private int bytes = 0;
-	public LOut() throws LineUnavailableException {
+	public LineOut() throws LineUnavailableException {
 		int channels = 2;
 		AudioFormat audioFormat = new AudioFormat(44100, 16, channels, true,
 				false);

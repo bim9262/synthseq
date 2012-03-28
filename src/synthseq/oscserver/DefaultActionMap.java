@@ -1,6 +1,7 @@
-package synthseq;
+package synthseq.oscserver;
 
 import java.util.Scanner;
+
 
 public class DefaultActionMap implements ActionMap {
 	public void interpret(String label, float x, float y) {

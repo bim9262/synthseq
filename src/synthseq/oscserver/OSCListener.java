@@ -1,6 +1,7 @@
-package synthseq;
+package synthseq.oscserver;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+
 
 
 /**

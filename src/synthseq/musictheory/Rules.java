@@ -1,9 +1,9 @@
-package synthseq;
+package synthseq.musictheory;
 
 import java.util.Scanner;
 import java.util.Vector;
 
-import playables.Playable;
+import synthseq.playables.Playable;
 
 public class Rules {
 

@@ -1,4 +1,6 @@
-package playables;
+package synthseq.playables.readables.operations;
+
+import synthseq.playables.readables.Readable;
 
 public class String implements Readable {
 	private double[] buffer;

@@ -1,5 +1,7 @@
-package synthseq;
+package synthseq.sequencer;
 import java.util.Vector;
+
+import synthseq.oscserver.Action;
 
 public class Metronome {
 	private static int count = 0;

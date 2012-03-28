@@ -1,16 +1,18 @@
-package synthseq;
+package synthseq.synthesizer;
 
 import java.util.Vector;
-import playables.Readable;
+
+import synthseq.playables.readables.Readable;
 
 public class Synthesizer {
-	private LOut out;
+	private LineOut out;
 	private Vector<Readable> readables = new Vector<Readable>();
 	private Vector<Integer> quietCount = new Vector<Integer>();
 	private double threshold = .01;
 	private int quietDuration = 44100 * 1;
+	private Visualizer vis = new Visualizer();
 
-	public Synthesizer(LOut out) {
+	public Synthesizer(LineOut out) {
 		this.out = out;
 		start();
 	}
@@ -42,6 +44,7 @@ public class Synthesizer {
 						}
 					}
 					out.writeM(add);
+					vis.write(add);
 				}
 			}
 		}.start();

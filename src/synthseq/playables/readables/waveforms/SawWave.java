@@ -1,4 +1,9 @@
-package playables;
+package synthseq.playables.readables.waveforms;
+
+import synthseq.playables.readables.Readable;
+
+
+
 public class SawWave implements Readable{
 	private double amplitude = 0;
 	private double freq;

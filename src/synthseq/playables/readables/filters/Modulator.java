@@ -1,4 +1,7 @@
-package playables;
+package synthseq.playables.readables.filters;
+
+import synthseq.playables.readables.Readable;
+
 
 public class Modulator implements Readable {
 	private Readable p;

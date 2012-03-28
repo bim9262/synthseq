@@ -1,7 +1,27 @@
+To do:
+	Figure out the best way to have readables
+	register themselves with the synthesizer when played
+	Readables:
+		Waveforms:
+			Sine, Triangle, Pulse, white noise
+		Filters:
+			Low pass, High pass, Finite Impulse Response
+		Modifiers:
+			Adder, Multiplier (waveform or number), Speed, [Pitch, Timbre](filters?)
+			Smooth Clipping, Soft Clipping
+	Music Theory:
+		Notes from scale + base note
+		Notes from chords
+	Clojure bindings
+	Sequencer.	
+
+**Use Collections for all parameters to facilitate Clojure interop**
+
+
+
 Synthesizer/Sequencer
 Sketch OSC support
 Sound Synthesis
 Sound Sequencing
 Wave loading
 Rules
-Crap README

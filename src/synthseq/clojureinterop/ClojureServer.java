@@ -7,7 +7,7 @@ import java.io.StringReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ClojureListener {
+public class ClojureServer {
 
 	public static void start(int i) {
 		try {

@@ -1,4 +1,4 @@
-package synthseq.oscserver;
+package synthseq.oscinterop;
 
 
 

@@ -1,4 +1,4 @@
-package synthseq.oscserver;
+package synthseq.oscinterop;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
@@ -13,7 +13,7 @@ import java.net.DatagramSocket;
  * 
  * @author john
  */
-public class OSCListener {
+public class OSCServer {
 	public static void start(final ActionMap map, int port) {
 		try {
 			final DatagramSocket input = new DatagramSocket(port);
@@ -30,16 +30,16 @@ public class OSCListener {
 							for (int i = 0; i < b.length - 7; i++) {
 								if (b[i] == 44 && b[i + 1] == 102
 										&& b[i + 2] == 0 && b[i + 3] == 0) {
-									x = Float.intBitsToFloat(byteArrayToInt(b,
-											i + 4));
+									x = byteArrayToFloat(b,
+											i + 4);
 									break;
 								}
 								if (b[i] == 44 && b[i + 1] == 102
 										&& b[i + 2] == 102 && b[i + 3] == 0) {
-									x = Float.intBitsToFloat(byteArrayToInt(b,
-											i + 4));
-									y = Float.intBitsToFloat(byteArrayToInt(b,
-											i + 8));
+									x = byteArrayToFloat(b,
+											i + 4);
+									y = byteArrayToFloat(b,
+											i + 8);
 									break;
 								}
 							}
@@ -55,13 +55,13 @@ public class OSCListener {
 		}
 	}
 	
-	private static int byteArrayToInt(byte[] b, int start) {
+	private static float byteArrayToFloat(byte[] b, int start) {
 		int value = 0;
 		for (int i = start; i < start + 4; i++) {
 			int shift = (4 - 1 - i) * 8;
 			value += (b[i] & 0xff) << shift;
 		}
-		return value;
+		return Float.intBitsToFloat(value);
 	}
 
 }

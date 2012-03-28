@@ -1,9 +1,9 @@
-package synthseq.playables.readables.filters;
+package synthseq.playables.readables.operations;
 
 import synthseq.playables.readables.Readable;
 
 
-public class Combinator implements Readable {
+public class Combinator extends Readable {
 	private Readable[] elements;
 
 	public Combinator(Readable... element) {

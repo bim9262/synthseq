@@ -1,8 +1,8 @@
-package synthseq.playables.readables.operations;
+package synthseq.playables.readables.filters;
 
 import synthseq.playables.readables.Readable;
 
-public class String implements Readable {
+public class String extends Readable {
 	private double[] buffer;
 	private int first = 0;
 	private int last = 0;
@@ -17,6 +17,7 @@ public class String implements Readable {
 	}
 
 	public void start() {
+		register();
 		damper = defDamper;
 		for (int i = 0; i < buffer.length; i++) {
 			buffer[i] = (Math.random()) * 2 - 1;

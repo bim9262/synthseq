@@ -1,3 +1,3 @@
 (ns Clojure-Bindings)
-(println "success")
+(import '(synthseq.synthesizer.Synthesizer))
 

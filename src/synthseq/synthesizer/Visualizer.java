@@ -1,4 +1,5 @@
 package synthseq.synthesizer;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -7,14 +8,23 @@ import javax.swing.JPanel;
 
 public class Visualizer {
 	private GPanel g = new GPanel();
+	private JFrame gui = new JFrame();
+
 	public Visualizer() {
-		JFrame gui = new JFrame();
 		gui.setSize(400, 400);
 		gui.add(g);
-		gui.setVisible(true);
 	}
+
 	public void write(double d) {
 		g.write(d);
+	}
+
+	public void show() {
+		gui.setVisible(true);
+	}
+
+	public void hide() {
+		gui.setVisible(false);
 	}
 }
 

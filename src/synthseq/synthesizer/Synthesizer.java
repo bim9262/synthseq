@@ -11,15 +11,32 @@ public class Synthesizer {
 	private double threshold = .01;
 	private int quietDuration = 44100 * 1;
 	private Visualizer vis = new Visualizer();
+	private static Synthesizer instance = null;
 
-	public Synthesizer(LineOut out) {
-		this.out = out;
+	private Synthesizer() {
+		this.out = LineOut.getInstance();
 		start();
 	}
 
+	public static Synthesizer getInstance() {
+		if (instance == null)
+			instance = new Synthesizer();
+		return instance;
+	}
+
 	public void addSource(Readable r) {
-		readables.add(r);
+		if (!readables.contains(r)) {
+			readables.add(r);
+		}
 		quietCount.set(readables.indexOf(r), 0);
+	}
+
+	public void showVisualizer() {
+		vis.show();
+	}
+
+	public void hideVisualizer() {
+		vis.hide();
 	}
 
 	public void kill() {

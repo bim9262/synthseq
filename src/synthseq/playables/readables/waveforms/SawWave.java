@@ -4,7 +4,7 @@ import synthseq.playables.readables.Readable;
 
 
 
-public class SawWave implements Readable{
+public class SawWave extends Readable{
 	private double amplitude = 0;
 	private double freq;
 	private boolean running = false;
@@ -23,6 +23,7 @@ public class SawWave implements Readable{
 
 	@Override
 	public void start() {
+		register();
 		running = true;
 	}
 

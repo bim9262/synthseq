@@ -1,9 +1,9 @@
-package synthseq.playables.readables.filters;
+package synthseq.playables.readables.operations;
 
 import synthseq.playables.readables.Readable;
 
 
-public class Modulator implements Readable {
+public class Modulator extends Readable {
 	private Readable p;
 	private double time = 0;
 	private double wobbleFreq = 1;

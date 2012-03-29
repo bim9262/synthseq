@@ -2,18 +2,29 @@ To do:
 	Figure out the best way to have readables
 	register themselves with the synthesizer when played
 	Readables:
+		Buffer
+			-specify period, loads that amount of data from a readable
+			-like a clip for synthesizable
 		Waveforms:
-			Sine, Triangle, Pulse, white noise
+			Triangle
 		Filters:
 			Low pass, High pass, Finite Impulse Response
 		Modifiers:
-			Adder, Multiplier (waveform or number), Speed, [Pitch, Timbre](filters?)
-			Smooth Clipping, Soft Clipping
+			Speed, [Pitch, Timbre](filters?)
+			Smooth Clipping
 	Music Theory:
 		Notes from scale + base note
 		Notes from chords
 	Clojure bindings
-	Sequencer.	
+	Sequencer.
+		-String input for osc format
+			Something like "/1/push/[1-9]"
+			Returns a collection of bindings for push 1 through push 9
+			Bound to clojure code
+	Wave Analysis
+		Visualizer (amplitude over time)
+		Frequency domain (histogram)
+		Spectrograph (frequency domain over time)
 
 **Use Collections for all parameters to facilitate Clojure interop**
 

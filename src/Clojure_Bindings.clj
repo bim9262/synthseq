@@ -14,6 +14,8 @@
 (defn white-noise [] (WhiteNoise.))
 (defn stringinst [freq] (StringInst. freq)) 
 (defn add 
+  ([readables] (Adder. readables)))
+(defn addm 
   ([& readables] (Adder. readables)))
 (defn mult [readable mult] (Multiplier. readable mult))
 (defn clip [readable maxVal] (Clipping. readable maxVal))

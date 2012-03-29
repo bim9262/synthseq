@@ -2,7 +2,6 @@ package synthseq.playables.readables.operations;
 
 import synthseq.playables.readables.ReadableSound;
 
-
 public class Multiplier extends ReadableSound {
 	private ReadableSound p;
 	private ReadableSound mult = null;
@@ -12,7 +11,7 @@ public class Multiplier extends ReadableSound {
 		this.magnitude = magnitude;
 		this.p = p;
 	}
-	
+
 	public Multiplier(ReadableSound p, ReadableSound magnitude) {
 		mult = magnitude;
 		this.p = p;
@@ -20,14 +19,17 @@ public class Multiplier extends ReadableSound {
 
 	@Override
 	public double read() {
-		if(mult == null)
-			return p.read()*magnitude;
+		if (mult == null)
+			return p.read() * magnitude;
 		else
-			return p.read()*((mult.read()+1)/2);
+			return p.read() * ((mult.read() + 1) / 2);
 	}
+
 	@Override
 	public void start() {
 		p.start();
+		if (mult != null)
+			mult.start();
 	}
 
 	@Override

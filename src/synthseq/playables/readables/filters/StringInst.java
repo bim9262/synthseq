@@ -17,7 +17,6 @@ public class StringInst extends ReadableSound {
 	}
 
 	public void start() {
-		register();
 		damper = defDamper;
 		for (int i = 0; i < buffer.length; i++) {
 			buffer[i] = (Math.random()) * 2 - 1;

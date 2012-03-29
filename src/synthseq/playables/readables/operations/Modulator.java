@@ -1,19 +1,19 @@
 package synthseq.playables.readables.operations;
 
-import synthseq.playables.readables.Readable;
+import synthseq.playables.readables.ReadableSound;
 
 
-public class Modulator extends Readable {
-	private Readable p;
+public class Modulator extends ReadableSound {
+	private ReadableSound p;
 	private double time = 0;
 	private double wobbleFreq = 1;
 
-	public Modulator(Readable p, double wobbleFreq) {
+	public Modulator(ReadableSound p, double wobbleFreq) {
 		this.wobbleFreq = wobbleFreq;
 		this.p = p;
 	}
 	
-	public void setPlayable(Readable p){
+	public void setPlayable(ReadableSound p){
 		this.p = p;
 	}
 

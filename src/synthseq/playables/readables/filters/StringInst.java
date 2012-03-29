@@ -1,8 +1,8 @@
 package synthseq.playables.readables.filters;
 
-import synthseq.playables.readables.Readable;
+import synthseq.playables.readables.ReadableSound;
 
-public class String extends Readable {
+public class StringInst extends ReadableSound {
 	private double[] buffer;
 	private int first = 0;
 	private int last = 0;
@@ -10,7 +10,7 @@ public class String extends Readable {
 	private double damper = .999;
 	private double defDamper = .999;
 
-	public String(double freq) {
+	public StringInst(double freq) {
 		int len = (int) (44100 / freq);
 		buffer = new double[len - tension];
 		last = len;

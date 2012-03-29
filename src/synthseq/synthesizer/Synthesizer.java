@@ -1,21 +1,26 @@
 package synthseq.synthesizer;
 
-import java.util.Vector;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-import synthseq.playables.readables.Readable;
+import synthseq.playables.readables.ReadableSound;
 
 public class Synthesizer {
 	private LineOut out;
-	private Vector<Readable> readables = new Vector<Readable>();
-	private Vector<Integer> quietCount = new Vector<Integer>();
+	private Map<ReadableSound, Integer> readables = new HashMap<ReadableSound, Integer>();
 	private double threshold = .01;
 	private int quietDuration = 44100 * 1;
 	private Visualizer vis = new Visualizer();
 	private static Synthesizer instance = null;
-
+	
 	private Synthesizer() {
 		this.out = LineOut.getInstance();
 		start();
+	}
+	
+	public int size(){
+		return readables.size();
 	}
 
 	public static Synthesizer getInstance() {
@@ -24,11 +29,10 @@ public class Synthesizer {
 		return instance;
 	}
 
-	public void addSource(Readable r) {
-		if (!readables.contains(r)) {
-			readables.add(r);
+	public synchronized void addSource(ReadableSound r) {
+		if (!readables.containsKey(r)) {
+			readables.put(r, 0);
 		}
-		quietCount.set(readables.indexOf(r), 0);
 	}
 
 	public void showVisualizer() {
@@ -40,7 +44,7 @@ public class Synthesizer {
 	}
 
 	public void kill() {
-		for (Readable r : readables)
+		for (ReadableSound r : readables.keySet())
 			r.stop();
 	}
 
@@ -49,19 +53,21 @@ public class Synthesizer {
 			public void run() {
 				while (true) {
 					double add = 0;
-					for (int i = 0; i < readables.size(); i++) {
-						double a = readables.get(i).read();
+					for (Iterator<ReadableSound> it = readables.keySet()
+							.iterator(); it.hasNext();) {
+						ReadableSound r = it.next();
+						double a = r.read();
 						add += a / readables.size();
 						if (Math.abs(a) < threshold)
-							quietCount.set(i, quietCount.get(i) + 1);
-						if (quietCount.get(i) > quietDuration) {
-							readables.remove(i);
-							quietCount.remove(i);
-							i--;
+							readables.put(r, readables.get(r) + 1);
+						if (readables.get(r) > quietDuration) {
+							it.remove();
+
 						}
 					}
 					out.writeM(add);
-					vis.write(add);
+					if (vis.isVisible())
+						vis.write(add);
 				}
 			}
 		}.start();

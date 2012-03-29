@@ -1,10 +1,10 @@
 package synthseq.playables.readables.waveforms;
 
-import synthseq.playables.readables.Readable;
+import synthseq.playables.readables.ReadableSound;
 
 
 
-public class SawWave extends Readable{
+public class SawWave extends ReadableSound{
 	private double amplitude = 0;
 	private double freq;
 	private boolean running = false;

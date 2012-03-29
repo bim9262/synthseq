@@ -1,32 +1,34 @@
 package synthseq.playables.readables.operations;
 
-import synthseq.playables.readables.Readable;
+import java.util.Collection;
+
+import synthseq.playables.readables.ReadableSound;
 
 
-public class Combinator extends Readable {
-	private Readable[] elements;
+public class Combinator extends ReadableSound {
+	private Collection<ReadableSound> elements;
 
-	public Combinator(Readable... element) {
-		elements = element;
+	public Combinator(Collection<ReadableSound> elements) {
+		this.elements = elements;
 	}
 
 	@Override
 	public double read() {
 		double a = 0;
-		for (Readable p : elements)
-			a += p.read() / elements.length;
+		for (ReadableSound p : elements)
+			a += p.read() / elements.size();
 		return a;
 	}
 
 	@Override
 	public void start() {
-		for (Readable p : elements)
+		for (ReadableSound p : elements)
 			p.start();
 	}
 
 	@Override
 	public void stop() {
-		for (Readable p : elements)
+		for (ReadableSound p : elements)
 			p.stop();
 	}
 }

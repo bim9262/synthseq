@@ -18,6 +18,9 @@ public class Visualizer {
 	public void write(double d) {
 		g.write(d);
 	}
+	public boolean isVisible(){
+		return gui.isVisible();
+	}
 
 	public void show() {
 		gui.setVisible(true);
@@ -38,21 +41,15 @@ class GPanel extends JPanel {
 	}
 
 	public void write(double d) {
-		if (x < 400) {
-			int y = (int) (d * 200 + 200);
-			b.setRGB(x, ys[x], 0x33330000);
-			b.setRGB(x, y, 0xFFFF0000);
-			ys[x] = y;
-		}
-		x++;
-		if (x >= 400) {
+		ys[x++]=(int) (d*200+200);
+		if(x>=400){
 			x = 0;
 			repaint();
 		}
 	}
 
 	public void paintComponent(Graphics g) {
-		g.fillRect(0, 0, 400, 400);
-		g.drawImage(b, 0, 0, null);
+		for(int i = 0; i< ys.length-1;i++)
+			g.drawLine(i,ys[i], i+1, ys[i+1]);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import synthseq.playables.readables.ReadableSound;
+import synthseq.signalanalysis.Visualizer;
 
 public class Synthesizer {
 	private LineOut out;

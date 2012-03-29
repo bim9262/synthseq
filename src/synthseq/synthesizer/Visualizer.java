@@ -41,7 +41,9 @@ class GPanel extends JPanel {
 	}
 
 	public void write(double d) {
-		ys[x++]=(int) (d*200+200);
+		if(Math.abs(d)>1)
+			System.out.println(d);
+		ys[x++]=(int) (400 - (d*200+200));
 		if(x>=400){
 			x = 0;
 			repaint();
@@ -49,6 +51,7 @@ class GPanel extends JPanel {
 	}
 
 	public void paintComponent(Graphics g) {
+		g.clearRect(0, 0, getWidth(), getHeight());
 		for(int i = 0; i< ys.length-1;i++)
 			g.drawLine(i,ys[i], i+1, ys[i+1]);
 	}

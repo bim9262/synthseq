@@ -4,6 +4,10 @@ import synthseq.playables.Playable;
 import synthseq.synthesizer.Synthesizer;
 
 public abstract class ReadableSound implements Playable{
+	public void play(){
+		register();
+		start();
+	}
 	public void register(){
 		Synthesizer.getInstance().addSource(this);
 	}

@@ -5,10 +5,10 @@ import java.util.Collection;
 import synthseq.playables.readables.ReadableSound;
 
 
-public class Combinator extends ReadableSound {
+public class Adder extends ReadableSound {
 	private Collection<ReadableSound> elements;
 
-	public Combinator(Collection<ReadableSound> elements) {
+	public Adder(Collection<ReadableSound> elements) {
 		this.elements = elements;
 	}
 

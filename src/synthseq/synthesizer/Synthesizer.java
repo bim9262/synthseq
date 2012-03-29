@@ -13,13 +13,13 @@ public class Synthesizer {
 	private int quietDuration = 44100 * 1;
 	private Visualizer vis = new Visualizer();
 	private static Synthesizer instance = null;
-	
+
 	private Synthesizer() {
 		this.out = LineOut.getInstance();
 		start();
 	}
-	
-	public int size(){
+
+	public int size() {
 		return readables.size();
 	}
 
@@ -30,8 +30,10 @@ public class Synthesizer {
 	}
 
 	public synchronized void addSource(ReadableSound r) {
-		if (!readables.containsKey(r)) {
-			readables.put(r, 0);
+		synchronized (readables) {
+			if (!readables.containsKey(r)) {
+				readables.put(r, 0);
+			}
 		}
 	}
 
@@ -44,8 +46,10 @@ public class Synthesizer {
 	}
 
 	public void kill() {
-		for (ReadableSound r : readables.keySet())
-			r.stop();
+		synchronized (readables) {
+			for (ReadableSound r : readables.keySet())
+				r.stop();
+		}
 	}
 
 	public void start() {
@@ -53,21 +57,25 @@ public class Synthesizer {
 			public void run() {
 				while (true) {
 					double add = 0;
-					for (Iterator<ReadableSound> it = readables.keySet()
-							.iterator(); it.hasNext();) {
-						ReadableSound r = it.next();
-						double a = r.read();
-						add += a / readables.size();
-						if (Math.abs(a) < threshold)
-							readables.put(r, readables.get(r) + 1);
-						if (readables.get(r) > quietDuration) {
-							it.remove();
+					synchronized (readables) {
+						for (Iterator<ReadableSound> it = readables.keySet()
+								.iterator(); it.hasNext();) {
+							ReadableSound r = it.next();
+							double a = r.read();
+							add += a / readables.size();
+							if (Math.abs(a) < threshold)
+								readables.put(r, readables.get(r) + 1);
+							else
+								readables.put(r, 0);
+							if (readables.get(r) > quietDuration) {
+								it.remove();
 
+							}
 						}
+						out.writeM(add);
+						if (vis.isVisible())
+							vis.write(add);
 					}
-					out.writeM(add);
-					if (vis.isVisible())
-						vis.write(add);
 				}
 			}
 		}.start();

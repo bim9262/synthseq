@@ -2,14 +2,12 @@ package synthseq.playables.readables.waveforms;
 
 import synthseq.playables.readables.ReadableSound;
 
-
-
-public class SawWave extends ReadableSound{
-	private double amplitude = 0;
+public class SineWave extends ReadableSound{
+	private double time = 0;
 	private double freq;
 	private boolean running = false;
 
-	public SawWave(double freq) {
+	public SineWave(double freq) {
 		this.freq = freq;
 	}
 
@@ -17,10 +15,10 @@ public class SawWave extends ReadableSound{
 	public double read() {
 		if (!running)
 			return 0;
-		amplitude += 2.0/(44100/freq);
-		if(amplitude >=1)
-			amplitude = -1;
-		return amplitude;
+		time += 2*Math.PI/(44100/freq);
+		if(time >= Math.PI*2)
+			time = 0;
+		return Math.sin(time);
 	}
 
 	@Override
@@ -32,6 +30,5 @@ public class SawWave extends ReadableSound{
 	public void stop() {
 		running = false;
 	}
-	
 
 }

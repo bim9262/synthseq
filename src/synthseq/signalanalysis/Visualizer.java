@@ -38,6 +38,7 @@ class GPanel extends JPanel {
 	BufferedImage b = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
 
 	public GPanel() {
+		super(true);
 	}
 
 	public void write(double d) {

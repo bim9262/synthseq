@@ -17,7 +17,7 @@ public class SineWave extends ReadableSound{
 			return 0;
 		time += 2*Math.PI/(44100/freq);
 		if(time >= Math.PI*2)
-			time = 0;
+			time -= Math.PI*2;
 		return Math.sin(time);
 	}
 

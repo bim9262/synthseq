@@ -4,7 +4,9 @@ import java.util.Collection;
 
 import synthseq.playables.readables.ReadableSound;
 
-
+/*
+ * Adds multiple waveforms together
+ */
 public class Adder extends ReadableSound {
 	private Collection<ReadableSound> elements;
 

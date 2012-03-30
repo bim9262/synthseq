@@ -1,9 +1,10 @@
 (ns Clojure-Bindings)
 (import '(synthseq.synthesizer Synthesizer)
         '(synthseq.playables Clip)
+        '(synthseq.signalanalysis FrequencyDomain)
         '(synthseq.playables.readables ReadableSound)
         '(synthseq.playables.readables.waveforms SawWave TriangleWave SineWave PulseWave WhiteNoise)
-        '(synthseq.playables.readables.filters StringInst)
+        '(synthseq.playables.readables.filters StringInst HighPass LowPass)
         '(synthseq.playables.readables.operations Adder Multiplier Clipping))
 (defn test-success [] (println "success"))
 (defn saw [freq] (SawWave. freq))
@@ -13,7 +14,9 @@
   ([freq] (PulseWave. freq))
   ([freq ratio] (PulseWave. freq ratio)))
 (defn white-noise [] (WhiteNoise.))
-(defn stringinst [freq] (StringInst. freq)) 
+(defn stringinst [freq] (StringInst. freq))
+(defn LPF [readable alpha] (LowPass. readable alpha))
+(defn HPF [readable alpha] (HighPass. readable alpha))
 (defn add 
   ([readables] (Adder. readables)))
 (defn addm 
@@ -22,5 +25,8 @@
 (defn clip [readable maxVal] (Clipping. readable maxVal))
 (def synth (Synthesizer/getInstance))
 (defn show-vis [] (.showVisualizer synth))
+(defn dft
+  ([readable] (FrequencyDomain. readable 10)))
+  ([readable accuracy] (FrequencyDomain. readable period))
 (defn kill [] (.kill synth))
 (defn testSynthAutoKill [] (.size synth))

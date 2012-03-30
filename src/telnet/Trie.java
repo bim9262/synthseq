@@ -1,3 +1,4 @@
+package telnet;
 import java.util.ArrayList;
 
 
@@ -37,7 +38,7 @@ public class Trie {
 			gotoNext(c);
 		}
 		
-		
+		return toReturn;
 	}
 
     /**

@@ -2,11 +2,12 @@
 (import '(synthseq.synthesizer Synthesizer)
         '(synthseq.playables Clip)
         '(synthseq.playables.readables ReadableSound)
-        '(synthseq.playables.readables.waveforms SawWave SineWave PulseWave WhiteNoise)
+        '(synthseq.playables.readables.waveforms SawWave TriangleWave SineWave PulseWave WhiteNoise)
         '(synthseq.playables.readables.filters StringInst)
         '(synthseq.playables.readables.operations Adder Multiplier Clipping))
 (defn test-success [] (println "success"))
 (defn saw [freq] (SawWave. freq))
+(defn triangle [freq] (TriangleWave. freq))
 (defn sine [freq] (SineWave. freq))
 (defn pulse 
   ([freq] (PulseWave. freq))

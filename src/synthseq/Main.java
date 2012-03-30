@@ -11,6 +11,7 @@ public class Main {
 		
 		ClojureServer.start(9000);
 		OSCServer.start(new DefaultActionMap(), 8000);
+		Thread.sleep(2000);
 		new Telnet("localhost", 9000);
 	}
 }

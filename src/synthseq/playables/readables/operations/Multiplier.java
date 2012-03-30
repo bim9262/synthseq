@@ -2,6 +2,9 @@ package synthseq.playables.readables.operations;
 
 import synthseq.playables.readables.ReadableSound;
 
+/*
+ * Multiplies Waveforms by waveforms or scalars
+ */
 public class Multiplier extends ReadableSound {
 	private ReadableSound p;
 	private ReadableSound mult = null;

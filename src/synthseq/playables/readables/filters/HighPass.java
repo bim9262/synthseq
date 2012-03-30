@@ -7,9 +7,10 @@ public class HighPass extends ReadableSound {
 	private double alpha;
 
 	public HighPass(ReadableSound r, double alpha) {
+		this.r = r;
 		this.alpha = alpha;
 	}
-
+	
 	@Override
 	public double read() {
 		//see http://en.wikipedia.org/wiki/High-pass_filter#Algorithmic_implementation

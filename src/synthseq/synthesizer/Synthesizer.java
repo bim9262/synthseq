@@ -63,7 +63,7 @@ public class Synthesizer {
 								.iterator(); it.hasNext();) {
 							ReadableSound r = it.next();
 							double a = r.read();
-							add += a / readables.size();
+							add += a / 10;
 							if (Math.abs(a) < threshold)
 								readables.put(r, readables.get(r) + 1);
 							else

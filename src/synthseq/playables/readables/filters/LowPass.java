@@ -13,9 +13,10 @@ public class LowPass extends ReadableSound {
 
 	@Override
 	public double read() {
-		//TODO
 		//see http://en.wikipedia.org/wiki/Low-pass_filter#Algorithmic_implementation
-		return 0;
+		   double y;
+		   y = r.read();
+		   return alpha * r.read() + (1-alpha) * y;
 	}
 
 	@Override

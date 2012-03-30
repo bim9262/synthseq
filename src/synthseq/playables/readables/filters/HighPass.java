@@ -12,9 +12,10 @@ public class HighPass extends ReadableSound {
 
 	@Override
 	public double read() {
-		//TODO
 		//see http://en.wikipedia.org/wiki/High-pass_filter#Algorithmic_implementation
-		return 0;
+		   double y;
+		   y = r.read();
+		   return  alpha * y + alpha * (- r.read() + r.read());
 	}
 
 	@Override

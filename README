@@ -1,6 +1,4 @@
 To do:
-	Figure out the best way to have readables
-	register themselves with the synthesizer when played
 	Readables:
 		Buffer
 			-specify period, loads that amount of data from a readable
@@ -24,7 +22,7 @@ To do:
 	Wave Analysis
 		Visualizer (amplitude over time)
 		Frequency domain (histogram)
-		Spectrograph (frequency domain over time)
+		Spectrogram (frequency domain over time)
 
 **Use Collections for all parameters to facilitate Clojure interop**
 

@@ -49,7 +49,7 @@ public class Telnet {
 
 		gui.setSize(400, 400);
 		gui.add(g);
-
+		
 		gui.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				out.close();
@@ -69,12 +69,16 @@ public class Telnet {
 		});
 
 		gui.setVisible(true);
+		
+		textField.requestFocusInWindow();
+		
 	}
 
 	private class GPanel extends JPanel implements ActionListener {
 		GPanel() {
 			super(new GridBagLayout());
 			textField = new JTextField();
+			
 			textField.addActionListener(this);
 			textField.addKeyListener(new KeyAdapter() {
 				public void keyPressed(KeyEvent e) {
@@ -88,13 +92,22 @@ public class Telnet {
 					case 40:
 						textField.setText(cmds.next());
 						break;
+					//tab key
+					case 9:
+						
+						break;
 					}
 
 				}
 			});
 
 			textArea = new JTextArea();
+			
+			
+			textField.setFocusTraversalKeysEnabled(false);
 			textArea.setEditable(false);
+			textArea.setFocusable(false);
+			
 			JScrollPane scrollPane = new JScrollPane(textArea);
 
 			// Add Components to this panel.
@@ -130,7 +143,7 @@ public class Telnet {
 			}
 
 			textField.setText("");
-
+			setFocusTraversalKeysEnabled(false);
 			textArea.setCaretPosition(textArea.getDocument().getLength());
 		}
 	}

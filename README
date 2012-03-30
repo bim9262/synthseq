@@ -3,10 +3,8 @@ To do:
 		Buffer
 			-specify period, loads that amount of data from a readable
 			-like a clip for synthesizable
-		Waveforms:
-			Triangle
 		Filters:
-			Low pass, High pass, Finite Impulse Response
+			Finite Impulse Response
 		Modifiers:
 			Speed, [Pitch, Timbre](filters?)
 			Smooth Clipping

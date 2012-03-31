@@ -36,9 +36,8 @@ public class Linear extends ReadableSound {
 		} else if (amplitude <= -1) {
 			running = false;
 		} else
-			amplitude -= 1 / (44100 / period);
+			amplitude -= 2/(period * 44100);
 		return amplitude;
-
 	}
 
 }

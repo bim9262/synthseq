@@ -1,24 +1,12 @@
 package synthseq.signalanalysis;
+
 public class FFT {
-
-	public static void main(String[] args) {
-		int sampleSize = (int) Math.pow(2, 12);
-		double[] x = new double[sampleSize];
-		for (int i = 0; i < x.length; i++) {
-			x[i] = Math.sin(i * 2 * Math.PI / (44100 / 440))
-					+ Math.sin(i * 2 * Math.PI / (44100 / 1500));
-		}
-		double[][] res = FrequencyDomain(x);
-		for(int i = 0; i<res[0].length;i++)
-			System.out.println(res[0][i]+" , "+res[1][i]);
-	}
-
 	/*
-	 * This computes the frequency domain of the passed array.
-	 * Returns 2d 'histogram' of frequencies in the array.
-	 * Array length is a power of 2.
+	 * This computes the frequency domain of the passed array. Returns 2d
+	 * frequency domain of the passed array. Array length is a power of 2.
+	 * Sampling frequency is assumed to be 44.1kHz
 	 */
-	static double[][] FrequencyDomain(double[] x) {
+	public static double[][] FrequencyDomain(double[] x) {
 		double[] y = new double[x.length];
 		int m = (int) (Math.log(x.length) / Math.log(2));
 		int n, i, i1, j, k, i2, l, l1, l2;
@@ -26,8 +14,8 @@ public class FFT {
 		n = x.length;
 		i2 = n >> 1;
 		j = 0;
-		//adapdted from Paul Bourke's implemenation
-		//of a complex to complex fft
+		// adapted from Paul Bourke's implementation
+		// of a complex to complex FFT
 		for (i = 0; i < n - 1; i++) {
 			if (i < j) {
 				tx = x[i];
@@ -84,7 +72,7 @@ public class FFT {
 		for (i = 0; i < freq.length; i++) {
 			freq[i] = nyquist * ((double) i) / (freq.length);
 		}
-		double[][] res = new double[2][x.length];		
+		double[][] res = new double[2][x.length];
 		res[0] = freq;
 		res[1] = power;
 		return res;

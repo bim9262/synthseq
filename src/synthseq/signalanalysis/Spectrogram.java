@@ -5,11 +5,11 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Visualizer {
+public class Spectrogram {
 	private GPanel g = new GPanel();
 	private JFrame gui = new JFrame();
 
-	public Visualizer() {
+	public Spectrogram() {
 		gui.setSize(400, 400);
 		gui.add(g);
 	}
@@ -17,7 +17,8 @@ public class Visualizer {
 	public void write(double d) {
 		g.write(d);
 	}
-	public boolean isVisible(){
+
+	public boolean isVisible() {
 		return gui.isVisible();
 	}
 
@@ -28,7 +29,7 @@ public class Visualizer {
 	public void hide() {
 		gui.setVisible(false);
 	}
-	@SuppressWarnings("serial") 
+	@SuppressWarnings("serial")
 	private class GPanel extends JPanel {
 		int x = 0;
 		int[] ys = new int[400];
@@ -37,9 +38,10 @@ public class Visualizer {
 		}
 
 		public void write(double d) {
-			ys[x]=(int) (400 - (d*200+200));
-			x++;
-			if(x>=400){
+			if (Math.abs(d) > 1)
+				System.out.println(d);
+			ys[x++] = (int) (400 - (d * 200 + 200));
+			if (x >= 400) {
 				x = 0;
 				repaint();
 			}
@@ -47,8 +49,9 @@ public class Visualizer {
 
 		public void paintComponent(Graphics g) {
 			g.clearRect(0, 0, getWidth(), getHeight());
-			for(int i = 0; i< ys.length-1;i++)
-				g.drawLine(i,ys[i], i+1, ys[i+1]);
+			for (int i = 0; i < ys.length - 1; i++)
+				g.drawLine(i, ys[i], i + 1, ys[i + 1]);
 		}
 	}
 }
+

@@ -25,18 +25,4 @@ public class CommandList{
 				
 	}
 	
-	public static void main (String[] args){
-		 CommandList c =  new  CommandList();
-		 
-
-		 c.add("Test");
-		 c.add("Test2");
-		 System.out.println(c.prev() + c.pos);
-		 System.out.println(c.prev() + c.pos);
-		 System.out.println(c.prev() + c.pos);
-		 System.out.println(c.next() + c.pos);
-		 System.out.println(c.next() + c.pos);
-		 
-		
-	}
 }

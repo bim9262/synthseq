@@ -1,15 +1,23 @@
 package synthseq.playables.readables.operations;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import synthseq.playables.readables.ReadableSound;
 
-
+/*
+ * Adds multiple waveforms together
+ */
 public class Adder extends ReadableSound {
 	private Collection<ReadableSound> elements;
 
 	public Adder(Collection<ReadableSound> elements) {
 		this.elements = elements;
+	}
+	
+	public Adder(ReadableSound element) {
+		this.elements = new ArrayList<ReadableSound>();
+		elements.add(element);
 	}
 
 	@Override

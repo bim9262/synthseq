@@ -46,6 +46,17 @@ public class Telnet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		new Thread(){
+			public void run(){
+				try {
+					while(true)
+					textArea.append(in.readLine() + "\n");
+				} catch (IOException e) {
+					System.out.println("Connection Closed.");
+				}
+			}
+		}.start();
 
 		gui.setSize(400, 400);
 		gui.add(g);
@@ -69,14 +80,24 @@ public class Telnet {
 		});
 
 		gui.setVisible(true);
+
+		textField.requestFocusInWindow();
+
 	}
 
 	private class GPanel extends JPanel implements ActionListener {
+		private int tabCount = 0;
 		GPanel() {
 			super(new GridBagLayout());
+			
+		
+			
 			textField = new JTextField();
+
 			textField.addActionListener(this);
 			textField.addKeyListener(new KeyAdapter() {
+				
+				
 				public void keyPressed(KeyEvent e) {
 					switch (e.getKeyCode()) {
 					// up key
@@ -88,13 +109,29 @@ public class Telnet {
 					case 40:
 						textField.setText(cmds.next());
 						break;
+
 					}
 
+				}
+
+				public void keyTyped(KeyEvent e) {
+					switch (e.getKeyCode()) {
+					// tab key
+					case 9:
+						tabCount++;
+						//TODO: add implementation for tabbing
+						break;
+					}
+					
 				}
 			});
 
 			textArea = new JTextArea();
+
+			textField.setFocusTraversalKeysEnabled(false);
 			textArea.setEditable(false);
+			textArea.setFocusable(false);
+
 			JScrollPane scrollPane = new JScrollPane(textArea);
 
 			// Add Components to this panel.
@@ -122,15 +159,9 @@ public class Telnet {
 			cmds.add(text);
 
 			out.println(text);
-			try {
-				textArea.append(in.readLine() + "\n");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
 			textField.setText("");
-
+			tabCount = 0;
 			textArea.setCaretPosition(textArea.getDocument().getLength());
 		}
 	}

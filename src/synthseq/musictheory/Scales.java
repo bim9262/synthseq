@@ -11,5 +11,5 @@ public class Scales {
 		private static byte[] wholeToneScale = { 2, 2, 2, 2, 2, 2 };
 		private static byte[] phrygianDominantScale = { 1, 3, 1, 2, 1, 2, 2 };
 		private static byte[] doubleHarmonicMajorScale = { 1, 3, 1, 2, 1, 3, 1 };
-		 
+		
 }

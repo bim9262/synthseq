@@ -2,15 +2,29 @@ To do:
 	Readables:
 		Buffer
 			-specify period, loads that amount of data from a readable
-			-like a clip for synthesizable
+			-like a clip for synthesizables
+		Decays
+			Linear
+			Exponential
+				Syntax Example: (defn drum [freq length] 
+									(mult 
+										(expDecay length) 
+										(add (sine freq) (pulse (* 2 freq)))))
 		Filters:
 			Finite Impulse Response
+			Band Pass
 		Modifiers:
+			Modify frequency of a wave by increasing or 
+				decreasing sampling rate inside a modifier
+				and interpolating linearly between sampled values
+			Companding
 			Speed, [Pitch, Timbre](filters?)
 			Smooth Clipping
 	Music Theory:
 		Notes from scale + base note
+			Ex: C4 pentatonic minor
 		Notes from chords
+			Ex: C B A Cm Cb C# v vii iv VI IIm III7 C6 Csus4 C#m13#11
 	Clojure bindings
 	Sequencer.
 		-String input for osc format

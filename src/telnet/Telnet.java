@@ -1,13 +1,25 @@
 package telnet;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
-import javax.swing.*;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class Telnet {
 
@@ -24,34 +36,18 @@ public class Telnet {
 
 		try {
 			s = new Socket(InetAddress.getByName(host), port);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
 			s.setKeepAlive(true);
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
 			in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
 			out = new PrintWriter(s.getOutputStream(), true);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		new Thread(){
-			public void run(){
+
+		new Thread() {
+			public void run() {
 				try {
-					while(true)
-					textArea.append(in.readLine() + "\n");
+					while (true)
+						textArea.append(in.readLine() + "\n");
 				} catch (IOException e) {
 					System.out.println("Connection Closed.");
 				}
@@ -60,36 +56,35 @@ public class Telnet {
 
 		gui.setSize(400, 400);
 		gui.add(g);
-		
+
 		gui.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				out.close();
 				try {
 					in.close();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				try {
 					s.close();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 		});
 
 		gui.setVisible(true);
-		
+
 		textField.requestFocusInWindow();
-		
+
 	}
 
+	@SuppressWarnings("serial")
 	private class GPanel extends JPanel implements ActionListener {
 		GPanel() {
 			super(new GridBagLayout());
 			textField = new JTextField();
-			
+
 			textField.addActionListener(this);
 			textField.addKeyListener(new KeyAdapter() {
 				public void keyPressed(KeyEvent e) {
@@ -103,9 +98,9 @@ public class Telnet {
 					case 40:
 						textField.setText(cmds.next());
 						break;
-					//tab key
+					// tab key
 					case 9:
-						
+
 						break;
 					}
 
@@ -113,11 +108,10 @@ public class Telnet {
 			});
 
 			textArea = new JTextArea();
-			
-			
+
 			textField.setFocusTraversalKeysEnabled(false);
-			//textArea.setEditable(false);
-			
+			// textArea.setEditable(false);
+
 			JScrollPane scrollPane = new JScrollPane(textArea);
 
 			// Add Components to this panel.

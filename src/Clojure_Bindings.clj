@@ -18,15 +18,14 @@
 (defn LPF [readable alpha] (LowPass. readable alpha))
 (defn HPF [readable alpha] (HighPass. readable alpha))
 (defn add 
-  ([readables] (Adder. readables)))
-(defn addm 
-  ([& readables] (Adder. readables)))
+  ([readables] (Adder. readables))
+  ([readables & r] (Adder. (conj r readables))))
 (defn mult [readable mult] (Multiplier. readable mult))
 (defn clip [readable maxVal] (Clipping. readable maxVal))
 (def synth (Synthesizer/getInstance))
 (defn show-vis [] (.showVisualizer synth))
 (defn dft
-  ([readable] (FrequencyDomain. readable 10)))
-  ([readable accuracy] (FrequencyDomain. readable period))
+  ([readable] (FrequencyDomain. readable 10.0))
+  ([readable accuracy] (FrequencyDomain. readable accuracy)))
 (defn kill [] (.kill synth))
 (defn testSynthAutoKill [] (.size synth))

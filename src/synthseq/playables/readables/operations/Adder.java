@@ -1,5 +1,6 @@
 package synthseq.playables.readables.operations;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import synthseq.playables.readables.ReadableSound;
@@ -12,6 +13,11 @@ public class Adder extends ReadableSound {
 
 	public Adder(Collection<ReadableSound> elements) {
 		this.elements = elements;
+	}
+	
+	public Adder(ReadableSound element) {
+		this.elements = new ArrayList<ReadableSound>();
+		elements.add(element);
 	}
 
 	@Override

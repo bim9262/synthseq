@@ -4,7 +4,7 @@ import synthseq.playables.readables.ReadableSound;
 
 public class Linear extends ReadableSound {
 	private double amplitude = 1;
-	private double freq;
+	private double period;
 	private boolean running = false;
 
 	/*
@@ -14,12 +14,13 @@ public class Linear extends ReadableSound {
 	 * a period of 1 should decay linearly from 1 to -1 over 44.1k samples/calls
 	 * to read().
 	 */
-	public Linear(double freq) {
-		this.freq = freq;
+	public Linear(double period) {
+		this.period = period;
 	}
 
 	@Override
 	public void start() {
+		amplitude = 1;
 		running = true;
 	}
 
@@ -31,11 +32,11 @@ public class Linear extends ReadableSound {
 	@Override
 	public double read() {
 		if (!running) {
-			return 0;
+			return -1;
 		} else if (amplitude <= -1) {
 			running = false;
 		} else
-			amplitude -= 1 / (44100 / freq);
+			amplitude -= 1 / (44100 / period);
 		return amplitude;
 
 	}

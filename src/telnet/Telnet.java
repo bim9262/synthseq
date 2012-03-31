@@ -58,7 +58,7 @@ public class Telnet {
 			}
 		}.start();
 
-		gui.setSize(400, 400);
+		gui.setSize(600, 400);
 		gui.add(g);
 
 		gui.addWindowListener(new WindowAdapter() {

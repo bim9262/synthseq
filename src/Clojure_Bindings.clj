@@ -18,7 +18,8 @@
 (defn LPF [readable alpha] (LowPass. readable alpha))
 (defn HPF [readable alpha] (HighPass. readable alpha))
 (defn add 
-  ([& readables] (Adder. readables)))
+  ([readables] (Adder. readables))
+  ([readables & r] (Adder. (conj r readables))))
 (defn mult [readable mult] (Multiplier. readable mult))
 (defn clip [readable maxVal] (Clipping. readable maxVal))
 (def synth (Synthesizer/getInstance))

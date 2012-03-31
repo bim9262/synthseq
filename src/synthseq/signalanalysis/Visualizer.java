@@ -37,9 +37,8 @@ public class Visualizer {
 		}
 
 		public void write(double d) {
-			if(Math.abs(d)>1)
-				System.out.println(d);
-			ys[x++]=(int) (400 - (d*200+200));
+			ys[x]=(int) (400 - (d*200+200));
+			x++;
 			if(x>=400){
 				x = 0;
 				repaint();

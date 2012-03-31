@@ -46,6 +46,17 @@ public class Telnet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		new Thread(){
+			public void run(){
+				try {
+					while(true)
+					textArea.append(in.readLine() + "\n");
+				} catch (IOException e) {
+					System.out.println("Connection Closed.");
+				}
+			}
+		}.start();
 
 		gui.setSize(400, 400);
 		gui.add(g);
@@ -105,8 +116,7 @@ public class Telnet {
 			
 			
 			textField.setFocusTraversalKeysEnabled(false);
-			textArea.setEditable(false);
-			textArea.setFocusable(false);
+			//textArea.setEditable(false);
 			
 			JScrollPane scrollPane = new JScrollPane(textArea);
 
@@ -135,12 +145,6 @@ public class Telnet {
 			cmds.add(text);
 
 			out.println(text);
-			try {
-				textArea.append(in.readLine() + "\n");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
 			textField.setText("");
 			setFocusTraversalKeysEnabled(false);

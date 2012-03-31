@@ -70,7 +70,6 @@ public class Synthesizer {
 								readables.put(r, 0);
 							if (readables.get(r) > quietDuration) {
 								it.remove();
-
 							}
 						}
 						out.writeM(add);

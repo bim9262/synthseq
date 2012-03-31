@@ -26,7 +26,7 @@
 (def synth (Synthesizer/getInstance))
 (defn show-vis [] (.showVisualizer synth))
 (defn dft
-  ([readable] (FrequencyDomain. readable 10)))
-  ([readable accuracy] (FrequencyDomain. readable period))
+  ([readable] (FrequencyDomain. readable 10))
+  ([readable accuracy] (FrequencyDomain. readable accuracy)))
 (defn kill [] (.kill synth))
 (defn testSynthAutoKill [] (.size synth))

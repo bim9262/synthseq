@@ -4,7 +4,6 @@ To do:
 			-specify period, loads that amount of data from a readable
 			-like a clip for synthesizables
 		Decays
-			Linear
 			Exponential
 				Syntax Example: (defn drum [freq length] 
 									(mult 

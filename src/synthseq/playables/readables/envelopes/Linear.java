@@ -3,7 +3,7 @@ package synthseq.playables.readables.envelopes;
 import synthseq.playables.readables.ReadableSound;
 
 public class Linear extends ReadableSound {
-	private double amplitude = 1;
+	private double amplitude;
 	private double period;
 	private boolean running = false;
 

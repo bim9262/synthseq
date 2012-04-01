@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -100,11 +99,6 @@ public class Telnet {
 					// down key
 					case 40:
 						textField.setText(cmds.next());
-						break;
-
-					// tab key
-					case 9:
-
 						break;
 					}
 

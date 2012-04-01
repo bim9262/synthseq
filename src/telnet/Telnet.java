@@ -54,7 +54,7 @@ public class Telnet {
 			}
 		}.start();
 
-		gui.setSize(400, 400);
+		gui.setSize(600, 400);
 		gui.add(g);
 
 		gui.addWindowListener(new WindowAdapter() {
@@ -81,12 +81,15 @@ public class Telnet {
 
 	@SuppressWarnings("serial")
 	private class GPanel extends JPanel implements ActionListener {
+		private int tabCount = 0;
 		GPanel() {
 			super(new GridBagLayout());
 			textField = new JTextField();
 
 			textField.addActionListener(this);
 			textField.addKeyListener(new KeyAdapter() {
+				
+				
 				public void keyPressed(KeyEvent e) {
 					switch (e.getKeyCode()) {
 					// up key
@@ -98,6 +101,7 @@ public class Telnet {
 					case 40:
 						textField.setText(cmds.next());
 						break;
+
 					// tab key
 					case 9:
 
@@ -105,12 +109,25 @@ public class Telnet {
 					}
 
 				}
+
+				public void keyTyped(KeyEvent e) {
+					switch (e.getKeyCode()) {
+					// tab key
+					case 9:
+						tabCount++;
+						//TODO: add implementation for tabbing
+						break;
+					}
+					
+				}
 			});
 
 			textArea = new JTextArea();
 
 			textField.setFocusTraversalKeysEnabled(false);
-			// textArea.setEditable(false);
+
+			textArea.setEditable(false);
+			textArea.setFocusable(false);
 
 			JScrollPane scrollPane = new JScrollPane(textArea);
 
@@ -141,7 +158,7 @@ public class Telnet {
 			out.println(text);
 
 			textField.setText("");
-			setFocusTraversalKeysEnabled(false);
+			tabCount = 0;
 			textArea.setCaretPosition(textArea.getDocument().getLength());
 		}
 	}

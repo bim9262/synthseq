@@ -19,8 +19,10 @@
 (defn expenv [period] (Exponential. period))
 (defn ADSRenv [attack peek decay level release] (ADSR. attack peek decay level release))
 (defn stringinst [freq] (StringInst. freq))
-(defn LPF [readable alpha] (LowPass. readable alpha))
-(defn HPF [readable alpha] (HighPass. readable alpha))
+(defn LPF ([readable alpha] (LowPass. readable alpha))
+  ([readable] (LowPass. readable 0.5)))
+(defn HPF ([readable alpha] (HighPass. readable alpha))
+  ([readable] (HighPass. readable 0.5)))
 (defn add 
   ([readables] (Adder. readables))
   ([readables & r] (Adder. (conj r readables))))

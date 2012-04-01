@@ -5,23 +5,20 @@ import synthseq.playables.readables.ReadableSound;
 public class LowPass extends ReadableSound {
 	private ReadableSound r;
 	private double alpha;
-	private double[] buffer = new double[2];
+	private double old = 0;
 
-	public LowPass(ReadableSound r, double RC) {
+	public LowPass(ReadableSound r, double alpha) {
 		this.r = r;
-		buffer[0] = r.read();
-		buffer[1] = r.read();
-		this.alpha = (1 / 44100.0) / (RC + 1 / 44100.0);
-		this.alpha = 0.5;
+		old = r.read();
+		this.alpha = alpha;
 	}
 
 	@Override
 	public double read() {
 		// see
 		// http://en.wikipedia.org/wiki/Low-pass_filter#Algorithmic_implementation
-		double out = alpha * buffer[1] + (1 - alpha) * buffer[0];
-		buffer[0] = buffer[1];
-		buffer[1] = r.read();
+		double out = alpha * r.read() + (1 - alpha) * old;
+		old = out;
 		return out;
 	}
 

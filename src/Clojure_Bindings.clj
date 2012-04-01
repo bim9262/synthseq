@@ -30,8 +30,9 @@
 (defn clip [readable maxVal] (Clipping. readable maxVal))
 (def synth (Synthesizer/getInstance))
 (defn show-vis [] (.showVisualizer synth))
+(defn show-fd [] (.showFreqVis synth))
 (defn dft
-  ([readable] (FrequencyDomain. readable 10.0))
-  ([readable accuracy] (FrequencyDomain. readable accuracy)))
+  ([readable] (.show (FrequencyDomain. readable 10.0)))
+  ([readable accuracy] (.show (FrequencyDomain. readable accuracy))))
 (defn kill [] (.kill synth))
 (defn testSynthAutoKill [] (.size synth))

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import synthseq.playables.readables.ReadableSound;
+import synthseq.signalanalysis.FrequencyDomain;
 import synthseq.signalanalysis.Visualizer;
 
 public class Synthesizer {
@@ -13,6 +14,7 @@ public class Synthesizer {
 	private double threshold = .01;
 	private int quietDuration = 44100 * 1;
 	private Visualizer vis = new Visualizer();
+	private FrequencyDomain fdVis = new FrequencyDomain(8);
 	private static Synthesizer instance = null;
 
 	private Synthesizer() {
@@ -46,6 +48,14 @@ public class Synthesizer {
 		vis.hide();
 	}
 
+	public void showFreqVis() {
+		fdVis.show();
+	}
+
+	public void hideFreqVis() {
+		fdVis.hide();
+	}
+
 	public void kill() {
 		synchronized (readables) {
 			for (ReadableSound r : readables.keySet())
@@ -75,6 +85,8 @@ public class Synthesizer {
 						out.writeM(add);
 						if (vis.isVisible())
 							vis.write(add);
+						if(fdVis.isVisible())
+							fdVis.write(add);
 					}
 				}
 			}

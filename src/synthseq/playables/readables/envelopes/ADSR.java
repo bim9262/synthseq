@@ -58,7 +58,7 @@ public class ADSR extends ReadableSound {
 		} else if (time < attack && time >= attack + decay) {
 			amplitude += (level - peek) / (decay * 44100);
 		} else if (time < attack + decay && time >= attack + decay + release) {
-			amplitude += -level / (release * 44100);
+			amplitude -= level / (release * 44100);
 		} else {
 			running = false;
 		}

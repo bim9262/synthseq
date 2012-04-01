@@ -1,5 +1,6 @@
 package synthseq.signalanalysis;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JFrame;
@@ -47,7 +48,7 @@ public class FrequencyDomain {
 
 	public void write(double d) {
 		buffer[bufferLoc++] = d;
-		if (bufferLoc >= buffer.length-1){
+		if (bufferLoc >= buffer.length - 1) {
 			write();
 			bufferLoc = 0;
 		}
@@ -62,6 +63,8 @@ public class FrequencyDomain {
 				yMax = frequencyDomain[1][i];
 			}
 		}
+		if(yMax <= 0.0000000001)
+			yMax = 1;
 		g.repaint();
 	}
 
@@ -72,15 +75,20 @@ public class FrequencyDomain {
 		}
 
 		public void paintComponent(Graphics g) {
-			g.clearRect(0, 0, getWidth(), getHeight());
-			for (int i = 0; i < frequencyDomain[0].length - 1; i++)
-				g.drawLine(
-						(int) (getWidth() * (frequencyDomain[0][i] / xMax)),
-						(int) (getHeight() - getHeight()
-								* (frequencyDomain[1][i] / yMax)),
-						(int) (getWidth() * (frequencyDomain[0][i + 1] / xMax)),
-						(int) (getHeight() - getHeight()
-								* (frequencyDomain[1][i + 1] / yMax)));
+			g.setColor(new Color(0x01000000));
+			g.fillRect(0, 0, getWidth(), getHeight());
+			g.setColor(new Color(0xffff0000));
+			int[] xLocs = new int[frequencyDomain[0].length+1];
+			int[] yLocs = new int[frequencyDomain[0].length+1];
+			xLocs[0]=0;
+			yLocs[0]=getHeight();
+			for (int i = 0; i < frequencyDomain[0].length; i++) {
+				xLocs[i+1] = (int) (getWidth() * (frequencyDomain[0][i] / xMax));
+				yLocs[i+1] = (int) (getHeight() - getHeight()
+						* (frequencyDomain[1][i] / yMax));
+			}
+
+			g.fillPolygon(xLocs, yLocs, xLocs.length);
 		}
 	}
 }

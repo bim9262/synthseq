@@ -1,5 +1,6 @@
 package synthseq.signalanalysis;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JFrame;
@@ -46,7 +47,9 @@ public class Visualizer {
 		}
 
 		public void paintComponent(Graphics g) {
-			g.clearRect(0, 0, getWidth(), getHeight());
+			g.setColor(new Color(0x01000000));
+			g.fillRect(0, 0, getWidth(), getHeight());
+			g.setColor(new Color(0xffff0000));
 			for(int i = 0; i< ys.length-1;i++)
 				g.drawLine(i,ys[i], i+1, ys[i+1]);
 		}

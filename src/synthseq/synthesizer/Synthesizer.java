@@ -82,6 +82,7 @@ public class Synthesizer {
 								it.remove();
 							}
 						}
+						add = (add>1)?1:(add<-1)?-1:add;
 						out.writeM(add);
 						if (vis.isVisible())
 							vis.write(add);

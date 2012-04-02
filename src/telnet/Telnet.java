@@ -120,8 +120,8 @@ public class Telnet {
 
 			textField.setFocusTraversalKeysEnabled(false);
 
-			textArea.setEditable(false);
-			textArea.setFocusable(false);
+			//textArea.setEditable(false);
+			//textArea.setFocusable(false);
 
 			JScrollPane scrollPane = new JScrollPane(textArea);
 

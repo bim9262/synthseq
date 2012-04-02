@@ -14,11 +14,12 @@
 (defn pulse 
   ([freq] (PulseWave. freq))
   ([freq ratio] (PulseWave. freq ratio)))
+(defn load-clip [file] (Clip. file))
 (defn white-noise [] (WhiteNoise.))
 (defn linenv [period] (Linear. period))
 (defn expenv [period] (Exponential. period))
 (defn ADSRenv [attack peek decay level release] (ADSR. attack peek decay level release))
-(defn stringinst [freq] (StringInst. freq))
+(defn string-inst [freq] (StringInst. freq))
 (defn LPF ([readable alpha] (LowPass. readable alpha))
   ([readable] (LowPass. readable 0.5)))
 (defn HPF ([readable alpha] (HighPass. readable alpha))
@@ -31,6 +32,7 @@
 (def synth (Synthesizer/getInstance))
 (defn show-vis [] (.showVisualizer synth))
 (defn show-fd [] (.showFreqVis synth))
+(defn list-files [directory] (map #(.getAbsolutePath %) (.listFiles (java.io.File. directory))))
 (defn dft
   ([readable] (.show (FrequencyDomain. readable 10.0)))
   ([readable accuracy] (.show (FrequencyDomain. readable accuracy))))

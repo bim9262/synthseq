@@ -16,6 +16,8 @@ public class Clip extends ReadableSound {
 	private byte frameSize = 0;
 	private int location = 0;
 
+	//don't get rid of this just yet.
+	//its for testing new audio formats
 	/*public static void main(String[] args) throws Exception {
 		Clip clip = new Clip("/home/john/Desktop/Beats/39452__the-bizniss__gotcha.wav");
 		clip.play();
@@ -32,7 +34,6 @@ public class Clip extends ReadableSound {
 			AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
 			frameSize =  ((byte) (format
 					.getFormat().getFrameSize()));
-			System.out.println(frameSize);
 			byte[] frame = new byte[frameSize];
 			audio = new double[AudioSystem.getAudioFileFormat(file)
 					.getByteLength() / frameSize];

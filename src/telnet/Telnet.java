@@ -150,6 +150,8 @@ public class Telnet {
 			textArea.setBackground(Color.BLACK);
 			textField.setForeground(Color.GREEN);
 			textArea.setForeground(Color.GREEN);
+			textField.setCaretColor(Color.RED);
+		
 		}
 
 		public void actionPerformed(ActionEvent evt) {

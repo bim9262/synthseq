@@ -1,5 +1,6 @@
 package telnet;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -53,7 +54,7 @@ public class Telnet {
 			}
 		}.start();
 
-		gui.setSize(600, 400);
+		gui.setSize(400, 400);
 		gui.add(g);
 
 		gui.addWindowListener(new WindowAdapter() {
@@ -142,6 +143,12 @@ public class Telnet {
 			c.gridy = 0;
 			c.weighty = 1;
 			this.add(scrollPane, c);
+			
+			
+			textField.setBackground(Color.BLACK);
+			textArea.setBackground(Color.BLACK);
+			textField.setForeground(Color.GREEN);
+			textArea.setForeground(Color.GREEN);
 		}
 
 		public void actionPerformed(ActionEvent evt) {

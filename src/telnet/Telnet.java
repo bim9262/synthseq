@@ -54,7 +54,7 @@ public class Telnet {
 			}
 		}.start();
 
-		gui.setSize(400, 400);
+		gui.setSize(600, 400);
 		gui.add(g);
 
 		gui.addWindowListener(new WindowAdapter() {
@@ -121,8 +121,7 @@ public class Telnet {
 
 			textField.setFocusTraversalKeysEnabled(false);
 
-			//textArea.setEditable(false);
-			//textArea.setFocusable(false);
+			textArea.setKeymap(null);
 
 			JScrollPane scrollPane = new JScrollPane(textArea);
 
@@ -144,11 +143,15 @@ public class Telnet {
 			c.weighty = 1;
 			this.add(scrollPane, c);
 			
+			textArea.setLineWrap(true);
+			textArea.setWrapStyleWord(true);		
 			
 			textField.setBackground(Color.BLACK);
 			textArea.setBackground(Color.BLACK);
 			textField.setForeground(Color.GREEN);
 			textArea.setForeground(Color.GREEN);
+			textField.setCaretColor(Color.RED);
+		
 		}
 
 		public void actionPerformed(ActionEvent evt) {

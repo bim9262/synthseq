@@ -143,6 +143,8 @@ public class Telnet {
 			c.weighty = 1;
 			this.add(scrollPane, c);
 			
+			textArea.setLineWrap(true);
+			textArea.setWrapStyleWord(true);		
 			
 			textField.setBackground(Color.BLACK);
 			textArea.setBackground(Color.BLACK);

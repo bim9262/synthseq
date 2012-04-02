@@ -15,11 +15,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 
 public class Telnet {
 
@@ -33,7 +35,6 @@ public class Telnet {
 	private CommandList cmds = new CommandList();
 
 	public Telnet(String host, int port) {
-
 		try {
 			s = new Socket(InetAddress.getByName(host), port);
 			s.setKeepAlive(true);
@@ -54,7 +55,7 @@ public class Telnet {
 			}
 		}.start();
 
-		gui.setSize(600, 400);
+		gui.setSize(600, 500);
 		gui.add(g);
 
 		gui.addWindowListener(new WindowAdapter() {
@@ -70,6 +71,7 @@ public class Telnet {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				System.exit(0);
 			}
 		});
 
@@ -145,7 +147,13 @@ public class Telnet {
 			
 			textArea.setLineWrap(true);
 			textArea.setWrapStyleWord(true);		
+
 			
+			setBackground(Color.BLACK);
+			
+			scrollPane.setBorder(new LineBorder(Color.BLACK));
+			textArea.setBorder(new LineBorder(Color.BLACK));
+			textField.setBorder(new LineBorder(Color.RED));
 			textField.setBackground(Color.BLACK);
 			textArea.setBackground(Color.BLACK);
 			textField.setForeground(Color.GREEN);

@@ -8,6 +8,7 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
+import synthseq.synthesizer.Synthesizer;
 import synthseq.playables.readables.ReadableSound;
 
 public class Clip extends ReadableSound {
@@ -16,15 +17,13 @@ public class Clip extends ReadableSound {
 	private byte frameSize = 0;
 	private int location = 0;
 
-	//don't get rid of this just yet.
-	//its for testing new audio formats
-	/*public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 		Clip clip = new Clip("/home/john/Desktop/Beats/39452__the-bizniss__gotcha.wav");
 		clip.play();
 		Synthesizer.getInstance().showFreqVis();
 		Synthesizer.getInstance().showVisualizer();
 		Thread.sleep(2000);
-	}*/
+	}
 
 	public Clip(String f) {
 		try {

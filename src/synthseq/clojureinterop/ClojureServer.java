@@ -40,7 +40,6 @@ public class ClojureServer {
 						while (true) {
 							Object out;
 							try {
-
 								out = clojure.lang.Compiler
 										.load(new StringReader(commandInput
 												.readLine()));

@@ -9,7 +9,7 @@ public class ADSR extends ReadableSound {
 	double level;
 	double release;
 	private boolean running = false;
-	private int amplitude;
+	private double amplitude = -1;
 	private double time;
 
 	/*
@@ -36,7 +36,7 @@ public class ADSR extends ReadableSound {
 
 	@Override
 	public void start() {
-		amplitude = 0;
+		amplitude = -1;
 		time = 0;
 		running = true;
 	}
@@ -51,18 +51,26 @@ public class ADSR extends ReadableSound {
 		if (!running) {
 			return 0;
 		} else {
-			time += 1 / 44100;
+			time += 0.5 / 44100;
 		}
-		if (time >= attack) {
+		if (time <= attack) {
 			amplitude += peek / (attack * 44100);
-		} else if (time < attack && time >= attack + decay) {
+		} else if (time > attack && time <= attack + decay) {
 			amplitude += (level - peek) / (decay * 44100);
-		} else if (time < attack + decay && time >= attack + decay + release) {
-			amplitude -= level / (release * 44100);
+		} else if (time > attack + decay && time <= attack + decay + release) {
+			amplitude += (-level) / (release * 44100);
 		} else {
 			running = false;
 		}
 		return amplitude;
+	}
+	
+	public static void main(String[]args){
+		ADSR env = new ADSR(1,1,1,0.5,1);
+		env.start();
+		for(int i = 0; i< 10; i++){
+			System.out.println(env.running+" r: "+env.read()+" t:"+env.time+" t<=atk: "+(env.time<=env.attack)+" p: "+env.peek+" p/fs: "+(env.peek / (env.attack * 44100)));
+		}
 	}
 
 }

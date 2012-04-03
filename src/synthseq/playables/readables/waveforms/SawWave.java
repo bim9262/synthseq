@@ -5,22 +5,22 @@ import synthseq.playables.readables.ReadableSound;
 
 
 public class SawWave extends ReadableSound{
-	private double amplitude = 0;
+	private double time = 0;
 	private double freq;
 	private boolean running = false;
 
 	public SawWave(double freq) {
-		this.freq = freq;
+		this.freq =  44100/freq;
 	}
 
 	@Override
 	public double read() {
 		if (!running)
 			return 0;
-		amplitude += 2.0/(44100/freq);
-		if(amplitude >=1)
-			amplitude = -1;
-		return amplitude;
+		time++;
+		if(time>=freq)
+			time-=freq;
+		return (time/freq)*2-1;
 	}
 
 	@Override
@@ -32,6 +32,5 @@ public class SawWave extends ReadableSound{
 	public void stop() {
 		running = false;
 	}
-	
 
 }

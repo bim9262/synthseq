@@ -24,12 +24,17 @@ public class Trie {
 	public String autoComplete(String word){
 		String toReturn = "";
 		for (Character c : word.toCharArray()) {
-			location = location.getNode(c);
+			if (location != null){
+				location = location.getNode(c);
+			}
 		}
-		while (location.branchCount()==1){
-			location = location.getNode(0);
-			toReturn += location.getCharacter();
+		if (location != null){
+			while (location.branchCount()==1){
+				location = location.getNode(0);
+				toReturn += location.getCharacter();
+			}
 		}
+		location = top;
 		return toReturn;
 	}
 

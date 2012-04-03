@@ -130,8 +130,9 @@ public class Telnet {
 					// tab key
 					case 9:
 						tabCount++;
-						e.consume();
-						// TODO: add implementation for tabbing
+						e.consume();//Does not work
+						inputArea.setText(inputArea.getText().trim());
+						inputArea.setText(Tab.getInstance().autoComplete(inputArea.getText(), inputArea.getCaretPosition()));
 						break;
 					// enter key
 					case 10:

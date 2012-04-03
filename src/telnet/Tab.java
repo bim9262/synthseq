@@ -74,7 +74,7 @@ public class Tab {
 				end = caretPos++;
 			} while (caretPos != s.length() && !containsSeparator(s, caretPos));
 			end++;
-			return new SuperString(s.substring(front, end), front, end);
+			return new SuperString(s.substring(front, end), end);
 		}
 		return null;
 	}
@@ -90,12 +90,10 @@ public class Tab {
 
 	private class SuperString {
 		public String string;
-		public int front;
 		public int end;
 
-		public SuperString(String string, int front, int end) {
+		public SuperString(String string, int end) {
 			this.string = string;
-			this.front = front;
 			this.end = end;
 		}
 	}

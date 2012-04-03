@@ -129,19 +129,23 @@ public class Telnet {
 					switch ((int) e.getKeyChar()) {
 					// tab key
 					case 9:
+						tabCount++;
 						e.consume();// Does not work
 						inputArea.setText(inputArea.getText().trim());
-						if (tabCount == 0) {
-							String autoCompleted =Tab.getInstance().autoComplete(
-									inputArea.getText(),
-									inputArea.getCaretPosition());
-							if (!autoCompleted.equals(inputArea.getText())){
+						if (tabCount == 1) {
+							String autoCompleted = Tab.getInstance()
+									.autoComplete(inputArea.getText(),
+											inputArea.getCaretPosition());
+							if (!autoCompleted.equals(inputArea.getText())) {
 								inputArea.setText(autoCompleted);
-								tabCount++;
+
 							}
-						}
-						else {
-							tabCount=0;
+						} else if (tabCount == 2) {
+							outputArea.setText(outputArea.getText()
+									+ Tab.getInstance().suggestions(
+											inputArea.getText(),
+											inputArea.getCaretPosition())
+									+ "\n");
 						}
 						break;
 					// enter key
@@ -157,11 +161,15 @@ public class Telnet {
 							cmds.add(text);
 							out.println(text.replaceAll("\\n", ""));
 							inputArea.setText("");
-							tabCount = 0;
 						}
+						tabCount = 0;
+						break;
+					default:
+						tabCount = 0;
+						break;
 					}
-
 				}
+
 			});
 
 			outputArea = new JTextPane();

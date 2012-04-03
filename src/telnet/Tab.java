@@ -45,14 +45,14 @@ public class Tab {
 		SuperString string = findWordAndPos(s, caretPos);
 		String toReturn = "";
 		if (string != null) {
-			toReturn = "Sugestions for " + string.string + ":";
+			toReturn = "Sugestions for " + string.string + ": ";
 			ArrayList<String> posibilities = trie.getMutations(string.string);
 			if (posibilities.size() == 0) {
 				toReturn += "NONE FOUND";
 			} else {
 				for (int i = 0; i < posibilities.size(); i++) {
 					toReturn += posibilities.get(i)
-							+ (i != posibilities.size() - 1 ? "," : "");
+							+ (i != posibilities.size() - 1 ? ", " : "");
 				}
 			}
 		}

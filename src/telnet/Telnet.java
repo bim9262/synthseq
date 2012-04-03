@@ -129,10 +129,20 @@ public class Telnet {
 					switch ((int) e.getKeyChar()) {
 					// tab key
 					case 9:
-						tabCount++;
-						e.consume();//Does not work
+						e.consume();// Does not work
 						inputArea.setText(inputArea.getText().trim());
-						inputArea.setText(Tab.getInstance().autoComplete(inputArea.getText(), inputArea.getCaretPosition()));
+						if (tabCount == 0) {
+							String autoCompleted =Tab.getInstance().autoComplete(
+									inputArea.getText(),
+									inputArea.getCaretPosition());
+							if (!autoCompleted.equals(inputArea.getText())){
+								inputArea.setText(autoCompleted);
+								tabCount++;
+							}
+						}
+						else {
+							tabCount=0;
+						}
 						break;
 					// enter key
 					case 10:

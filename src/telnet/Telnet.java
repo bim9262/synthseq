@@ -127,7 +127,7 @@ public class Telnet {
 									"\\s+$", "");
 							outputArea.append(text + "\n");
 							cmds.add(text);
-							out.println(text);
+							out.println(text.replaceAll("\\n", ""));
 							inputArea.setText("");
 							tabCount = 0;
 							outputArea.setCaretPosition(outputArea

@@ -10,18 +10,18 @@ public class Node {
 	public Node() {
 	}
 
-	public Node getParent() {
-		return parrent;
-	}
-
 	private Node(Node parrent, Character c) {
 		this.c = c;
 		this.parrent = parrent;
 	}
 
+	public Node getParent() {
+		return parrent;
+	}
+
 	public Node addNode(Node parrent, Character c) {
 		Node toReturn = getNode(c);
-		if (toReturn != null) {
+		if (toReturn == null) {
 			toReturn = new Node(parrent, c);
 			branch.add(toReturn);
 		}
@@ -36,6 +36,18 @@ public class Node {
 			}
 		}
 		return null;
+	}
+
+	public Node getNode(int i) {
+		return branch.get(i);
+	}
+
+	public int branchCount() {
+		return branch.size();
+	}
+
+	public char getCharacter() {
+		return c;
 	}
 
 }

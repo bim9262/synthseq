@@ -20,6 +20,18 @@ public class Trie {
 		}
 		location = top;
 	}
+	
+	public String autoComplete(String word){
+		String toReturn = "";
+		for (Character c : word.toCharArray()) {
+			location = location.getNode(c);
+		}
+		while (location.branchCount()==1){
+			location = location.getNode(0);
+			toReturn += location.getCharacter();
+		}
+		return toReturn;
+	}
 
 	public void pop() {
 		location = location.getParent();

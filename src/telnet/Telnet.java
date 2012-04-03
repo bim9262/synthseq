@@ -13,14 +13,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
-import javax.swing.text.Document;
-import javax.swing.text.PlainDocument;
+import javax.swing.text.BadLocationException;
 
 public class Telnet {
 
@@ -101,11 +99,12 @@ public class Telnet {
 					// up key
 					case 38:
 						inputArea.setText(cmds.prev());
+						inputArea.setCaretPosition(inputArea.getDocument().getLength());						
 						break;
 
 					// down key
 					case 40:
-						if(!inputArea.getText().equals(""))
+						if (!inputArea.getText().equals(""))
 							cmds.add(inputArea.getText());
 						inputArea.setText(cmds.next());
 						break;
@@ -130,7 +129,7 @@ public class Telnet {
 						break;
 					// enter key
 					case 10:
-						//if shift is on
+						// if shift is on
 						if (e.getModifiersEx() == 64) {
 							String text = inputArea.getText().replaceAll(
 									"\\s+$", "");
@@ -142,8 +141,6 @@ public class Telnet {
 							out.println(text.replaceAll("\\n", ""));
 							inputArea.setText("");
 							tabCount = 0;
-							outputArea.setCaretPosition(outputArea
-									.getDocument().getLength());
 						}
 					}
 

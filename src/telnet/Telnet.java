@@ -3,8 +3,6 @@ package telnet;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -19,14 +17,15 @@ import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
+import javax.swing.text.Document;
+import javax.swing.text.PlainDocument;
 
 public class Telnet {
 
-	private JTextArea inputArea;
-	private JTextArea outputArea;
+	private JTextPane inputArea;
+	private JTextPane outputArea;
 	private Socket s;
 	private BufferedReader in;
 	private PrintWriter out;
@@ -47,8 +46,15 @@ public class Telnet {
 		new Thread() {
 			public void run() {
 				try {
-					while (true)
-						outputArea.append(in.readLine() + "\n");
+					while (true) {
+						String line = in.readLine();
+						synchronized (outputArea) {
+							outputArea.setText(outputArea.getText() + line
+									+ "\n");
+							outputArea.setCaretPosition(outputArea
+									.getDocument().getLength());
+						}
+					}
 				} catch (IOException e) {
 					System.out.println("Connection Closed.");
 				}
@@ -87,8 +93,7 @@ public class Telnet {
 
 		GPanel() {
 			super(new GridBagLayout());
-			inputArea = new JTextArea();
-
+			inputArea = new JTextPane();
 			inputArea.addKeyListener(new KeyAdapter() {
 
 				public void keyPressed(KeyEvent e) {
@@ -100,6 +105,8 @@ public class Telnet {
 
 					// down key
 					case 40:
+						if(!inputArea.getText().equals(""))
+							cmds.add(inputArea.getText());
 						inputArea.setText(cmds.next());
 						break;
 					// l key
@@ -118,14 +125,19 @@ public class Telnet {
 					// tab key
 					case 9:
 						tabCount++;
+						e.consume();
 						// TODO: add implementation for tabbing
 						break;
 					// enter key
 					case 10:
+						//if shift is on
 						if (e.getModifiersEx() == 64) {
 							String text = inputArea.getText().replaceAll(
 									"\\s+$", "");
-							outputArea.append(text + "\n");
+							synchronized (outputArea) {
+								outputArea.setText(outputArea.getText() + text
+										+ "\n");
+							}
 							cmds.add(text);
 							out.println(text.replaceAll("\\n", ""));
 							inputArea.setText("");
@@ -138,7 +150,7 @@ public class Telnet {
 				}
 			});
 
-			outputArea = new JTextArea();
+			outputArea = new JTextPane();
 
 			inputArea.setFocusTraversalKeysEnabled(false);
 
@@ -165,11 +177,6 @@ public class Telnet {
 			c.gridy = 0;
 			c.weighty = 4;
 			this.add(outputScrollPane, c);
-
-			inputArea.setLineWrap(true);
-			inputArea.setWrapStyleWord(true);
-			outputArea.setLineWrap(true);
-			outputArea.setWrapStyleWord(true);
 
 			setBackground(Color.BLACK);
 

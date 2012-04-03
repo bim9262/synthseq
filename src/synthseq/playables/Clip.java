@@ -54,6 +54,7 @@ public class Clip extends ReadableSound {
 
 	@Override
 	public void start() {
+		location = 0;
 		playing = true;
 	}
 

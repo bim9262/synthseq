@@ -25,8 +25,8 @@ import javax.swing.border.LineBorder;
 
 public class Telnet {
 
-	private JTextField textField;
-	private JTextArea textArea;
+	private JTextArea inputArea;
+	private JTextArea outputArea;
 	private Socket s;
 	private BufferedReader in;
 	private PrintWriter out;
@@ -48,7 +48,7 @@ public class Telnet {
 			public void run() {
 				try {
 					while (true)
-						textArea.append(in.readLine() + "\n");
+						outputArea.append(in.readLine() + "\n");
 				} catch (IOException e) {
 					System.out.println("Connection Closed.");
 				}
@@ -77,55 +77,74 @@ public class Telnet {
 
 		gui.setVisible(true);
 
-		textField.requestFocusInWindow();
+		inputArea.requestFocusInWindow();
 
 	}
 
 	@SuppressWarnings("serial")
-	private class GPanel extends JPanel implements ActionListener {
+	private class GPanel extends JPanel {
 		private int tabCount = 0;
+
 		GPanel() {
 			super(new GridBagLayout());
-			textField = new JTextField();
+			inputArea = new JTextArea();
 
-			textField.addActionListener(this);
-			textField.addKeyListener(new KeyAdapter() {
-				
-				
+			inputArea.addKeyListener(new KeyAdapter() {
+
 				public void keyPressed(KeyEvent e) {
 					switch (e.getKeyCode()) {
 					// up key
 					case 38:
-						textField.setText(cmds.prev());
+						inputArea.setText(cmds.prev());
 						break;
 
 					// down key
 					case 40:
-						textField.setText(cmds.next());
+						inputArea.setText(cmds.next());
+						break;
+					// l key
+					case 76:
+						if(e.getModifiersEx()==128);
+						inputArea.setText("");
+						outputArea.setText("");
 						break;
 					}
 
 				}
 
 				public void keyTyped(KeyEvent e) {
-					switch (e.getKeyCode()) {
+					switch ((int) e.getKeyChar()) {
 					// tab key
 					case 9:
 						tabCount++;
-						//TODO: add implementation for tabbing
+						// TODO: add implementation for tabbing
 						break;
+					// enter key
+					case 10:
+						if (e.getModifiersEx() == 64) {
+							String text = inputArea.getText().replaceAll(
+									"\\s+$", "");
+							outputArea.append(text + "\n");
+							cmds.add(text);
+							out.println(text);
+							inputArea.setText("");
+							tabCount = 0;
+							outputArea.setCaretPosition(outputArea
+									.getDocument().getLength());
+						}
 					}
-					
+
 				}
 			});
 
-			textArea = new JTextArea();
+			outputArea = new JTextArea();
 
-			textField.setFocusTraversalKeysEnabled(false);
+			inputArea.setFocusTraversalKeysEnabled(false);
 
-			textArea.setKeymap(null);
+			outputArea.setKeymap(null);
 
-			JScrollPane scrollPane = new JScrollPane(textArea);
+			JScrollPane outputScrollPane = new JScrollPane(outputArea);
+			JScrollPane inputScrollPane = new JScrollPane(inputArea);
 
 			// Add Components to this panel.
 			GridBagConstraints c = new GridBagConstraints();
@@ -133,45 +152,36 @@ public class Telnet {
 			c.gridwidth = getWidth();
 			c.weightx = 1;
 
-			c.fill = GridBagConstraints.HORIZONTAL;
+			c.fill = GridBagConstraints.BOTH;
 			c.gridx = 0;
 			c.gridy = 1;
+			c.weighty = 1;
 			c.anchor = GridBagConstraints.PAGE_END;
-			this.add(textField, c);
+			this.add(inputScrollPane, c);
 
 			c.fill = GridBagConstraints.BOTH;
 			c.gridx = 0;
 			c.gridy = 0;
-			c.weighty = 1;
-			this.add(scrollPane, c);
-			
-			textArea.setLineWrap(true);
-			textArea.setWrapStyleWord(true);		
+			c.weighty = 4;
+			this.add(outputScrollPane, c);
 
-			
+			inputArea.setLineWrap(true);
+			inputArea.setWrapStyleWord(true);
+			outputArea.setLineWrap(true);
+			outputArea.setWrapStyleWord(true);
+
 			setBackground(Color.BLACK);
-			
-			scrollPane.setBorder(new LineBorder(Color.BLACK));
-			textArea.setBorder(new LineBorder(Color.BLACK));
-			textField.setBorder(new LineBorder(Color.RED));
-			textField.setBackground(Color.BLACK);
-			textArea.setBackground(Color.BLACK);
-			textField.setForeground(Color.GREEN);
-			textArea.setForeground(Color.GREEN);
-			textField.setCaretColor(Color.RED);
-		
-		}
 
-		public void actionPerformed(ActionEvent evt) {
-			String text = textField.getText();
-			textArea.append(text + "\n");
-			cmds.add(text);
+			outputScrollPane.setBorder(new LineBorder(Color.BLACK));
+			inputScrollPane.setBorder(new LineBorder(Color.BLACK));
+			outputArea.setBorder(new LineBorder(Color.BLACK));
+			inputArea.setBorder(new LineBorder(Color.RED));
+			inputArea.setBackground(Color.BLACK);
+			outputArea.setBackground(Color.BLACK);
+			inputArea.setForeground(Color.GREEN);
+			outputArea.setForeground(Color.GREEN);
+			inputArea.setCaretColor(Color.RED);
 
-			out.println(text);
-
-			textField.setText("");
-			tabCount = 0;
-			textArea.setCaretPosition(textArea.getDocument().getLength());
 		}
 	}
 

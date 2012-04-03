@@ -26,4 +26,8 @@ public class CommandList {
 
 	}
 
+	public int size() {
+		return cmds.size();
+	}
+
 }

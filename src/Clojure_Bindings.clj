@@ -18,7 +18,7 @@
 (defn white-noise [] (WhiteNoise.))
 (defn linenv [period] (Linear. period))
 (defn expenv [period] (Exponential. period))
-(defn ADSRenv [attack peek decay level release] (ADSR. attack peek decay level release))
+(defn ADSRenv [attack peekamp decay level release] (ADSR. attack peekamp decay level release))
 (defn string-inst [freq] (StringInst. freq))
 (defn LPF ([readable alpha] (LowPass. readable alpha))
   ([readable] (LowPass. readable 0.5)))

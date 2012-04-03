@@ -97,8 +97,8 @@ public class Telnet {
 					switch (e.getKeyCode()) {
 					// up key
 					case 38:
-						// if shift is off
-						if (e.getModifiersEx() != 64) {
+						// if shift is on
+						if (e.getModifiersEx() == 64) {
 							inputArea.setText(cmds.prev());
 							inputArea.setCaretPosition(inputArea.getDocument()
 									.getLength());
@@ -107,8 +107,8 @@ public class Telnet {
 
 					// down key
 					case 40:
-						// if shift is off
-						if (e.getModifiersEx() != 64) {
+						// if shift is on
+						if (e.getModifiersEx() == 64) {
 							cmds.add(inputArea.getText());
 							inputArea.setText(cmds.next());
 						}

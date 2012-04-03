@@ -31,6 +31,16 @@ public class Tab {
 	}
 
 	public String autoComplete(String s, int caretPos) {
+		SuperString string = findWordAndPos(s, caretPos);
+		if (string!=null) {
+			
+			return s.substring(0, string.end) + trie.autoComplete(string.string)
+					+ s.substring(string.end, s.length());
+		}
+		return s;
+	}
+
+	public SuperString findWordAndPos(String s, int caretPos) {
 		caretPos--;
 		if (s.length() != 0 && containsSeparator(s, caretPos)) {
 			caretPos--;
@@ -45,19 +55,29 @@ public class Tab {
 				end = caretPos++;
 			} while (caretPos != s.length() && !containsSeparator(s, caretPos));
 			end++;
-			String autoComplete = trie.autoComplete(s.substring(front, end));
-			//System.out.println("\"" + s.substring(front, end) + "\"" + front + ", " + end + " \"" + autoComplete + "\"");
-		return s.substring(0, end) + autoComplete
-				+ s.substring(end, s.length());
+			return new SuperString(s.substring(front, end), front, end);
 		}
-		return s;
+		return null;
 	}
-	
-	private boolean containsSeparator(String s, int caretPos){
-		String toCheck = " \n";
-		for (char c : toCheck.toCharArray()){
-			if (s.charAt(caretPos) == c) return true;
+
+	private boolean containsSeparator(String s, int caretPos) {
+		String toCheck = " \n().";
+		for (char c : toCheck.toCharArray()) {
+			if (s.charAt(caretPos) == c)
+				return true;
 		}
 		return false;
+	}
+
+	private class SuperString {
+		public String string;
+		public int front;
+		public int end;
+
+		public SuperString(String string, int front, int end) {
+			this.string = string;
+			this.front = front;
+			this.end = end;
+		}
 	}
 }

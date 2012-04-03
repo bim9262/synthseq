@@ -42,5 +42,11 @@ public class Trie {
 		location = location.getParent();
 	}
 
+	public ArrayList<String> getMutations(String word) {
+		ArrayList<String> toReturn = new ArrayList<String>();
+		
+		return toReturn;
+	}
+
 	
 }

@@ -46,7 +46,7 @@ public class Tab {
 			} while (caretPos != s.length() && !containsSeparator(s, caretPos));
 			end++;
 			String autoComplete = trie.autoComplete(s.substring(front, end));
-			System.out.println("\"" + s.substring(front, end) + "\"" + front + ", " + end + " \"" + autoComplete + "\"");
+			//System.out.println("\"" + s.substring(front, end) + "\"" + front + ", " + end + " \"" + autoComplete + "\"");
 		return s.substring(0, end) + autoComplete
 				+ s.substring(end, s.length());
 		}

@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
-import javax.swing.text.BadLocationException;
 
 public class Telnet {
 
@@ -98,18 +97,25 @@ public class Telnet {
 					switch (e.getKeyCode()) {
 					// up key
 					case 38:
-						inputArea.setText(cmds.prev());
-						inputArea.setCaretPosition(inputArea.getDocument().getLength());						
+						// if shift is off
+						if (e.getModifiersEx() != 64) {
+							inputArea.setText(cmds.prev());
+							inputArea.setCaretPosition(inputArea.getDocument()
+									.getLength());
+						}
 						break;
 
 					// down key
 					case 40:
-						if (!inputArea.getText().equals(""))
+						// if shift is off
+						if (e.getModifiersEx() != 64) {
 							cmds.add(inputArea.getText());
-						inputArea.setText(cmds.next());
+							inputArea.setText(cmds.next());
+						}
 						break;
 					// l key
 					case 76:
+						// if control is on
 						if (e.getModifiersEx() == 128) {
 							inputArea.setText("");
 							outputArea.setText("");

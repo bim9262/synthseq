@@ -104,9 +104,10 @@ public class Telnet {
 						break;
 					// l key
 					case 76:
-						if(e.getModifiersEx()==128);
-						inputArea.setText("");
-						outputArea.setText("");
+						if (e.getModifiersEx() == 128) {
+							inputArea.setText("");
+							outputArea.setText("");
+						}
 						break;
 					}
 

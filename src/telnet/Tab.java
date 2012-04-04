@@ -19,6 +19,10 @@ public class Tab {
 				if (word.startsWith("def", 1))
 					trie.addWord(word.split(" ")[1]);
 			}
+			f = new Scanner(new FileReader("src/Builtin_Clojure_Vars"));
+			while (f.hasNext()) {
+					trie.addWord(f.next());
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

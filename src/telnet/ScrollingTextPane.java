@@ -1,9 +1,11 @@
 package telnet;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -65,9 +67,35 @@ public class ScrollingTextPane extends JScrollPane {
 			if (thumbBounds.height > 20) {
 				g.setColor(thumbCoreColor);
 				g.drawLine(thumbBounds.width / 2, thumbBounds.y + 10,
-						 thumbBounds.width / 2, thumbBounds.height + thumbBounds.y- 10);
+						thumbBounds.width / 2, thumbBounds.height
+								+ thumbBounds.y - 10);
 			}
 
+		}
+
+		protected JButton createDecreaseButton(int orientation) {
+			//orientation = 1
+			return new ArrowButton(orientation);
+
+		}
+
+		protected JButton createIncreaseButton(int orientation) {
+			//orientation = 5
+			return new ArrowButton(orientation);
+		}
+
+		private class ArrowButton extends JButton {
+			ArrowButton(int orientation) {
+				setPreferredSize(new Dimension(15, 15));
+				System.out.print(orientation);
+			}
+
+			public void paint(Graphics g) {
+				g.setColor(Color.BLACK);
+				g.fillRect(0, 0, getWidth()-1, getHeight()-1);
+				g.setColor(Color.RED);
+				g.drawRect(0, 0, getWidth()-1, getHeight()-1);
+			}
 		}
 	}
 }

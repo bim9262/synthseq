@@ -15,9 +15,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
+
+import telnet.ScrollingTextPane.TextPane;
 
 public class Telnet {
 
@@ -76,7 +76,6 @@ public class Telnet {
 		gui.setVisible(true);
 
 		inputArea.requestFocusInWindow();
-
 	}
 
 	@SuppressWarnings("serial")
@@ -85,7 +84,14 @@ public class Telnet {
 
 		GPanel() {
 			super(new GridBagLayout());
-			inputArea = new TextPane();
+			
+			ScrollingTextPane inputScrollPane = new ScrollingTextPane();
+			ScrollingTextPane outputScrollPane = new ScrollingTextPane();
+			
+			
+			inputArea = inputScrollPane.getTextPane();
+			outputArea = outputScrollPane.getTextPane();
+			
 			inputArea.addKeyListener(new KeyAdapter() {
 
 				public void keyPressed(KeyEvent e) {
@@ -119,6 +125,7 @@ public class Telnet {
 						e.consume();
 						String text = inputArea.getSelectedText();
 						if (e.getModifiersEx() == 128 && text != null) {
+							outputArea.append(text);
 							out.println(text.replaceAll("\\n", ""));
 						}
 						break;
@@ -168,14 +175,9 @@ public class Telnet {
 
 			});
 
-			outputArea = new TextPane();
-
 			inputArea.setFocusTraversalKeysEnabled(false);
 
 			outputArea.setKeymap(null);
-
-			JScrollPane outputScrollPane = new JScrollPane(outputArea);
-			JScrollPane inputScrollPane = new JScrollPane(inputArea);
 
 			// Add Components to this panel.
 			GridBagConstraints c = new GridBagConstraints();
@@ -202,11 +204,6 @@ public class Telnet {
 			inputScrollPane.setBorder(new LineBorder(Color.BLACK));
 			outputArea.setBorder(new LineBorder(Color.BLACK));
 			inputArea.setBorder(new LineBorder(Color.RED));
-			inputArea.setBackground(Color.BLACK);
-			outputArea.setBackground(Color.BLACK);
-			inputArea.setForeground(Color.GREEN);
-			outputArea.setForeground(Color.GREEN);
-			inputArea.setCaretColor(Color.RED);
 
 		}
 	}

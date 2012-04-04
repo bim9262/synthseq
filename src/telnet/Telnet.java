@@ -102,6 +102,7 @@ public class Telnet {
 							inputArea.setText(cmds.prev());
 							inputArea.setCaretPosition(inputArea.getDocument()
 									.getLength());
+							e.consume();
 						}
 						break;
 
@@ -111,6 +112,7 @@ public class Telnet {
 						if (e.getModifiersEx() == 64) {
 							cmds.add(inputArea.getText());
 							inputArea.setText(cmds.next());
+							e.consume();
 						}
 						break;
 					// l key

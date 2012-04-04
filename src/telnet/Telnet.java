@@ -148,9 +148,16 @@ public class Telnet {
 
 							}
 						} else if (tabCount == 2) {
-							outputArea.append(Tab.getInstance().suggestions(
+							String results = Tab.getInstance().suggestions(
 									inputArea.getText(),
-									inputArea.getCaretPosition()));
+									inputArea.getCaretPosition());
+							if (results.startsWith("doc ", 1)){
+								outputArea.append(results);
+								out.println(results);
+							}
+							else{
+							outputArea.append(results);
+							}
 						}
 						break;
 					// enter key

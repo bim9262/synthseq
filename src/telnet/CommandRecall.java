@@ -3,9 +3,15 @@ package telnet;
 import java.util.ArrayList;
 
 public class CommandRecall {
+	
 	private ArrayList<String> cmds = new ArrayList<String>();
-	public int pos;
+	private int pos;
+	private static CommandRecall instance = new CommandRecall();
 
+	public static CommandRecall getInstance(){
+		return instance;
+	}
+	
 	public String next() {
 		pos += pos == cmds.size() ? 0 : 1;
 		return pos < cmds.size() ? cmds.get(pos) : "";

@@ -28,7 +28,6 @@ public class Telnet {
 	private PrintWriter out;
 	private GPanel g = new GPanel();
 	private JFrame gui = new JFrame("Telnet");
-	private CommandRecall cmds = new CommandRecall();
 
 	public Telnet(String host, int port) {
 		try {
@@ -100,7 +99,7 @@ public class Telnet {
 					case 38:
 						// if shift is on
 						if (e.getModifiersEx() == 64) {
-							inputArea.setText(cmds.prev());
+							inputArea.setText(CommandRecall.getInstance().prev());
 						}
 						break;
 
@@ -108,8 +107,8 @@ public class Telnet {
 					case 40:
 						// if shift is on
 						if (e.getModifiersEx() == 64) {
-							cmds.add(inputArea.getText());
-							inputArea.setText(cmds.next());
+							CommandRecall.getInstance().add(inputArea.getText());
+							inputArea.setText(CommandRecall.getInstance().next());
 						}
 						break;
 					// l key
@@ -161,7 +160,7 @@ public class Telnet {
 							String text = inputArea.getText().replaceAll(
 									"\\s+$", "");
 							outputArea.append(text);
-							cmds.add(text);
+							CommandRecall.getInstance().add(text);
 							out.println(text.replaceAll("\\n", ""));
 							inputArea.setText("");
 						}

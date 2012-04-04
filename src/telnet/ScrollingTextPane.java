@@ -1,7 +1,10 @@
 package telnet;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
+import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -44,15 +47,33 @@ public class ScrollingTextPane extends JScrollPane {
 			setCaretPosition(getDocument().getLength());
 		}
 	}
+
 	private class ScrollBar extends JScrollBar {
-		public ScrollBar(){
+		public ScrollBar() {
 			super();
 			setUI(new CoolScrollBarUI());
 		}
-		
-		private class CoolScrollBarUI extends BasicScrollBarUI{
-			protected void configureScrollBarColors(){
-				
+
+		private class CoolScrollBarUI extends BasicScrollBarUI {
+
+			private Color thumbCoreColor;
+
+			protected void configureScrollBarColors() {
+				trackColor = Color.BLACK;
+				thumbColor = Color.BLACK;
+				thumbHighlightColor = Color.RED;
+				thumbCoreColor = Color.GREEN;
+			}
+
+			protected void paintThumb(Graphics g, JComponent c,
+					Rectangle thumbBounds) {
+				super.paintThumb(g, c, thumbBounds);
+				if (thumbBounds.height > 20) {
+					g.setColor(thumbCoreColor);
+					g.drawLine(thumbBounds.width / 2, thumbBounds.y + 10,
+							 thumbBounds.width / 2, thumbBounds.height + thumbBounds.y- 10);
+				}
+
 			}
 		}
 	}

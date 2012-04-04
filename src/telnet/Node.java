@@ -1,6 +1,5 @@
 package telnet;
 
-
 import java.util.ArrayList;
 
 public class Node {
@@ -18,6 +17,10 @@ public class Node {
 
 	public Node getParent() {
 		return parrent;
+	}
+
+	public ArrayList<Node> getBranch() {
+		return branch;
 	}
 
 	public Node addNode(Node parrent, Character c) {

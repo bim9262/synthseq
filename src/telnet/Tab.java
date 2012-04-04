@@ -45,14 +45,14 @@ public class Tab {
 		SuperString string = findWordAndPos(s, caretPos);
 		String toReturn = "";
 		if (string != null) {
-			toReturn = "Sugestions for " + string.string + ":";
+			toReturn = "Sugestions for " + string.string + ": ";
 			ArrayList<String> posibilities = trie.getMutations(string.string);
 			if (posibilities.size() == 0) {
 				toReturn += "NONE FOUND";
 			} else {
 				for (int i = 0; i < posibilities.size(); i++) {
 					toReturn += posibilities.get(i)
-							+ (i != posibilities.size() - 1 ? "," : "");
+							+ (i != posibilities.size() - 1 ? ", " : "");
 				}
 			}
 		}
@@ -74,7 +74,7 @@ public class Tab {
 				end = caretPos++;
 			} while (caretPos != s.length() && !containsSeparator(s, caretPos));
 			end++;
-			return new SuperString(s.substring(front, end), front, end);
+			return new SuperString(s.substring(front, end), end);
 		}
 		return null;
 	}
@@ -90,12 +90,10 @@ public class Tab {
 
 	private class SuperString {
 		public String string;
-		public int front;
 		public int end;
 
-		public SuperString(String string, int front, int end) {
+		public SuperString(String string, int end) {
 			this.string = string;
-			this.front = front;
 			this.end = end;
 		}
 	}

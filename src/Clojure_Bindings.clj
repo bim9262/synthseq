@@ -13,6 +13,9 @@
 (defn pulse 
   ([freq] (PulseWave. freq))
   ([freq ratio] (PulseWave. freq ratio)))
+(defn play [readable] (.play readable))
+(defn start [readable] (.start readable))
+(defn stop [readable] (.stop readable))
 (defn load-clip [file] (Clip. file))
 (defn white-noise [] (WhiteNoise.))
 (defn linenv [period] (Linear. period))

@@ -15,20 +15,20 @@ import java.net.InetAddress;
 import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
+
+import telnet.ScrollingTextPane.TextPane;
 
 public class Telnet {
 
-	private JTextPane inputArea;
-	private JTextPane outputArea;
+	private TextPane inputArea;
+	private TextPane outputArea;
 	private Socket s;
 	private BufferedReader in;
 	private PrintWriter out;
 	private GPanel g = new GPanel();
 	private JFrame gui = new JFrame("Telnet");
-	private CommandList cmds = new CommandList();
+	private CommandRecall cmds = new CommandRecall();
 
 	public Telnet(String host, int port) {
 		try {
@@ -45,12 +45,7 @@ public class Telnet {
 				try {
 					while (true) {
 						String line = in.readLine();
-						synchronized (outputArea) {
-							outputArea.setText(outputArea.getText() + line
-									+ "\n");
-							outputArea.setCaretPosition(outputArea
-									.getDocument().getLength());
-						}
+						outputArea.append(line);
 					}
 				} catch (IOException e) {
 					System.out.println("Connection Closed.");
@@ -81,7 +76,6 @@ public class Telnet {
 		gui.setVisible(true);
 
 		inputArea.requestFocusInWindow();
-
 	}
 
 	@SuppressWarnings("serial")
@@ -90,7 +84,14 @@ public class Telnet {
 
 		GPanel() {
 			super(new GridBagLayout());
-			inputArea = new JTextPane();
+			
+			ScrollingTextPane inputScrollPane = new ScrollingTextPane();
+			ScrollingTextPane outputScrollPane = new ScrollingTextPane();
+			
+			
+			inputArea = inputScrollPane.getTextPane();
+			outputArea = outputScrollPane.getTextPane();
+			
 			inputArea.addKeyListener(new KeyAdapter() {
 
 				public void keyPressed(KeyEvent e) {
@@ -119,8 +120,17 @@ public class Telnet {
 					case 76:
 						// if control is on
 						if (e.getModifiersEx() == 128) {
-							inputArea.setText("");
 							outputArea.setText("");
+						}
+						break;
+					// e key
+					case 69:
+						// if control is on
+						e.consume();
+						String text = inputArea.getSelectedText();
+						if (e.getModifiersEx() == 128 && text != null) {
+							outputArea.append(text);
+							out.println(text.replaceAll("\\n", ""));
 						}
 						break;
 					}
@@ -143,11 +153,9 @@ public class Telnet {
 
 							}
 						} else if (tabCount == 2) {
-							outputArea.setText(outputArea.getText()
-									+ Tab.getInstance().suggestions(
-											inputArea.getText(),
-											inputArea.getCaretPosition())
-									+ "\n");
+							outputArea.append(Tab.getInstance().suggestions(
+									inputArea.getText(),
+									inputArea.getCaretPosition()));
 						}
 						break;
 					// enter key
@@ -156,10 +164,7 @@ public class Telnet {
 						if (e.getModifiersEx() == 64) {
 							String text = inputArea.getText().replaceAll(
 									"\\s+$", "");
-							synchronized (outputArea) {
-								outputArea.setText(outputArea.getText() + text
-										+ "\n");
-							}
+							outputArea.append(text);
 							cmds.add(text);
 							out.println(text.replaceAll("\\n", ""));
 							inputArea.setText("");
@@ -174,14 +179,9 @@ public class Telnet {
 
 			});
 
-			outputArea = new JTextPane();
-
 			inputArea.setFocusTraversalKeysEnabled(false);
 
 			outputArea.setKeymap(null);
-
-			JScrollPane outputScrollPane = new JScrollPane(outputArea);
-			JScrollPane inputScrollPane = new JScrollPane(inputArea);
 
 			// Add Components to this panel.
 			GridBagConstraints c = new GridBagConstraints();
@@ -208,11 +208,6 @@ public class Telnet {
 			inputScrollPane.setBorder(new LineBorder(Color.BLACK));
 			outputArea.setBorder(new LineBorder(Color.BLACK));
 			inputArea.setBorder(new LineBorder(Color.RED));
-			inputArea.setBackground(Color.BLACK);
-			outputArea.setBackground(Color.BLACK);
-			inputArea.setForeground(Color.GREEN);
-			outputArea.setForeground(Color.GREEN);
-			inputArea.setCaretColor(Color.RED);
 
 		}
 	}

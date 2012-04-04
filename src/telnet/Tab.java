@@ -19,12 +19,10 @@ public class Tab {
 				if (word.startsWith("def", 1))
 					trie.addWord(word.split(" ")[1]);
 			}
-			System.out.print("\n");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		trie.addWord(".play");
 	}
 
 	public static Tab getInstance() {
@@ -95,6 +93,127 @@ public class Tab {
 		public SuperString(String string, int end) {
 			this.string = string;
 			this.end = end;
+		}
+	}
+	
+	public class Trie {
+		private Node top;
+		private Node location;
+
+		public Trie() {
+			top = new Node();
+			location = top;
+		}
+
+		public void addWord(String word) {
+			for (Character c : (word + "\r").toCharArray()) {
+				location = location.addNode(c);
+			}
+			location = top;
+		}
+
+		public String autoComplete(String word) {
+			String toReturn = "";
+			for (Character c : word.toCharArray()) {
+				if (location != null) {
+					location = location.getNode(c);
+				}
+			}
+			if (location != null) {
+				while (location.branchCount() == 1) {
+					location = location.getNode(0);
+					toReturn += location.getCharacter();
+				}
+			}
+			location = top;
+			return toReturn.replaceAll("\r+$", "");
+		}
+
+		public ArrayList<String> getMutations(String word) {
+			ArrayList<String> toReturn = new ArrayList<String>();
+			for (Character c : word.toCharArray()) {
+				if (location != null) {
+					location = location.getNode(c);
+				}
+			}
+			if (location != null) {
+				ArrayList<Node> nodes = new ArrayList<Node>();
+				nodes.add(location);
+				for (String s : getPossibleCombos(nodes)) {
+					toReturn.add(word + s.substring(1, s.length() - 1));
+				}
+			}
+			location = top;
+			return toReturn;
+		}
+
+		private ArrayList<String> getPossibleCombos(ArrayList<Node> nodes) {
+			ArrayList<String> toReturn = new ArrayList<String>();
+			for (Node n : nodes.get(nodes.size() - 1).getBranch()) {
+				ArrayList<Node> newFoundTiles = new ArrayList<Node>();
+				for (int i = 0; i < nodes.size(); i++)
+					newFoundTiles.add(nodes.get(i));
+				newFoundTiles.add(n);
+				if (n.branchCount() == 0) {
+					String toAdd = "";
+					for (Node nf : newFoundTiles) {
+						toAdd += nf.getCharacter();
+					}
+					toReturn.add(toAdd);
+				}
+				for (String s : getPossibleCombos(newFoundTiles)) {
+					toReturn.add(s);
+				}
+			}
+			return toReturn;
+		}
+
+		public class Node {
+			private Character c;
+			private ArrayList<Node> branch = new ArrayList<Node>();
+
+			public Node() {
+			}
+
+			public Node(Character c) {
+				this.c = c;
+			}
+
+			public ArrayList<Node> getBranch() {
+				return branch;
+			}
+
+			public Node addNode(Character c) {
+				Node toReturn = getNode(c);
+				if (toReturn == null) {
+					toReturn = new Node(c);
+					branch.add(toReturn);
+				}
+				return toReturn;
+
+			}
+
+			public Node getNode(Character c) {
+				for (Node n : branch) {
+					if (n.c.equals(c)) {
+						return n;
+					}
+				}
+				return null;
+			}
+
+			public Node getNode(int i) {
+				return branch.get(i);
+			}
+
+			public int branchCount() {
+				return branch.size();
+			}
+
+			public char getCharacter() {
+				return c;
+			}
+
 		}
 	}
 }

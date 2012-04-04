@@ -2,7 +2,7 @@ package telnet;
 
 import java.util.ArrayList;
 
-public class CommandList {
+public class CommandRecall {
 	private ArrayList<String> cmds = new ArrayList<String>();
 	public int pos;
 

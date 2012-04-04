@@ -137,11 +137,12 @@ public class Telnet {
 					case 9:
 						tabCount++;
 						e.consume();// Does not work
-						inputArea.setText(inputArea.getText().trim());
+						String textpt = inputArea.getText().trim();
+						int tabPos = inputArea.getCaretPosition()-4;
 						if (tabCount == 1) {
 							String autoCompleted = Tab.getInstance()
-									.autoComplete(inputArea.getText(),
-											inputArea.getCaretPosition());
+									.autoComplete(textpt,
+											tabPos);
 							if (!autoCompleted.equals(inputArea.getText())) {
 								inputArea.setText(autoCompleted);
 

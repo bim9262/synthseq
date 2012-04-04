@@ -84,7 +84,6 @@ public class ScrollingTextPane extends JScrollPane {
 		private class ArrowButton extends JButton {
 			ArrowButton(int orientation) {
 				setPreferredSize(new Dimension(15, 15));
-				System.out.print(orientation);
 			}
 
 			public void paint(Graphics g) {

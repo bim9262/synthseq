@@ -71,20 +71,22 @@ public class ScrollingTextPane extends JScrollPane {
 		}
 
 		protected JButton createDecreaseButton(int orientation) {
-			//orientation = 1
+			// orientation = 1
 			return new ArrowButton(orientation);
 
 		}
 
 		protected JButton createIncreaseButton(int orientation) {
-			//orientation = 5
+			// orientation = 5
 			return new ArrowButton(orientation);
 		}
 
 		private class ArrowButton extends JButton {
+			Boolean up;
+
 			ArrowButton(int orientation) {
-				setPreferredSize(new Dimension(15, 15));
-				System.out.print(orientation);
+				setPreferredSize(new Dimension(14, 14));
+				up = orientation == 1;
 			}
 
 			public void paint(Graphics g) {
@@ -92,6 +94,31 @@ public class ScrollingTextPane extends JScrollPane {
 				g.fillRect(0, 0, getWidth()-1, getHeight()-1);
 				g.setColor(Color.RED);
 				g.drawRect(0, 0, getWidth()-1, getHeight()-1);
+				g.setColor(Color.GREEN);
+				if(up){
+					new Triangle(getWidth()/2, 3, 2, getHeight()-4, getWidth()-3, getHeight()-4).draw(g);
+				}
+				else{
+					new Triangle(getWidth()/2, getHeight()-4, 2, 3, getWidth()-3, 3).draw(g);
+				}
+			}
+
+			private class Triangle {
+				private int[] x = new int[3];
+				private int[] y = new int[3];
+
+				public Triangle(int x1, int y1, int x2, int y2, int x3, int y3) {
+					x[0] = x1;
+					x[1] = x2;
+					x[2] = x3;
+					y[0] = y1;
+					y[1] = y2;
+					y[2] = y3;
+				}
+
+				public void draw(Graphics g) {
+					g.drawPolygon(x, y, 3);
+				}
 			}
 		}
 	}

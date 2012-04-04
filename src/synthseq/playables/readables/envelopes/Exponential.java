@@ -6,6 +6,7 @@ import synthseq.playables.readables.ReadableSound;
 public class Exponential extends ReadableSound{
 	private double amplitude;
 	private double period;
+	private double t;
 	private boolean running = false;
 	
 
@@ -15,6 +16,7 @@ public class Exponential extends ReadableSound{
 
 	public Exponential(double period) {
 		this.period = period;
+		t = -Math.log(period);
 	}
 
 	@Override
@@ -34,8 +36,11 @@ public class Exponential extends ReadableSound{
 			return -1;
 		} else if (amplitude <= -1) {
 			running = false;
-		} else
-			amplitude = 0;//TODO:Change to some equation
+		} else{
+			t += 2/(period * 44100);
+			amplitude = Math.pow(Math.E, -t);//TODO:Change to some equation
+		}
 		return amplitude;
+		
 	}
 }

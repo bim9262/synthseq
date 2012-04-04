@@ -84,7 +84,7 @@ public class Tab {
 	}
 
 	private boolean containsSeparator(String s, int caretPos) {
-		String toCheck = " \n().";
+		String toCheck = " \n\t().";
 		for (char c : toCheck.toCharArray()) {
 			if (s.charAt(caretPos) == c)
 				return true;

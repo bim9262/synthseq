@@ -19,7 +19,6 @@ public class Tab {
 				if (word.startsWith("def", 1))
 					trie.addWord(word.split(" ")[1]);
 			}
-			System.out.print("\n");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -23,7 +23,6 @@ public class Tab {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		trie.addWord(".play");
 	}
 
 	public static Tab getInstance() {

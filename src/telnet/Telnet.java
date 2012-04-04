@@ -83,14 +83,13 @@ public class Telnet {
 
 		GPanel() {
 			super(new GridBagLayout());
-			
+
 			ScrollingTextPane inputScrollPane = new ScrollingTextPane();
 			ScrollingTextPane outputScrollPane = new ScrollingTextPane();
-			
-			
+
 			inputArea = inputScrollPane.getTextPane();
 			outputArea = outputScrollPane.getTextPane();
-			
+
 			inputArea.addKeyListener(new KeyAdapter() {
 
 				public void keyPressed(KeyEvent e) {
@@ -99,6 +98,7 @@ public class Telnet {
 					case 38:
 						// if shift is on
 						if (e.getModifiersEx() == 64) {
+							CommandRecall.getInstance().add(inputArea.getText());
 							inputArea.setText(CommandRecall.getInstance().prev());
 						}
 						break;

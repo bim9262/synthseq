@@ -47,7 +47,9 @@ public class Tab {
 			ArrayList<String> posibilities = trie.getMutations(string.string);
 			if (posibilities.size() == 0) {
 				toReturn += "NONE FOUND";
-			} else {
+			} else if(posibilities.size() == 1 && posibilities.get(0).equals(string.string)){
+				toReturn = "input options";
+			}else{
 				for (int i = 0; i < posibilities.size(); i++) {
 					toReturn += posibilities.get(i)
 							+ (i != posibilities.size() - 1 ? ", " : "");
@@ -95,7 +97,7 @@ public class Tab {
 			this.end = end;
 		}
 	}
-	
+
 	public class Trie {
 		private Node top;
 		private Node location;

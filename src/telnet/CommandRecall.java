@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class CommandRecall {
 	
 	private ArrayList<String> cmds = new ArrayList<String>();
-	private int pos;
+	private int pos = 0;
 	private static CommandRecall instance = new CommandRecall();
 
 	public static CommandRecall getInstance(){
@@ -21,8 +21,8 @@ public class CommandRecall {
 		pos -= pos == 0 ? 0 : 1;
 		return pos >= 0 ? cmds.get(pos) : "";
 	}
-
-	public void add(String cmd) {
+	
+public void add(String cmd) {
 		if (cmd != null && !cmd.equals("")
 				&& (cmds.size() == 0 || !cmds.get(cmds.size() - 1).equals(cmd))) {
 			cmds.add(cmd);

@@ -21,8 +21,8 @@ import javax.swing.border.LineBorder;
 
 public class Telnet {
 
-	private JTextPane inputArea;
-	private JTextPane outputArea;
+	private TextPane inputArea;
+	private TextPane outputArea;
 	private Socket s;
 	private BufferedReader in;
 	private PrintWriter out;
@@ -45,12 +45,7 @@ public class Telnet {
 				try {
 					while (true) {
 						String line = in.readLine();
-						synchronized (outputArea) {
-							outputArea.setText(outputArea.getText() + line
-									+ "\n");
-							outputArea.setCaretPosition(outputArea
-									.getDocument().getLength());
-						}
+						outputArea.append(line);
 					}
 				} catch (IOException e) {
 					System.out.println("Connection Closed.");
@@ -90,7 +85,7 @@ public class Telnet {
 
 		GPanel() {
 			super(new GridBagLayout());
-			inputArea = new JTextPane();
+			inputArea = new TextPane();
 			inputArea.addKeyListener(new KeyAdapter() {
 
 				public void keyPressed(KeyEvent e) {
@@ -100,8 +95,6 @@ public class Telnet {
 						// if shift is on
 						if (e.getModifiersEx() == 64) {
 							inputArea.setText(cmds.prev());
-							inputArea.setCaretPosition(inputArea.getDocument()
-									.getLength());
 						}
 						break;
 
@@ -120,7 +113,7 @@ public class Telnet {
 							outputArea.setText("");
 						}
 						break;
-					//e key
+					// e key
 					case 69:
 						// if control is on
 						e.consume();
@@ -128,7 +121,7 @@ public class Telnet {
 						if (e.getModifiersEx() == 128 && text != null) {
 							out.println(text.replaceAll("\\n", ""));
 						}
-							break;
+						break;
 					}
 
 				}
@@ -149,11 +142,9 @@ public class Telnet {
 
 							}
 						} else if (tabCount == 2) {
-							outputArea.setText(outputArea.getText()
-									+ Tab.getInstance().suggestions(
-											inputArea.getText(),
-											inputArea.getCaretPosition())
-									+ "\n");
+							outputArea.append(Tab.getInstance().suggestions(
+									inputArea.getText(),
+									inputArea.getCaretPosition()));
 						}
 						break;
 					// enter key
@@ -162,10 +153,7 @@ public class Telnet {
 						if (e.getModifiersEx() == 64) {
 							String text = inputArea.getText().replaceAll(
 									"\\s+$", "");
-							synchronized (outputArea) {
-								outputArea.setText(outputArea.getText() + text
-										+ "\n");
-							}
+							outputArea.append(text);
 							cmds.add(text);
 							out.println(text.replaceAll("\\n", ""));
 							inputArea.setText("");
@@ -180,12 +168,12 @@ public class Telnet {
 
 			});
 
-			outputArea = new JTextPane();
+			outputArea = new TextPane();
 
 			inputArea.setFocusTraversalKeysEnabled(false);
-			
+
 			outputArea.setKeymap(null);
-			
+
 			JScrollPane outputScrollPane = new JScrollPane(outputArea);
 			JScrollPane inputScrollPane = new JScrollPane(inputArea);
 

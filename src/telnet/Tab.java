@@ -48,7 +48,7 @@ public class Tab {
 			if (posibilities.size() == 0) {
 				toReturn += "NONE FOUND";
 			} else if(posibilities.size() == 1 && posibilities.get(0).equals(string.string)){
-				toReturn = "input options";
+				toReturn = "(doc " + string.string + ")";
 			}else{
 				for (int i = 0; i < posibilities.size(); i++) {
 					toReturn += posibilities.get(i)
@@ -98,7 +98,7 @@ public class Tab {
 		}
 	}
 
-	public class Trie {
+	private class Trie {
 		private Node top;
 		private Node location;
 
@@ -170,7 +170,7 @@ public class Tab {
 			return toReturn;
 		}
 
-		public class Node {
+		private class Node {
 			private Character c;
 			private ArrayList<Node> branch = new ArrayList<Node>();
 

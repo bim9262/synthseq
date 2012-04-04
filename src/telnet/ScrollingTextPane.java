@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class ScrollingTextPane extends JScrollPane {
@@ -13,6 +14,7 @@ public class ScrollingTextPane extends JScrollPane {
 	public ScrollingTextPane() {
 		super();
 		textPane = new TextPane();
+		setBorder(new LineBorder(Color.BLACK));
 		setViewportView(textPane);
 	}
 

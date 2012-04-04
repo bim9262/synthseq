@@ -117,7 +117,6 @@ public class Telnet {
 					case 76:
 						// if control is on
 						if (e.getModifiersEx() == 128) {
-							inputArea.setText("");
 							outputArea.setText("");
 						}
 						break;

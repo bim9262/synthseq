@@ -21,7 +21,7 @@ public class ScrollingTextPane extends JScrollPane {
 		super();
 		textPane = new TextPane();
 		setBorder(new LineBorder(Color.BLACK));
-		setVerticalScrollBar(new ScrollBar());
+		getVerticalScrollBar().setUI(new CoolScrollBarUI());
 		setViewportView(textPane);
 	}
 
@@ -48,33 +48,26 @@ public class ScrollingTextPane extends JScrollPane {
 		}
 	}
 
-	private class ScrollBar extends JScrollBar {
-		public ScrollBar() {
-			super();
-			setUI(new CoolScrollBarUI());
+	public class CoolScrollBarUI extends BasicScrollBarUI {
+
+		private Color thumbCoreColor;
+
+		protected void configureScrollBarColors() {
+			trackColor = Color.BLACK;
+			thumbColor = Color.BLACK;
+			thumbHighlightColor = Color.RED;
+			thumbCoreColor = Color.GREEN;
 		}
 
-		private class CoolScrollBarUI extends BasicScrollBarUI {
-
-			private Color thumbCoreColor;
-
-			protected void configureScrollBarColors() {
-				trackColor = Color.BLACK;
-				thumbColor = Color.BLACK;
-				thumbHighlightColor = Color.RED;
-				thumbCoreColor = Color.GREEN;
+		protected void paintThumb(Graphics g, JComponent c,
+				Rectangle thumbBounds) {
+			super.paintThumb(g, c, thumbBounds);
+			if (thumbBounds.height > 20) {
+				g.setColor(thumbCoreColor);
+				g.drawLine(thumbBounds.width / 2, thumbBounds.y + 10,
+						 thumbBounds.width / 2, thumbBounds.height + thumbBounds.y- 10);
 			}
 
-			protected void paintThumb(Graphics g, JComponent c,
-					Rectangle thumbBounds) {
-				super.paintThumb(g, c, thumbBounds);
-				if (thumbBounds.height > 20) {
-					g.setColor(thumbCoreColor);
-					g.drawLine(thumbBounds.width / 2, thumbBounds.y + 10,
-							 thumbBounds.width / 2, thumbBounds.height + thumbBounds.y- 10);
-				}
-
-			}
 		}
 	}
 }

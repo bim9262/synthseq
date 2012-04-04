@@ -19,6 +19,10 @@ public class Node {
 		return parrent;
 	}
 
+	public ArrayList<Node> getBranch() {
+		return branch;
+	}
+
 	public Node addNode(Node parrent, Character c) {
 		Node toReturn = getNode(c);
 		if (toReturn == null) {

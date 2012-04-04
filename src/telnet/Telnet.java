@@ -199,8 +199,6 @@ public class Telnet {
 
 			setBackground(Color.BLACK);
 
-			outputScrollPane.setBorder(new LineBorder(Color.BLACK));
-			inputScrollPane.setBorder(new LineBorder(Color.BLACK));
 			outputArea.setBorder(new LineBorder(Color.BLACK));
 			inputArea.setBorder(new LineBorder(Color.RED));
 

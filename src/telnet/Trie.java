@@ -12,7 +12,7 @@ public class Trie {
 
 	public void addWord(String word) {
 		for (Character c : (word+"\r").toCharArray()) {
-			location = location.addNode(location, c);
+			location = location.addNode(c);
 		}
 		location = top;
 	}

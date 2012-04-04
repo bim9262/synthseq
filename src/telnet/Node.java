@@ -4,29 +4,23 @@ import java.util.ArrayList;
 
 public class Node {
 	private Character c;
-	private Node parrent;
 	private ArrayList<Node> branch = new ArrayList<Node>();
 
 	public Node() {
 	}
 
-	private Node(Node parrent, Character c) {
+	private Node(Character c) {
 		this.c = c;
-		this.parrent = parrent;
-	}
-
-	public Node getParent() {
-		return parrent;
 	}
 
 	public ArrayList<Node> getBranch() {
 		return branch;
 	}
 
-	public Node addNode(Node parrent, Character c) {
+	public Node addNode(Character c) {
 		Node toReturn = getNode(c);
 		if (toReturn == null) {
-			toReturn = new Node(parrent, c);
+			toReturn = new Node(c);
 			branch.add(toReturn);
 		}
 		return toReturn;

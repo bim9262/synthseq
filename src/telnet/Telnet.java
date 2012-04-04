@@ -28,7 +28,7 @@ public class Telnet {
 	private PrintWriter out;
 	private GPanel g = new GPanel();
 	private JFrame gui = new JFrame("Telnet");
-	private CommandList cmds = new CommandList();
+	private CommandRecall cmds = new CommandRecall();
 
 	public Telnet(String host, int port) {
 		try {

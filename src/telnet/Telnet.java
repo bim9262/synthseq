@@ -134,9 +134,9 @@ public class Telnet {
 					case 69:
 						// if control is on
 						e.consume();
-						if (e.getModifiersEx() == 128) {
-							System.out.println("test");
-							out.println(inputArea.getSelectedText().replaceAll("\\n", ""));
+						String text = inputArea.getSelectedText();
+						if (e.getModifiersEx() == 128 && text != null) {
+							out.println(text.replaceAll("\\n", ""));
 						}
 							break;
 					}

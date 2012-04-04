@@ -31,7 +31,7 @@ public class Trie {
 			}
 		}
 		location = top;
-		return toReturn.substring(0,toReturn.length()-1);
+		return toReturn.replaceAll("\r+$", "");
 	}
 
 	public ArrayList<String> getMutations(String word) {

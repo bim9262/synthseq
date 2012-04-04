@@ -98,7 +98,6 @@ public class Telnet {
 					case 38:
 						// if shift is on
 						if (e.getModifiersEx() == 64) {
-							CommandRecall.getInstance().add(inputArea.getText());
 							inputArea.setText(CommandRecall.getInstance().prev());
 						}
 						break;

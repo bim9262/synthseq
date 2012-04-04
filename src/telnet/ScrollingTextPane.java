@@ -2,9 +2,12 @@ package telnet;
 
 import java.awt.Color;
 
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.ScrollBarUI;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 @SuppressWarnings("serial")
 public class ScrollingTextPane extends JScrollPane {
@@ -15,6 +18,7 @@ public class ScrollingTextPane extends JScrollPane {
 		super();
 		textPane = new TextPane();
 		setBorder(new LineBorder(Color.BLACK));
+		setVerticalScrollBar(new ScrollBar());
 		setViewportView(textPane);
 	}
 
@@ -38,6 +42,18 @@ public class ScrollingTextPane extends JScrollPane {
 		public synchronized void setText(String s) {
 			super.setText(s);
 			setCaretPosition(getDocument().getLength());
+		}
+	}
+	private class ScrollBar extends JScrollBar {
+		public ScrollBar(){
+			super();
+			setUI(new CoolScrollBarUI());
+		}
+		
+		private class CoolScrollBarUI extends BasicScrollBarUI{
+			protected void configureScrollBarColors(){
+				
+			}
 		}
 	}
 }

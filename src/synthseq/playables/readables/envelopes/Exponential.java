@@ -32,7 +32,7 @@ public class Exponential extends ReadableSound{
 	public double read() {
 		if (!running) {
 			return -1;
-		} else if (amplitude <= 0) {
+		} else if (amplitude <= -1) {
 			running = false;
 		} else
 			amplitude = 0;//TODO:Change to some equation

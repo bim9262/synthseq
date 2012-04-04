@@ -40,7 +40,7 @@ public class Exponential extends ReadableSound{
 			t += 2/(period * 44100);
 			amplitude = Math.pow(Math.E, -t);//TODO:Change to some equation
 		}
-		return amplitude;
+		return amplitude*2-1;
 		
 	}
 }

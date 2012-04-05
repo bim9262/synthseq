@@ -15,8 +15,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
-
 import telnet.ScrollingTextPane.TextPane;
 
 public class Telnet {

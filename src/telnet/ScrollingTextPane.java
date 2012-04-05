@@ -51,6 +51,7 @@ public class ScrollingTextPane extends JScrollPane {
 			setBackground(Color.BLACK);
 			setForeground(Color.GREEN);
 			setCaretColor(Color.RED);
+			
 		}
 
 		public synchronized void append(String s) {

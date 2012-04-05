@@ -9,19 +9,31 @@
 (defn test-success [] (println "success"))
 (defn saw
   "Generates a new saw wave with the specified frequency"
-  [freq] (SawWave. freq))
+  [freq] 
+  (if (= (type freq) Integer)
+    (SawWave. (double freq))
+    (SawWave. freq)))
 (defn triangle
   "Generates a new triangle wave with the specified frequency"
-   [freq] (TriangleWave. freq))
+   [freq] 
+   (if (= (type freq) Integer)
+   (TriangleWave. (double freq))
+   (TriangleWave. freq)))
 (defn sine 
   "Generates a new sine wave with the specified frequency"
-   [freq] (SineWave. freq))
+   [freq] 
+   (if (= (type freq) Integer)
+   (SineWave. (double freq))
+   (SineWave. freq)))
 (defn pulse 
 "Generates a new pulse wave with the specified frequency. 
 Ratio specifies the ratio between troughs and peeks. 
 A pulse wave with a ratio of 0.5 is a square wave.
 Ratio defaults to 0.5"
-  ([freq] (PulseWave. freq))
+  ([freq] 
+    (if (= (type freq) Integer)
+    (PulseWave. (double freq))
+    (PulseWave. freq)))
   ([freq ratio] (PulseWave. freq ratio)))
 (defn play 
   "Plays the specified sound"

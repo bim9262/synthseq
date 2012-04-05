@@ -28,8 +28,9 @@ public class MainInputAreaListener extends InputAreaListener {
 		case 40:
 			// if shift is on
 			if (e.getModifiersEx() == 64) {
-				CommandRecall.getInstance().add(inputArea.getText());
+				String s = inputArea.getText();
 				inputArea.setText(CommandRecall.getInstance().next());
+				CommandRecall.getInstance().add(s);
 			}
 			break;
 		// l key

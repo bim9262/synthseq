@@ -23,8 +23,8 @@ public class ScrollingTextPane extends JScrollPane {
 		textPane = new TextPane();
 		setBorder(new LineBorder(Color.RED));
 		textPane.setBorder(new LineBorder(Color.BLACK));
-		getVerticalScrollBar().setUI(new CoolScrollBarUI(false));
-		getHorizontalScrollBar().setUI(new CoolScrollBarUI(true));
+		getVerticalScrollBar().setUI(new CoolScrollBarUI());
+		getHorizontalScrollBar().setUI(new CoolScrollBarUI());
 		makeCorner();
 		setViewportView(textPane);
 	}
@@ -65,12 +65,8 @@ public class ScrollingTextPane extends JScrollPane {
 
 	public class CoolScrollBarUI extends BasicScrollBarUI {
 
-		private boolean horizontal;
+		private boolean horizontal = false;
 		private Color thumbCoreColor;
-
-		public CoolScrollBarUI(boolean horizontal) {
-			this.horizontal = horizontal;
-		}
 
 		protected void configureScrollBarColors() {
 			trackColor = Color.BLACK;
@@ -115,6 +111,7 @@ public class ScrollingTextPane extends JScrollPane {
 			ArrowButton(int orientation) {
 				setPreferredSize(new Dimension(18, 18));
 				this.orientation = orientation;
+				horizontal = (orientation == 3 || orientation == 7);
 			}
 
 			public void paint(Graphics g) {
@@ -131,6 +128,14 @@ public class ScrollingTextPane extends JScrollPane {
 				case 5:
 					new Triangle(getWidth() / 2, getHeight() - 4, 2, 3,
 							getWidth() - 3, 3).draw(g);
+					break;
+				case 7:
+					new Triangle(2, getHeight() /2, getWidth() - 4, 3,
+							getWidth() - 4, getHeight() - 4).draw(g);
+						break;
+				case 3:
+					new Triangle(getWidth() - 4, getHeight() /2, 2, 3,
+							2, getHeight() - 4).draw(g);
 					break;
 				}
 			}

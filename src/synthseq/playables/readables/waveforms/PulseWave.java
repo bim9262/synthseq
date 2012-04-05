@@ -1,17 +1,25 @@
 package synthseq.playables.readables.waveforms;
 
 import synthseq.playables.readables.ReadableSound;
+import synthseq.playables.readables.Variable;
 
 public class PulseWave extends ReadableSound {
-	private double time = 0, amplitude = -1, ratio;
-	private double freq;
+	private double time = 0, amplitude = -1;
+	private Variable ratio;
+	private Variable freq;
 	private boolean running = false;
 
-	public PulseWave(double freq) {
+	public PulseWave(Variable freq) {
 		this(freq, 0.5);
 	}
+	public PulseWave(Variable freq, double ratio){
+		this(freq,new Variable(ratio));
+	}
+	public PulseWave(double freq, double ratio){
+		this(new Variable(freq),new Variable(ratio));
+	}
 
-	public PulseWave(double freq, double ratio) {
+	public PulseWave(Variable freq, Variable ratio) {
 		this.freq = freq;
 		this.ratio = ratio;
 	}
@@ -20,14 +28,14 @@ public class PulseWave extends ReadableSound {
 	public double read() {
 		if (!running)
 			return 0;
-		time += 1.00 / (44100 / freq);
+		time += 1.00 / (44100 / freq.read());
 		if (amplitude > 0) {
-			if (time >= ratio) {
+			if (time >= ratio.read()) {
 				time = 0;
 				amplitude = -amplitude;
 			}
 		} else {
-			if (time >= (1 - ratio)) {
+			if (time >= (1 - ratio.read())) {
 				time = 0;
 				amplitude = -amplitude;
 			}

@@ -1,25 +1,25 @@
 package synthseq.playables.readables;
 
-public class LineIn extends ReadableSound{
+import synthseq.synthesizer.LineOut;
 
-	//Reads sound from the microphone
-	
+public class LineIn extends ReadableSound {
+	private boolean running = false;
+
 	@Override
 	public void start() {
-		// TODO Auto-generated method stub
-		
+		running = true;
 	}
 
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
-		
+		running = false;
 	}
 
 	@Override
 	public double read() {
-		// TODO Auto-generated method stub
-		return 0;
+		if (!running)
+			return 0;
+		return LineOut.readMic();
 	}
 
 }

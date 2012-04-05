@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -31,6 +32,7 @@ public class Telnet {
 
 	public Telnet(String host, int port) {
 		try {
+			gui.setIconImage(javax.imageio.ImageIO.read(new File("icon.png")));
 			s = new Socket(InetAddress.getByName(host), port);
 			s.setKeepAlive(true);
 			in = new BufferedReader(new InputStreamReader(s.getInputStream()));

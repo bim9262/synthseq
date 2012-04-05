@@ -1,7 +1,7 @@
 (ns Clojure-Bindings)
 (import '(synthseq.synthesizer Synthesizer)
         '(synthseq.signalanalysis FrequencyDomain)
-        '(synthseq.playables.readables ReadableSound Clip)
+        '(synthseq.playables.readables ReadableSound Clip LineIn)
         '(synthseq.playables.readables.envelopes ADSR Exponential Linear)
         '(synthseq.playables.readables.waveforms SawWave TriangleWave SineWave PulseWave WhiteNoise)
         '(synthseq.playables.readables.filters StringInst HighPass LowPass)
@@ -52,6 +52,7 @@ Release is the time it takes to decay from the level value to nothing
 The level value is sustained until stop is called"
   [attack peekamp decay level release] (ADSR. attack peekamp decay level release))
 (defn string-inst [freq] (StringInst. freq))
+(defn line-in [] (LineIn.))
 (defn LPF 
   "Creates a low pass filter
 The lower the alpha value, the lower the pass band

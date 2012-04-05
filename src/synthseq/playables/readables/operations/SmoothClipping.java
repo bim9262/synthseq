@@ -1,12 +1,13 @@
 package synthseq.playables.readables.operations;
 
 import synthseq.playables.readables.ReadableSound;
+import synthseq.playables.readables.Variable;
 
 public class SmoothClipping extends ReadableSound {
 	private ReadableSound r;
-	private double max;
+	private Variable max;
 	
-	public SmoothClipping(ReadableSound r, double max) {
+	public SmoothClipping(ReadableSound r, Variable max) {
 	this.r = r;
 	this.max = max;
 	}
@@ -14,10 +15,10 @@ public class SmoothClipping extends ReadableSound {
 	@Override
 	public double read() {
 		double val = r.read();
-		double det = val/Math.abs(max);
-		if (val > Math.abs(max))
+		double det = val/Math.abs(max.read());
+		if (val > Math.abs(max.read()))
 			return val/det;
-		if (val < -Math.abs(max))
+		if (val < -Math.abs(max.read()))
 			return val/det;
 		return val;
 	}

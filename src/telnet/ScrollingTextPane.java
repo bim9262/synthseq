@@ -83,7 +83,11 @@ public class ScrollingTextPane extends JScrollPane {
 				Rectangle thumbBounds) {
 			super.paintThumb(g, c, thumbBounds);
 			if (horizontal) {
-
+				if (thumbBounds.width > 20) {
+					g.setColor(thumbCoreColor);
+					g.drawLine(thumbBounds.x + 10, thumbBounds.height / 2,
+							thumbBounds.width + thumbBounds.x - 10, thumbBounds.height / 2);
+				}
 			} else {
 				if (thumbBounds.height > 20) {
 					g.setColor(thumbCoreColor);
@@ -109,7 +113,7 @@ public class ScrollingTextPane extends JScrollPane {
 			private int orientation;
 
 			ArrowButton(int orientation) {
-				setPreferredSize(new Dimension(14, 14));
+				setPreferredSize(new Dimension(18, 18));
 				this.orientation = orientation;
 			}
 

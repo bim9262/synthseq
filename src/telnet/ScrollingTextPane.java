@@ -36,6 +36,7 @@ public class ScrollingTextPane extends JScrollPane {
 		corner.setBorder(new LineBorder(Color.BLACK));
 		corner.setText(" X");
 		corner.setFocusable(false);
+		corner.setEditable(false);
 		setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER, corner);
 	}
 

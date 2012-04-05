@@ -205,9 +205,6 @@ public class Telnet {
 
 			setBackground(Color.BLACK);
 
-			outputArea.setBorder(new LineBorder(Color.BLACK));
-			inputArea.setBorder(new LineBorder(Color.RED));
-
 		}
 	}
 

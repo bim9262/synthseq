@@ -6,8 +6,11 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
@@ -19,9 +22,22 @@ public class ScrollingTextPane extends JScrollPane {
 	public ScrollingTextPane() {
 		super();
 		textPane = new TextPane();
-		setBorder(new LineBorder(Color.BLACK));
-		getVerticalScrollBar().setUI(new CoolScrollBarUI());
+		setBorder(new LineBorder(Color.RED));
+		textPane.setBorder(new LineBorder(Color.BLACK));
+		getVerticalScrollBar().setUI(new CoolScrollBarUI(false));
+		getHorizontalScrollBar().setUI(new CoolScrollBarUI(true));
+		makeCorner();
 		setViewportView(textPane);
+	}
+
+	private void makeCorner() {
+		JTextField corner = new JTextField();
+		corner.setBackground(Color.BLACK);
+		corner.setForeground(Color.GREEN);
+		corner.setBorder(new LineBorder(Color.BLACK));
+		corner.setText(" X");
+		corner.setFocusable(false);
+		setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER, corner);
 	}
 
 	public TextPane getTextPane() {
@@ -49,7 +65,12 @@ public class ScrollingTextPane extends JScrollPane {
 
 	public class CoolScrollBarUI extends BasicScrollBarUI {
 
+		private boolean horizontal;
 		private Color thumbCoreColor;
+
+		public CoolScrollBarUI(boolean horizontal) {
+			this.horizontal = horizontal;
+		}
 
 		protected void configureScrollBarColors() {
 			trackColor = Color.BLACK;
@@ -61,45 +82,52 @@ public class ScrollingTextPane extends JScrollPane {
 		protected void paintThumb(Graphics g, JComponent c,
 				Rectangle thumbBounds) {
 			super.paintThumb(g, c, thumbBounds);
-			if (thumbBounds.height > 20) {
-				g.setColor(thumbCoreColor);
-				g.drawLine(thumbBounds.width / 2, thumbBounds.y + 10,
-						thumbBounds.width / 2, thumbBounds.height
-								+ thumbBounds.y - 10);
+			if (horizontal) {
+
+			} else {
+				if (thumbBounds.height > 20) {
+					g.setColor(thumbCoreColor);
+					g.drawLine(thumbBounds.width / 2, thumbBounds.y + 10,
+							thumbBounds.width / 2, thumbBounds.height
+									+ thumbBounds.y - 10);
+				}
 			}
 
 		}
 
 		protected JButton createDecreaseButton(int orientation) {
-			// orientation = 1
 			return new ArrowButton(orientation);
 
 		}
 
 		protected JButton createIncreaseButton(int orientation) {
-			// orientation = 5
 			return new ArrowButton(orientation);
 		}
 
 		private class ArrowButton extends JButton {
-			Boolean up;
+
+			private int orientation;
 
 			ArrowButton(int orientation) {
 				setPreferredSize(new Dimension(14, 14));
-				up = orientation == 1;
+				this.orientation = orientation;
 			}
 
 			public void paint(Graphics g) {
 				g.setColor(Color.BLACK);
-				g.fillRect(0, 0, getWidth()-1, getHeight()-1);
+				g.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
 				g.setColor(Color.RED);
-				g.drawRect(0, 0, getWidth()-1, getHeight()-1);
+				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 				g.setColor(Color.GREEN);
-				if(up){
-					new Triangle(getWidth()/2, 3, 2, getHeight()-4, getWidth()-3, getHeight()-4).draw(g);
-				}
-				else{
-					new Triangle(getWidth()/2, getHeight()-4, 2, 3, getWidth()-3, 3).draw(g);
+				switch (orientation) {
+				case 1:
+					new Triangle(getWidth() / 2, 3, 2, getHeight() - 4,
+							getWidth() - 3, getHeight() - 4).draw(g);
+					break;
+				case 5:
+					new Triangle(getWidth() / 2, getHeight() - 4, 2, 3,
+							getWidth() - 3, 3).draw(g);
+					break;
 				}
 			}
 

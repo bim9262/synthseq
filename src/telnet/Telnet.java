@@ -16,8 +16,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
-
 import telnet.ScrollingTextPane.TextPane;
 
 public class Telnet {
@@ -207,9 +205,6 @@ public class Telnet {
 			this.add(outputScrollPane, c);
 
 			setBackground(Color.BLACK);
-
-			outputArea.setBorder(new LineBorder(Color.BLACK));
-			inputArea.setBorder(new LineBorder(Color.RED));
 
 		}
 	}

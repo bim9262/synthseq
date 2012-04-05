@@ -3,8 +3,6 @@ package telnet;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -23,9 +21,8 @@ public class Telnet {
 	private TextPane inputArea;
 	private TextPane outputArea;
 	private Socket s;
-	private BufferedReader in;
-	private PrintWriter out;
-	private GPanel g = new GPanel();
+	private BufferedReader socketOutput;
+	private PrintWriter socketInput;
 	private JFrame gui = new JFrame("Telnet");
 
 	public Telnet(String host, int port) {
@@ -33,8 +30,8 @@ public class Telnet {
 			gui.setIconImage(javax.imageio.ImageIO.read(new File("icon.png")));
 			s = new Socket(InetAddress.getByName(host), port);
 			s.setKeepAlive(true);
-			in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			out = new PrintWriter(s.getOutputStream(), true);
+			socketOutput = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			socketInput = new PrintWriter(s.getOutputStream(), true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,7 +40,7 @@ public class Telnet {
 			public void run() {
 				try {
 					while (true) {
-						String line = in.readLine();
+						String line = socketOutput.readLine();
 						outputArea.append(line);
 					}
 				} catch (IOException e) {
@@ -53,13 +50,13 @@ public class Telnet {
 		}.start();
 
 		gui.setSize(600, 500);
-		gui.add(g);
+		gui.add(new GPanel());
 
 		gui.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				out.close();
+				socketInput.close();
 				try {
-					in.close();
+					socketOutput.close();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -79,107 +76,17 @@ public class Telnet {
 
 	@SuppressWarnings("serial")
 	private class GPanel extends JPanel {
-		private int tabCount = 0;
 
 		GPanel() {
 			super(new GridBagLayout());
 
-			ScrollingTextPane inputScrollPane = new ScrollingTextPane();
 			ScrollingTextPane outputScrollPane = new ScrollingTextPane();
-
-			inputArea = inputScrollPane.getTextPane();
 			outputArea = outputScrollPane.getTextPane();
-
-			inputArea.addKeyListener(new KeyAdapter() {
-
-				public void keyPressed(KeyEvent e) {
-					switch (e.getKeyCode()) {
-					// up key
-					case 38:
-						// if shift is on
-						if (e.getModifiersEx() == 64) {
-							inputArea.setText(CommandRecall.getInstance().prev());
-						}
-						break;
-
-					// down key
-					case 40:
-						// if shift is on
-						if (e.getModifiersEx() == 64) {
-							CommandRecall.getInstance().add(inputArea.getText());
-							inputArea.setText(CommandRecall.getInstance().next());
-						}
-						break;
-					// l key
-					case 76:
-						// if control is on
-						if (e.getModifiersEx() == 128) {
-							outputArea.setText("");
-						}
-						break;
-					// e key
-					case 69:
-						// if control is on
-						e.consume();
-						String text = inputArea.getSelectedText();
-						if (e.getModifiersEx() == 128 && text != null) {
-							outputArea.append(text);
-							out.println(text.replaceAll("\\n", ""));
-						}
-						break;
-					}
-
-				}
-
-				public void keyTyped(KeyEvent e) {
-					switch ((int) e.getKeyChar()) {
-					// tab key
-					case 9:
-						tabCount++;
-						e.consume();// Does not work
-						String textpt = inputArea.getText().trim();
-						int tabPos = inputArea.getCaretPosition()-4;
-						if (tabCount == 1) {
-							String autoCompleted = Tab.getInstance()
-									.autoComplete(textpt,
-											tabPos);
-							if (!autoCompleted.equals(inputArea.getText())) {
-								inputArea.setText(autoCompleted);
-
-							}
-						} else if (tabCount == 2) {
-							String results = Tab.getInstance().suggestions(
-									inputArea.getText(),
-									inputArea.getCaretPosition());
-							if (results.startsWith("doc ", 1)){
-								outputArea.append(results);
-								out.println(results);
-							}
-							else{
-							outputArea.append(results);
-							}
-						}
-						break;
-					// enter key
-					case 10:
-						// if shift is on
-						if (e.getModifiersEx() == 64) {
-							String text = inputArea.getText().replaceAll(
-									"\\s+$", "");
-							outputArea.append(text);
-							CommandRecall.getInstance().add(text);
-							out.println(text.replaceAll("\\n", ""));
-							inputArea.setText("");
-						}
-						tabCount = 0;
-						break;
-					default:
-						tabCount = 0;
-						break;
-					}
-				}
-
-			});
+						
+			ScrollingTextPane inputScrollPane = new ScrollingTextPane();
+			inputArea = inputScrollPane.getTextPane();
+			
+			inputArea.addKeyListener(new MainInputAreaListener(inputArea, outputArea, socketInput));
 
 			inputArea.setFocusTraversalKeysEnabled(false);
 

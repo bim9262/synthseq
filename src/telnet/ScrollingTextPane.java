@@ -24,9 +24,13 @@ public class ScrollingTextPane extends JScrollPane {
 		setBorder(new LineBorder(Color.RED));
 		textPane.setBorder(new LineBorder(Color.BLACK));
 		getVerticalScrollBar().setUI(new CoolScrollBarUI());
-		getHorizontalScrollBar().setUI(new CoolScrollBarUI());
-		makeCorner();
+		//getHorizontalScrollBar().setUI(new CoolScrollBarUI());
+		//makeCorner();
 		setViewportView(textPane);
+	}
+	
+	public ScrollingTextPane(InputAreaListener listener){
+		textPane.addKeyListener(listener);
 	}
 
 	private void makeCorner() {

@@ -1,14 +1,5 @@
 To do:
 	Readables:
-		Buffer
-			-specify period, loads that amount of data from a readable
-			-like a clip for synthesizables
-		Decays
-			Exponential
-				Syntax Example: (defn drum [freq length] 
-									(mult 
-										(expDecay length) 
-										(add (sine freq) (pulse (* 2 freq)))))
 		Filters:
 			Finite Impulse Response
 			Band Pass
@@ -24,7 +15,6 @@ To do:
 			Ex: C4 pentatonic minor
 		Notes from chords
 			Ex: C B A Cm Cb C# v vii iv VI IIm III7 C6 Csus4 C#m13#11
-	Clojure bindings
 	Sequencer.
 	OSC
 		-String input for osc format
@@ -32,16 +22,6 @@ To do:
 			Returns a collection of bindings for push 1 through push 9
 			Bound to clojure code
 	Wave Analysis
-		Visualizer (amplitude over time)
 		Spectrogram (frequency domain over time)
 
 **Use Collections for all parameters to facilitate Clojure interop**
-
-
-
-Synthesizer/Sequencer
-Sketch OSC support
-Sound Synthesis
-Sound Sequencing
-Wave loading
-Rules

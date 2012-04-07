@@ -68,7 +68,26 @@ public class Telnet {
 			}
 		});
 
-		gui.add(new GPanel());
+		gui.setLayout(new GridBagLayout());
+		
+		ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
+
+		rightInputScrollPane.addKeyListener(new InputAreaListener(
+				rightInputScrollPane, outputArea, socketInput));
+		
+		GPanel gpanel = new GPanel();
+
+		GridBagConstraints c = new GridBagConstraints();		
+		c.fill = GridBagConstraints.BOTH;
+		c.gridy = 0;
+		c.weighty = 1;
+		c.weightx = 1;
+		
+		c.gridx = 1;		
+		gui.add(rightInputScrollPane, c);
+		
+		c.gridx = 0;
+		gui.add(gpanel, c);
 
 		gui.setVisible(true);
 
@@ -85,41 +104,25 @@ public class Telnet {
 
 			ScrollingTextPane leftInputScrollPane = new ScrollingTextPane();
 
-			ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
-
 			leftInputScrollPane.addKeyListener(new LeftInputAreaListener(
 					leftInputScrollPane, outputArea, socketInput));
-
-			rightInputScrollPane.addKeyListener(new InputAreaListener(
-					rightInputScrollPane, outputArea, socketInput));
-
+			
 			outputArea.setKeymap(null);
 
-			// Add Components to this panel.
 			GridBagConstraints c = new GridBagConstraints();
-
 			c.fill = GridBagConstraints.BOTH;
 			c.gridx = 0;
+			c.weightx = 1;
+					
 			c.gridy = 1;
 			c.weighty = 1;
-			c.weightx = 1;
-			// c.anchor = GridBagConstraints.SOUTHWEST;
 			this.add(leftInputScrollPane, c);
 
-			c.fill = GridBagConstraints.BOTH;
-			c.gridx = 0;
 			c.gridy = 0;
-			c.weighty = 4;
-			c.weightx = 1;
+			c.weighty = 4;			
 			this.add(outputScrollPane, c);
 
-			c.fill = GridBagConstraints.BOTH;
-			c.gridx = 1;
-			c.gridy = 1;
-			c.weighty = 1;
-			c.weightx = 1;
-			c.anchor = GridBagConstraints.NORTHEAST;
-			this.add(rightInputScrollPane, c);
+			
 
 			setBackground(Color.BLACK);
 

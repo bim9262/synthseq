@@ -18,7 +18,8 @@ import telnet.ScrollingTextPane.TextPane;
 
 public class Telnet {
 
-	private TextPane inputArea;
+	private TextPane leftInputArea;
+	private TextPane rightInputArea;
 	private TextPane outputArea;
 	private Socket s;
 	private BufferedReader socketOutput;
@@ -30,7 +31,8 @@ public class Telnet {
 			gui.setIconImage(javax.imageio.ImageIO.read(new File("icon.png")));
 			s = new Socket(InetAddress.getByName(host), port);
 			s.setKeepAlive(true);
-			socketOutput = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			socketOutput = new BufferedReader(new InputStreamReader(
+					s.getInputStream()));
 			socketInput = new PrintWriter(s.getOutputStream(), true);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -50,7 +52,6 @@ public class Telnet {
 		}.start();
 
 		gui.setSize(600, 500);
-		gui.add(new GPanel());
 
 		gui.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -68,10 +69,12 @@ public class Telnet {
 				System.exit(0);
 			}
 		});
+		
+		gui.add(new GPanel());
 
 		gui.setVisible(true);
-
-		inputArea.requestFocusInWindow();
+		
+		leftInputArea.requestFocusInWindow();
 	}
 
 	@SuppressWarnings("serial")
@@ -82,34 +85,45 @@ public class Telnet {
 
 			ScrollingTextPane outputScrollPane = new ScrollingTextPane();
 			outputArea = outputScrollPane.getTextPane();
-						
-			ScrollingTextPane inputScrollPane = new ScrollingTextPane();
-			inputArea = inputScrollPane.getTextPane();
-			
-			inputArea.addKeyListener(new MainInputAreaListener(inputArea, outputArea, socketInput));
 
-			inputArea.setFocusTraversalKeysEnabled(false);
+			ScrollingTextPane leftInputScrollPane = new ScrollingTextPane();
+			leftInputArea = leftInputScrollPane.getTextPane();
+
+			ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
+			rightInputArea = rightInputScrollPane.getTextPane();
+
+			leftInputArea.addKeyListener(new MainInputAreaListener(
+					leftInputArea, outputArea, socketInput));
+
+			leftInputArea.setFocusTraversalKeysEnabled(false);
 
 			outputArea.setKeymap(null);
 
 			// Add Components to this panel.
 			GridBagConstraints c = new GridBagConstraints();
 
-			c.gridwidth = getWidth();
-			c.weightx = 1;
-
 			c.fill = GridBagConstraints.BOTH;
 			c.gridx = 0;
 			c.gridy = 1;
 			c.weighty = 1;
+			c.weightx = 1;
 			c.anchor = GridBagConstraints.PAGE_END;
-			this.add(inputScrollPane, c);
+			this.add(leftInputScrollPane, c);
 
 			c.fill = GridBagConstraints.BOTH;
 			c.gridx = 0;
 			c.gridy = 0;
 			c.weighty = 4;
+			c.weightx = 1;
 			this.add(outputScrollPane, c);
+			
+			c.fill = GridBagConstraints.BOTH;
+			c.gridx = 1;
+			c.gridy = 0;
+			c.weighty = 5;
+			c.weightx = 1;
+			c.anchor = GridBagConstraints.EAST;
+			this.add(rightInputScrollPane, c);
 
 			setBackground(Color.BLACK);
 

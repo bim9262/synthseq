@@ -18,8 +18,6 @@ import telnet.ScrollingTextPane.TextPane;
 
 public class Telnet {
 
-	private TextPane leftInputArea;
-	private TextPane rightInputArea;
 	private TextPane outputArea;
 	private Socket s;
 	private BufferedReader socketOutput;
@@ -69,12 +67,11 @@ public class Telnet {
 				System.exit(0);
 			}
 		});
-		
+
 		gui.add(new GPanel());
 
 		gui.setVisible(true);
-		
-		leftInputArea.requestFocusInWindow();
+
 	}
 
 	@SuppressWarnings("serial")
@@ -87,15 +84,14 @@ public class Telnet {
 			outputArea = outputScrollPane.getTextPane();
 
 			ScrollingTextPane leftInputScrollPane = new ScrollingTextPane();
-			leftInputArea = leftInputScrollPane.getTextPane();
 
 			ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
-			rightInputArea = rightInputScrollPane.getTextPane();
 
-			leftInputArea.addKeyListener(new MainInputAreaListener(
-					leftInputArea, outputArea, socketInput));
+			leftInputScrollPane.addKeyListener(new LeftInputAreaListener(
+					leftInputScrollPane, outputArea, socketInput));
 
-			leftInputArea.setFocusTraversalKeysEnabled(false);
+			rightInputScrollPane.addKeyListener(new InputAreaListener(
+					rightInputScrollPane, outputArea, socketInput));
 
 			outputArea.setKeymap(null);
 
@@ -107,7 +103,7 @@ public class Telnet {
 			c.gridy = 1;
 			c.weighty = 1;
 			c.weightx = 1;
-			c.anchor = GridBagConstraints.PAGE_END;
+			// c.anchor = GridBagConstraints.SOUTHWEST;
 			this.add(leftInputScrollPane, c);
 
 			c.fill = GridBagConstraints.BOTH;
@@ -116,13 +112,13 @@ public class Telnet {
 			c.weighty = 4;
 			c.weightx = 1;
 			this.add(outputScrollPane, c);
-			
+
 			c.fill = GridBagConstraints.BOTH;
 			c.gridx = 1;
-			c.gridy = 0;
-			c.weighty = 5;
+			c.gridy = 1;
+			c.weighty = 1;
 			c.weightx = 1;
-			c.anchor = GridBagConstraints.EAST;
+			c.anchor = GridBagConstraints.NORTHEAST;
 			this.add(rightInputScrollPane, c);
 
 			setBackground(Color.BLACK);

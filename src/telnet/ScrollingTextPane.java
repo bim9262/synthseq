@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.KeyListener;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -22,15 +24,14 @@ public class ScrollingTextPane extends JScrollPane {
 		super();
 		textPane = new TextPane();
 		setBorder(new LineBorder(Color.RED));
-		textPane.setBorder(new LineBorder(Color.BLACK));
 		getVerticalScrollBar().setUI(new CoolScrollBarUI());
 		getHorizontalScrollBar().setUI(new CoolScrollBarUI());
 		makeCorner();
 		setViewportView(textPane);
 	}
-	
-	public ScrollingTextPane(InputAreaListener listener){
-		textPane.addKeyListener(listener);
+
+	public void addKeyListener(KeyListener keyListener) {
+		textPane.addKeyListener(keyListener);
 	}
 
 	private void makeCorner() {
@@ -55,7 +56,8 @@ public class ScrollingTextPane extends JScrollPane {
 			setBackground(Color.BLACK);
 			setForeground(Color.GREEN);
 			setCaretColor(Color.RED);
-			
+			setBorder(new LineBorder(Color.BLACK));
+			setFocusTraversalKeysEnabled(false);
 		}
 
 		public synchronized void append(String s) {
@@ -73,7 +75,7 @@ public class ScrollingTextPane extends JScrollPane {
 		private boolean horizontal = false;
 		private Color thumbCoreColor;
 
-		protected void configureScrollBarColors() {	
+		protected void configureScrollBarColors() {
 			thumbColor = Color.BLACK;
 			trackColor = thumbColor;
 			thumbHighlightColor = Color.RED;
@@ -87,7 +89,8 @@ public class ScrollingTextPane extends JScrollPane {
 				if (thumbBounds.width > 20) {
 					g.setColor(thumbCoreColor);
 					g.drawLine(thumbBounds.x + 10, thumbBounds.height / 2,
-							thumbBounds.width + thumbBounds.x - 10, thumbBounds.height / 2);
+							thumbBounds.width + thumbBounds.x - 10,
+							thumbBounds.height / 2);
 				}
 			} else {
 				if (thumbBounds.height > 20) {
@@ -135,12 +138,12 @@ public class ScrollingTextPane extends JScrollPane {
 							getWidth() - 3, 3).draw(g);
 					break;
 				case 7:
-					new Triangle(2, getHeight() /2, getWidth() - 4, 3,
+					new Triangle(2, getHeight() / 2, getWidth() - 4, 3,
 							getWidth() - 4, getHeight() - 4).draw(g);
-						break;
+					break;
 				case 3:
-					new Triangle(getWidth() - 4, getHeight() /2, 2, 3,
-							2, getHeight() - 4).draw(g);
+					new Triangle(getWidth() - 4, getHeight() / 2, 2, 3, 2,
+							getHeight() - 4).draw(g);
 					break;
 				}
 			}

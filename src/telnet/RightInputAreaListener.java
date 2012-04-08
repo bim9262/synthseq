@@ -58,7 +58,7 @@ public class RightInputAreaListener extends InputAreaListener {
 				if (file.exists()) {
 					if (JOptionPane.showConfirmDialog(new Frame(),
 							"Would you like to overwrite this file?",
-							"Are You Sure?", JOptionPane.YES_NO_OPTION) == 0) {
+							"Are You Sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
 						save();
 					} else {
 						file = null;

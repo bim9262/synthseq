@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 
 import telnet.ScrollingTextPane.TextPane;
 
@@ -58,7 +59,8 @@ public class RightInputAreaListener extends InputAreaListener {
 				if (file.exists()) {
 					if (JOptionPane.showConfirmDialog(new Frame(),
 							"Would you like to overwrite this file?",
-							"Are You Sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
+							"Are You Sure?", JOptionPane.YES_NO_OPTION,
+							JOptionPane.WARNING_MESSAGE) == 0) {
 						save();
 					} else {
 						file = null;
@@ -77,12 +79,42 @@ public class RightInputAreaListener extends InputAreaListener {
 		JFileChooser fc = new JFileChooser();
 		fc.setDialogTitle(dialogType);
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.setFileFilter(new FileFilter() {
+
+			@Override
+			public boolean accept(File f) {
+				if (f.isDirectory()) {
+					return true;
+				}
+				return isClojureFile(f);
+			}
+
+			@Override
+			public String getDescription() {
+				return "Clojure Files";
+			}
+		});
 
 		boolean toReturn = fc.showSaveDialog(fc) == JFileChooser.APPROVE_OPTION;
 		if (toReturn) {
 			file = fc.getSelectedFile();
+			if (!isClojureFile(file)) {
+				file = new File(file.toString() + ".clj");
+			}
 		}
 		return toReturn;
+	}
+
+	private boolean isClojureFile(File f) {
+		String ext = null;
+		String s = f.getName();
+		int i = s.lastIndexOf('.');
+
+		if (i > 0 && i < s.length() - 1) {
+			ext = s.substring(i + 1).toLowerCase();
+		}
+		return (ext == null ? false : ext.equals("clj"));
 	}
 
 	private void save() {

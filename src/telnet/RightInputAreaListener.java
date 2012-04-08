@@ -4,12 +4,13 @@ import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 import telnet.ScrollingTextPane.TextPane;
 
@@ -32,7 +33,18 @@ public class RightInputAreaListener extends InputAreaListener {
 				break;
 			// o key
 			case 79:
-
+				if (selectFile("Open")) {
+					inputArea.setText("");
+					try {
+						Scanner f = new Scanner(new FileReader(file));
+						while (f.hasNextLine()) {
+							inputArea.append(f.nextLine());
+						}
+						inputArea.setText(inputArea.getText().substring(0,
+								inputArea.getText().length() - 1));
+					} catch (Exception e1) {
+					}
+				}
 				break;
 			}
 		}
@@ -40,27 +52,19 @@ public class RightInputAreaListener extends InputAreaListener {
 
 	private void promptSave() {
 		if (file == null) {
-			JFileChooser fc = new JFileChooser("Save");
-			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-			int rval = fc.showSaveDialog(fc);
+			if (selectFile("Save")) {
 
-			if (rval == JFileChooser.APPROVE_OPTION) {
-
-				file = fc.getSelectedFile();
 				if (file.exists()) {
-					if(JOptionPane.showConfirmDialog(new Frame(),
-						    "Would you like to overwrite this file?",
-						    "Are You Sure?",
-						    JOptionPane.YES_NO_OPTION)==0){
+					if (JOptionPane.showConfirmDialog(new Frame(),
+							"Would you like to overwrite this file?",
+							"Are You Sure?", JOptionPane.YES_NO_OPTION) == 0) {
 						save();
+					} else {
+						file = null;
 					}
-					else {
-						file=null;
-					}
-				}
-				else {
-				save();
+				} else {
+					save();
 				}
 			}
 
@@ -69,15 +73,24 @@ public class RightInputAreaListener extends InputAreaListener {
 		}
 	}
 
+	private boolean selectFile(String dialogType) {
+		JFileChooser fc = new JFileChooser();
+		fc.setDialogTitle(dialogType);
+		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+		boolean toReturn = fc.showSaveDialog(fc) == JFileChooser.APPROVE_OPTION;
+		if (toReturn) {
+			file = fc.getSelectedFile();
+		}
+		return toReturn;
+	}
+
 	private void save() {
 		try {
-			// Create file
 			BufferedWriter out = new BufferedWriter(new FileWriter(file));
 			out.write(inputArea.getText());
-			// Close the output stream
 			out.close();
-		} catch (Exception e1) {// Catch exception if any
-			System.err.println("Error: " + e1.getMessage());
+		} catch (Exception e1) {
 		}
 	}
 }

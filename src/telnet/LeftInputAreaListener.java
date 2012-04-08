@@ -31,4 +31,11 @@ public class LeftInputAreaListener extends InputAreaListener {
 			}
 		}
 	}
+	
+	public void keyTyped(KeyEvent e){
+		super.keyTyped(e);
+		if (e.getModifiersEx() == 64 && e.getKeyChar() == '\n') {
+		inputArea.setText("");
+		}
+	}
 }

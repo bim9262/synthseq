@@ -88,9 +88,6 @@ public class InputAreaListener extends KeyAdapter {
 				outputArea.append(text);
 				CommandRecall.getInstance().add(text);
 				socketInput.println(text);
-				if (!getClass().equals(RightInputAreaListener.class)) {
-					inputArea.setText("");
-				}
 			}
 			tabCount = 0;
 			break;

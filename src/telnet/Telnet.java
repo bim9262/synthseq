@@ -14,6 +14,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+
 import telnet.ScrollingTextPane.TextPane;
 
 public class Telnet {
@@ -36,6 +38,18 @@ public class Telnet {
 			e.printStackTrace();
 		}
 
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} 
+		catch (Exception e) {
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+			} 
+			catch (Exception e1) {
+				
+			}
+		}
+		
 		new Thread() {
 			public void run() {
 				try {

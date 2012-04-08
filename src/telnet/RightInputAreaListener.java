@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import telnet.ScrollingTextPane.TextPane;
 
@@ -39,7 +40,7 @@ public class RightInputAreaListener extends InputAreaListener {
 
 	private void promptSave() {
 		if (file == null) {
-			JFileChooser fc = new JFileChooser();
+			JFileChooser fc = new JFileChooser("Save");
 			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
 			int rval = fc.showSaveDialog(fc);

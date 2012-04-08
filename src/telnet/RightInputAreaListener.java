@@ -36,6 +36,7 @@ public class RightInputAreaListener extends InputAreaListener {
 			case 79:
 				if (selectFile("Open")) {
 					inputArea.setText("");
+					undoManager.discardAllEdits();
 					try {
 						Scanner f = new Scanner(new FileReader(file));
 						while (f.hasNextLine()) {

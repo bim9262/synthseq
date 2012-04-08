@@ -13,7 +13,7 @@ public class InputAreaListener extends KeyAdapter {
 	protected TextPane outputArea;
 	protected PrintWriter socketInput;
 	private int tabCount = 0;
-	private UndoManager undoManager;
+	protected UndoManager undoManager;
 
 	public InputAreaListener(ScrollingTextPane scrollingInputArea,
 			TextPane outputArea, PrintWriter socketInput) {

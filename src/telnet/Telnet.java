@@ -64,6 +64,7 @@ public class Telnet {
 		}.start();
 
 		gui.setSize(600, 500);
+		gui.setBackground(Color.BLACK);
 
 		gui.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {

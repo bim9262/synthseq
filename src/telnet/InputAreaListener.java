@@ -15,21 +15,14 @@ public class InputAreaListener extends KeyAdapter {
 	protected TextPane outputArea;
 	protected PrintWriter socketInput;
 	private int tabCount = 0;
-	private UndoManager undoManager = new UndoManager();
+	private UndoManager undoManager;
 
 	public InputAreaListener(ScrollingTextPane scrollingInputArea,
 			TextPane outputArea, PrintWriter socketInput) {
 		inputArea = scrollingInputArea.getTextPane();
+		undoManager = scrollingInputArea.getUndoManager();
 		this.outputArea = outputArea;
 		this.socketInput = socketInput;
-		inputArea.getDocument().addUndoableEditListener(
-				new UndoableEditListener() {
-
-					@Override
-					public void undoableEditHappened(UndoableEditEvent e) {
-						undoManager.addEdit(e.getEdit());
-					}
-				});
 	}
 
 	public void keyPressed(KeyEvent e) {

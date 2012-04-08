@@ -13,12 +13,16 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.undo.UndoManager;
 
 @SuppressWarnings("serial")
 public class ScrollingTextPane extends JScrollPane {
 
 	private TextPane textPane;
+	private UndoManager undoManager = new UndoManager();
 
 	public ScrollingTextPane() {
 		super();
@@ -48,6 +52,10 @@ public class ScrollingTextPane extends JScrollPane {
 	public TextPane getTextPane() {
 		return textPane;
 	}
+	
+	public UndoManager getUndoManager(){
+		return undoManager;
+	}
 
 	public class TextPane extends JTextPane {
 
@@ -58,6 +66,13 @@ public class ScrollingTextPane extends JScrollPane {
 			setCaretColor(Color.RED);
 			setBorder(new LineBorder(Color.BLACK));
 			setFocusTraversalKeysEnabled(false);
+			getDocument().addUndoableEditListener(new UndoableEditListener() {
+
+				@Override
+				public void undoableEditHappened(UndoableEditEvent e) {
+					undoManager.addEdit(e.getEdit());
+				}
+			});
 		}
 
 		public synchronized void append(String s) {

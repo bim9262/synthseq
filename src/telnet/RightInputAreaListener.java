@@ -34,20 +34,24 @@ public class RightInputAreaListener extends InputAreaListener {
 				break;
 			// o key
 			case 79:
-				if (selectFile("Open")) {
-					inputArea.setText("");
-					undoManager.discardAllEdits();
-					try {
-						Scanner f = new Scanner(new FileReader(file));
-						while (f.hasNextLine()) {
-							inputArea.append(f.nextLine());
-						}
-						inputArea.setText(inputArea.getText().substring(0,
-								inputArea.getText().length() - 1));
-					} catch (Exception e1) {
-					}
-				}
+				promptOpen();
 				break;
+			}
+		}
+	}
+
+	private void promptOpen() {
+		if (selectFile("Open")) {
+			inputArea.setText("");
+			undoManager.discardAllEdits();
+			try {
+				Scanner f = new Scanner(new FileReader(file));
+				while (f.hasNextLine()) {
+					inputArea.append(f.nextLine());
+				}
+				inputArea.setText(inputArea.getText().substring(0,
+						inputArea.getText().length() - 1));
+			} catch (Exception e1) {
 			}
 		}
 	}

@@ -70,12 +70,13 @@ public class Telnet {
 
 		gui.setLayout(new GridBagLayout());
 		
+		GPanel gpanel = new GPanel();
+		
 		ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
 
-		rightInputScrollPane.addKeyListener(new InputAreaListener(
+		rightInputScrollPane.addKeyListener(new RightInputAreaListener(
 				rightInputScrollPane, outputArea, socketInput));
 		
-		GPanel gpanel = new GPanel();
 
 		GridBagConstraints c = new GridBagConstraints();		
 		c.fill = GridBagConstraints.BOTH;

@@ -22,44 +22,44 @@ public class InputAreaListener extends KeyAdapter {
 		inputArea = scrollingInputArea.getTextPane();
 		this.outputArea = outputArea;
 		this.socketInput = socketInput;
-		inputArea.getDocument().addUndoableEditListener(new UndoableEditListener(){
+		inputArea.getDocument().addUndoableEditListener(
+				new UndoableEditListener() {
 
-			@Override
-			public void undoableEditHappened(UndoableEditEvent e) {
-				undoManager.addEdit(e.getEdit());
+					@Override
+					public void undoableEditHappened(UndoableEditEvent e) {
+						undoManager.addEdit(e.getEdit());
 					}
 				});
 	}
 
 	public void keyPressed(KeyEvent e) {
-		switch (e.getKeyCode()) {
-		// l key
-		case 76:
-			// if control is on
-			if (e.getModifiersEx() == 128) {
+		// if control is on
+		if (e.getModifiersEx() == 128) {
+			switch (e.getKeyCode()) {
+			// l key
+			case 76:
 				outputArea.setText("");
+				break;
+			// e key
+			case 69:
+				e.consume();
+				String text = inputArea.getSelectedText();
+				if (text != null) {
+					outputArea.append(text);
+					socketInput.println(text.replaceAll("\\n", ""));
+				}
+				break;
+			// z key
+			case 90:
+				if (undoManager.canUndo())
+					undoManager.undo();
+				break;
+			// y key
+			case 89:
+				if (undoManager.canRedo())
+					undoManager.redo();
+				break;
 			}
-			break;
-		// e key
-		case 69:
-			e.consume();
-			String text = inputArea.getSelectedText();
-			// if control is on
-			if (e.getModifiersEx() == 128 && text != null) {
-				outputArea.append(text);
-				socketInput.println(text.replaceAll("\\n", ""));
-			}
-			break;
-		// z key
-		case 90:
-			if (e.getModifiersEx() == 128 && undoManager.canUndo())
-				undoManager.undo();
-			break;
-		// y key
-		case 89:
-			if (e.getModifiersEx() == 128 && undoManager.canRedo())
-				undoManager.redo();
-			break;
 		}
 
 	}
@@ -96,8 +96,10 @@ public class InputAreaListener extends KeyAdapter {
 				String text = inputArea.getText().replaceAll("\\s+$", "");
 				outputArea.append(text);
 				CommandRecall.getInstance().add(text);
-				socketInput.println(text.replaceAll("\\n", ""));
-				inputArea.setText("");
+				socketInput.println(text);
+				if (!getClass().equals(RightInputAreaListener.class)) {
+					inputArea.setText("");
+				}
 			}
 			tabCount = 0;
 			break;

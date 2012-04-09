@@ -18,6 +18,7 @@ import telnet.ScrollingTextPane.TextPane;
 public class RightInputAreaListener extends InputAreaListener {
 
 	private File file;
+	private boolean saved = true;
 
 	public RightInputAreaListener(ScrollingTextPane scrollingInputArea,
 			TextPane outputArea, PrintWriter socketInput) {
@@ -26,6 +27,7 @@ public class RightInputAreaListener extends InputAreaListener {
 
 	public void keyPressed(KeyEvent e) {
 		super.keyPressed(e);
+		// ctrl key
 		if (e.getModifiersEx() == 128) {
 			switch (e.getKeyCode()) {
 			// s key
@@ -38,8 +40,35 @@ public class RightInputAreaListener extends InputAreaListener {
 				break;
 			}
 		}
+		// shift + ctrl
+		if (e.getModifiersEx() == 192) {
+			switch (e.getKeyCode()) {
+			// s key
+			case 83:
+				promptSaveAs("SaveAs");
+				break;
+			}
+
+		}
 	}
 
+	public void keyTyped(KeyEvent e) {
+		super.keyTyped(e);
+		switch ((int) e.getKeyChar()) {
+		default:
+			saved = false;
+			break;
+		}
+	}
+
+	public void promptSaveOnQuit() {
+		if (!saved) {
+			if (prompt("Would you like to save before quitting?")) {
+				promptSave();
+			}
+		}
+	}
+	
 	private void promptOpen() {
 		if (selectFile("Open")) {
 			inputArea.setText("");
@@ -58,26 +87,30 @@ public class RightInputAreaListener extends InputAreaListener {
 
 	private void promptSave() {
 		if (file == null) {
-
-			if (selectFile("Save")) {
-
-				if (file.exists()) {
-					if (JOptionPane.showConfirmDialog(new Frame(),
-							"Would you like to overwrite this file?",
-							"Are You Sure?", JOptionPane.YES_NO_OPTION,
-							JOptionPane.WARNING_MESSAGE) == 0) {
-						save();
-					} else {
-						file = null;
-					}
-				} else {
-					save();
-				}
-			}
-
+			promptSaveAs("Save");
 		} else {
 			save();
 		}
+	}
+
+	private void promptSaveAs(String title) {
+		File tempFile = file;
+		if (selectFile(title)) {
+			if (file.exists()) {
+				if (prompt("Would you like to overwrite this file?")) {
+					save();
+				} else {
+					file = tempFile;
+				}
+			}
+		} else {
+			save();
+		}
+	}
+
+	private boolean prompt(String msg) {
+		return JOptionPane.showConfirmDialog(new Frame(), msg, "Are You Sure?",
+				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0;
 	}
 
 	private boolean selectFile(String dialogType) {
@@ -127,6 +160,7 @@ public class RightInputAreaListener extends InputAreaListener {
 			BufferedWriter out = new BufferedWriter(new FileWriter(file));
 			out.write(inputArea.getText());
 			out.close();
+			saved = true;
 		} catch (Exception e1) {
 		}
 	}

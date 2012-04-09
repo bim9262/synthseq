@@ -12,7 +12,9 @@ public class Synthesizer {
 	private LineOut out;
 	private Map<ReadableSound, Integer> readables = new HashMap<ReadableSound, Integer>();
 	private double threshold = .01;
-	private int quietDuration = 44100 * 1;
+	private final int quietSampling = 10000;
+	private int quietSamplingCount = 0;
+	private final int quietDuration = (44100 * 1) / quietSampling;
 	private Visualizer vis = new Visualizer();
 	private FrequencyDomain fdVis = new FrequencyDomain(8);
 	private static Synthesizer instance = null;
@@ -74,19 +76,22 @@ public class Synthesizer {
 							ReadableSound r = it.next();
 							double a = r.read();
 							add += a / 10;
-							if (Math.abs(a) < threshold)
-								readables.put(r, readables.get(r) + 1);
-							else
-								readables.put(r, 0);
-							if (readables.get(r) > quietDuration) {
-								it.remove();
+							if (quietSamplingCount++ >= quietSampling) {
+								quietSamplingCount = 0;
+								if (Math.abs(a) < threshold)
+									readables.put(r, readables.get(r) + 1);
+								else
+									readables.put(r, 0);
+								if (readables.get(r) > quietDuration) {
+									it.remove();
+								}
 							}
 						}
-						add = (add>1)?1:(add<-1)?-1:add;
+						add = (add > 1) ? 1 : (add < -1) ? -1 : add;
 						out.writeM(add);
 						if (vis.isVisible())
 							vis.write(add);
-						if(fdVis.isVisible())
+						if (fdVis.isVisible())
 							fdVis.write(add);
 					}
 				}

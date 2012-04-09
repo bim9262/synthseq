@@ -40,6 +40,7 @@ public class LineOut {
 				}
 				mic.open();
 				mic.start();
+				//System.out.println(mic);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

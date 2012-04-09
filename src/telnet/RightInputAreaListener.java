@@ -12,7 +12,6 @@ public class RightInputAreaListener extends InputAreaListener {
 			TextPane outputArea, PrintWriter socketInput, ManagedFile file) {
 		super(scrollingInputArea, outputArea, socketInput);
 		file.setTextArea(inputArea);
-		file.setUndoManager(undoManager);
 		this.file = file;
 	}
 
@@ -27,7 +26,9 @@ public class RightInputAreaListener extends InputAreaListener {
 				break;
 			// o key
 			case 79:
-				file.promptOpen();
+				if(file.promptOpen()){
+					undoManager.discardAllEdits();
+				}
 				break;
 			}
 		}

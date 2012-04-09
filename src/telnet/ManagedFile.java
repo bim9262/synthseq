@@ -6,18 +6,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Scanner;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.undo.UndoManager;
 
 import telnet.ScrollingTextPane.TextPane;
 
 public class ManagedFile {
 	
 	private TextPane inputArea;
-	private UndoManager undoManager;
 	private File file;
 	private boolean saved = true;
 	
@@ -29,10 +26,9 @@ public class ManagedFile {
 		}
 	}
 	
-	public void promptOpen() {
+	public boolean promptOpen() {
 		if (selectFile("Open")) {
 			inputArea.setText("");
-			undoManager.discardAllEdits();
 			try {
 				Scanner f = new Scanner(new FileReader(file));
 				while (f.hasNextLine()) {
@@ -42,7 +38,9 @@ public class ManagedFile {
 						inputArea.getText().length() - 1));
 			} catch (Exception e1) {
 			}
+			return true;
 		}
+		return false;
 	}
 
 	public void promptSave() {
@@ -131,10 +129,6 @@ public class ManagedFile {
 
 	public void setTextArea(TextPane inputArea) {
 		this.inputArea = inputArea;
-	}
-
-	public void setUndoManager(UndoManager undoManager) {
-		this.undoManager = undoManager;
 	}
 
 }

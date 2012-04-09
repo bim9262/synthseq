@@ -10,7 +10,7 @@ import telnet.ScrollingTextPane.TextPane;
 public class InputAreaListener extends KeyAdapter {
 
 	protected TextPane inputArea;
-	protected TextPane outputArea;
+	private TextPane outputArea;
 	protected PrintWriter socketInput;
 	private int tabCount = 0;
 	protected UndoManager undoManager;

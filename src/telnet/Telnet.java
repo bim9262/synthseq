@@ -25,6 +25,7 @@ public class Telnet {
 	private BufferedReader socketOutput;
 	private PrintWriter socketInput;
 	private JFrame gui = new JFrame("Telnet");
+	private ManagedFile file = new ManagedFile();
 
 	public Telnet(String host, int port) {
 		try {
@@ -60,17 +61,6 @@ public class Telnet {
 		gui.setSize(600, 500);
 		gui.setBackground(Color.BLACK);
 
-		gui.setLayout(new GridBagLayout());
-		
-		GPanel gpanel = new GPanel();
-		
-		ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
-		
-		final RightInputAreaListener rightinputAreaListener = new RightInputAreaListener(
-				rightInputScrollPane, outputArea, socketInput);
-		
-		rightInputScrollPane.addKeyListener(rightinputAreaListener);
-		
 		gui.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				socketInput.close();
@@ -84,10 +74,20 @@ public class Telnet {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				rightinputAreaListener.promptSaveOnQuit();
+				file.promptSaveOnQuit();
 				System.exit(0);
 			}
 		});
+
+		gui.setLayout(new GridBagLayout());
+		
+		GPanel gpanel = new GPanel();
+		
+		ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
+			
+		rightInputScrollPane.addKeyListener(new RightInputAreaListener(
+				rightInputScrollPane, outputArea, socketInput, file));
+		
 
 		GridBagConstraints c = new GridBagConstraints();		
 		c.fill = GridBagConstraints.BOTH;

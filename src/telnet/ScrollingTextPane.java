@@ -27,6 +27,7 @@ public class ScrollingTextPane extends JScrollPane {
 	public ScrollingTextPane() {
 		super();
 		textPane = new TextPane();
+		setBackground(Color.BLACK);
 		setBorder(new LineBorder(Color.RED));
 		getVerticalScrollBar().setUI(new CoolScrollBarUI());
 		getHorizontalScrollBar().setUI(new CoolScrollBarUI());
@@ -85,7 +86,7 @@ public class ScrollingTextPane extends JScrollPane {
 		}
 	}
 
-	public class CoolScrollBarUI extends BasicScrollBarUI {
+	private class CoolScrollBarUI extends BasicScrollBarUI {
 
 		private boolean horizontal = false;
 		private Color thumbCoreColor;

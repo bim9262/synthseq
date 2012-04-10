@@ -1,6 +1,7 @@
 (ns Clojure-Bindings)
 (import '(synthseq.synthesizer Synthesizer)
         '(synthseq.signalanalysis FrequencyDomain)
+        '(synthseq.oscinterop OSCServer)
         '(synthseq.playables.readables ReadableSound Clip Buffer LineIn Variable)
         '(synthseq.playables.readables.envelopes ADSR Exponential Linear)
         '(synthseq.playables.readables.waveforms SawWave TriangleWave SineWave PulseWave WhiteNoise)
@@ -13,6 +14,7 @@
   (if (= (type freq) Integer)
     (SawWave. (double freq))
     (SawWave. freq)))
+(defn 
 (defn triangle
   "Generates a new triangle wave with the specified frequency"
    [freq] 

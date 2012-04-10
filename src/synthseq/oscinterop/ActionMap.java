@@ -1,37 +1,91 @@
 package synthseq.oscinterop;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
+import synthseq.clojureinterop.ClojureServer;
+import synthseq.playables.readables.ReadableSound;
+import synthseq.playables.readables.Variable;
 
 public class ActionMap {
+	private HashMap<String, Bind> bindings = new HashMap<String, Bind>();
+
 	public void interpret(String label, float x, float y) {
-		/*if (label.matches("/1/push[1-9]"))
-			if (x == 1)
-				Sequencer.play(label.charAt(7) - 49);
-			else
-				Sequencer.damp(label.charAt(7) - 49);
-		if (label.matches("/4/toggle[1-5]")) {
-			if (x == 1) {
-				Sequencer.startWub(label.charAt(9) - 49);
-			} else {
-				Sequencer.stopWub(label.charAt(9) - 49);
+		bindings.get(label).trigger(x, y);
+	}
+
+	public void bindToggle(String s, final String codeDown, final String codeUp) {
+		bindings.put(s, new Bind() {
+			@Override
+			public void trigger(float x, float y) {
+				if (x == 0) {
+					ClojureServer.interpretInternal(codeUp);
+				} else {
+					ClojureServer.interpretInternal(codeDown);
+				}
 			}
+		});
+	}
+
+	public void bindToggle(String s, final ReadableSound r) {
+		bindings.put(s, new Bind() {
+			@Override
+			public void trigger(float x, float y) {
+				if (x == 0)
+					r.stop();
+				else
+					r.play();
+			}
+		});
+	}
+
+	public void bindTouch(String s, final String codeDown) {
+		bindings.put(s,new Bind(){
+			@Override
+			public void trigger(float x, float y) {
+				ClojureServer.interpretInternal(codeDown);
+			}});
+	}
+
+	public void bindTouch(String s, final ReadableSound r) {
+		bindings.put(s,new Bind(){
+			@Override
+			public void trigger(float x, float y) {
+				r.play();
+			}});
+	}
+
+	public void bindSlider(String s, final Variable v) {
+		bindings.put(s,new Bind(){
+			@Override
+			public void trigger(float x, float y) {
+				v.setValue(x);
+			}});
+	}
+
+	public void bind2D(String s, final Variable vx, final Variable vy) {
+		bindings.put(s,new Bind(){
+			@Override
+			public void trigger(float x, float y) {
+				vx.setValue(x);
+				vy.setValue(y);
+			}});
+	}
+
+	public Collection<String> generateBindings(String s,
+			Collection<Integer> xVals, Collection<Integer> yVals) {
+		ArrayList<String> strings = new ArrayList<String>();
+		if (s.contains("!1") && s.contains("!2")) {
+			for (int x : xVals)
+				for (int y : yVals)
+					strings.add(s.replace("!1", "" + x).replace("!2", "" + y));
+		} else if (s.contains("!1")) {
+			for (int x : xVals)
+				strings.add(s.replace("!1", "" + x));
+		} else {
+			strings.add(s);
 		}
-		if (label.matches("/2/multitoggle/[0-9]{1,2}/[0-9]{1,2}")) {
-			Scanner s = new Scanner(label);
-			s.useDelimiter("/");
-			s.next();
-			s.next();
-			if (x == 0) {
-				Sequencer.setOff(s.nextInt(), s.nextInt());
-			} else
-				Sequencer.setOn(s.nextInt(), s.nextInt());
-		}
-		if (label.matches("/4/xy")) {
-			if (oldY == -1)
-				oldY = y;
-			float dY = y - oldY;
-			oldY = y;
-			Sequencer.setWub(x, dY);
-		}*/
+		return strings;
 	}
 }

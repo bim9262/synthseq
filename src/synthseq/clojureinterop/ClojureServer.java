@@ -10,6 +10,13 @@ import java.net.Socket;
 
 public class ClojureServer {
 	public static PrintWriter clojureOut;
+	public static void interpretInternal(String s){
+		try {
+			clojure.lang.Compiler.load(new StringReader(s));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static void start(final int i) {
 		new Thread() {
@@ -40,6 +47,7 @@ public class ClojureServer {
 						while (true) {
 							Object out;
 							try {
+								
 								out = clojure.lang.Compiler
 										.load(new StringReader(commandInput
 												.readLine()));

@@ -86,9 +86,11 @@ public class Telnet {
 		c.weightx = 1;
 
 		c.gridx = 1;
+		c.anchor = GridBagConstraints.EAST;
 		gui.add(rightPanel, c);
 
 		c.gridx = 0;
+		c.anchor = GridBagConstraints.WEST;
 		gui.add(leftPanel, c);
 
 		gui.setVisible(true);
@@ -99,6 +101,9 @@ public class Telnet {
 	private class RightPanel extends JPanel {
 		RightPanel() {
 			super(new GridBagLayout());
+			
+			setBackground(Color.BLACK);
+						
 			ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
 
 			final JTextField fileInfo = new JTextField();
@@ -170,6 +175,8 @@ public class Telnet {
 	private class LeftPanel extends JPanel {
 		LeftPanel() {
 			super(new GridBagLayout());
+			
+			setBackground(Color.BLACK);
 
 			ScrollingTextPane outputScrollPane = new ScrollingTextPane();
 			outputArea = outputScrollPane.getTextPane();
@@ -188,10 +195,12 @@ public class Telnet {
 
 			c.gridy = 1;
 			c.weighty = 1;
+			c.anchor = GridBagConstraints.PAGE_END;
 			add(leftInputScrollPane, c);
 
 			c.gridy = 0;
 			c.weighty = 4;
+			c.anchor = GridBagConstraints.PAGE_START;
 			add(outputScrollPane, c);
 
 			new Thread() {
@@ -206,8 +215,6 @@ public class Telnet {
 					}
 				}
 			}.start();
-
-			setBackground(Color.BLACK);
 
 		}
 	}

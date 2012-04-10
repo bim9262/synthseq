@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import synthseq.playables.readables.ReadableSound;
+import synthseq.playables.readables.Variable;
 
 /*
  * Adds multiple waveforms together
  */
-public class Adder extends ReadableSound {
+public class Adder extends Variable {
 	private Collection<ReadableSound> elements;
 
 	public Adder(Collection<ReadableSound> elements) {
@@ -24,7 +25,7 @@ public class Adder extends ReadableSound {
 	public double read() {
 		double a = 0;
 		for (ReadableSound p : elements)
-			a += p.read() / elements.size();
+			a += p.read();
 		return a;
 	}
 

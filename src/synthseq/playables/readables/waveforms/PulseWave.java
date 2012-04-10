@@ -28,17 +28,15 @@ public class PulseWave extends ReadableSound {
 	public double read() {
 		if (!running)
 			return 0;
-		time += 1.00 / (44100 / freq.read());
-		if (amplitude > 0) {
-			if (time >= ratio.read()) {
-				time = 0;
-				amplitude = -amplitude;
-			}
-		} else {
-			if (time >= (1 - ratio.read())) {
-				time = 0;
-				amplitude = -amplitude;
-			}
+		time++;
+		double val = freq.read();
+		double ratVal = ratio.read();
+		if(time>=44100/val)
+			time-=44100/val;
+		if(time>val*ratVal){
+			amplitude=-1;
+		}else{
+			amplitude = 1;
 		}
 		return amplitude;
 	}
@@ -46,11 +44,15 @@ public class PulseWave extends ReadableSound {
 	@Override
 	public void start() {
 		running = true;
+		ratio.start();
+		freq.start();
 	}
 
 	@Override
 	public void stop() {
 		running = false;
+		ratio.stop();
+		freq.stop();
 	}
 
 }

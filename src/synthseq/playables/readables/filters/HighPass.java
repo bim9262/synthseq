@@ -33,10 +33,12 @@ public class HighPass extends ReadableSound {
 	@Override
 	public void start() {
 		r.start();
+		alpha.start();
 	}
 
 	@Override
 	public void stop() {
 		r.stop();
+		alpha.stop();
 	}
 }

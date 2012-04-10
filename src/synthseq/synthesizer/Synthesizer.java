@@ -14,7 +14,7 @@ public class Synthesizer {
 	private double threshold = .01;
 	private final int quietSampling = 10000;
 	private int quietSamplingCount = 0;
-	private final int quietDuration = (44100 * 1) / quietSampling;
+	private final int quietDuration = (44100 * 2) / quietSampling;
 	private Visualizer vis = new Visualizer();
 	private FrequencyDomain fdVis = new FrequencyDomain(8);
 	private static Synthesizer instance = null;
@@ -62,6 +62,13 @@ public class Synthesizer {
 		synchronized (readables) {
 			for (ReadableSound r : readables.keySet())
 				r.stop();
+		}
+	}
+	public void fkill() {
+		synchronized (readables) {
+			for (ReadableSound r : readables.keySet())
+				r.stop();
+			readables.clear();
 		}
 	}
 

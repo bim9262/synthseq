@@ -67,7 +67,11 @@ The level value is sustained until stop is called"
 (defn line-in [] (LineIn.))
 (defn buffer [readable period] (Buffer. readable period))
 (defn variable 
-  ([value] (Variable. value))
+  ([value] 
+    (if (= (type value) Integer)
+      (Variable. (double value))
+      (Variable. value))
+    )
   ([varr update] (.setValue varr update)))
 (defn LPF 
   "Creates a low pass filter
@@ -109,4 +113,7 @@ Takes samples specified by 2 to the power of the accuracy parameter"
 (defn kill 
   "Stops all sounds currently being played by the synthesizer"
   [] (.kill synth))
+(defn fkill
+  "Stops and removes all sounds currently being played by the synthesizer"
+  [] (.fkill synth))
 (defn testSynthAutoKill [] (.size synth))

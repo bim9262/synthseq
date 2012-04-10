@@ -6,7 +6,7 @@ import synthseq.playables.readables.Variable;
 /*
  * Multiplies Waveforms by waveforms or scalars
  */
-public class Multiplier extends ReadableSound {
+public class Multiplier extends Variable {
 	private ReadableSound p;
 	private ReadableSound mult = null;
 
@@ -21,6 +21,9 @@ public class Multiplier extends ReadableSound {
 
 	@Override
 	public double read() {
+		if(mult instanceof Variable)
+			return p.read()*mult.read();
+		else
 			return p.read() * ((mult.read() + 1) / 2);
 	}
 

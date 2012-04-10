@@ -16,7 +16,7 @@ public class WhiteNoise extends ReadableSound {
 		y = z;
 		z = w;
 		w = w ^ (w >>> 19) ^ (t ^ (t >> 8));
-		return ((double) w) / Integer.MAX_VALUE;
+		return (((double) w) / Integer.MAX_VALUE)*2-1;
 	}
 
 	@Override

@@ -28,11 +28,13 @@ public class SineWave extends ReadableSound{
 	@Override
 	public void start() {
 		running = true;
+		freq.start();
 	}
 
 	@Override
 	public void stop() {
 		running = false;
+		freq.stop();
 	}
 
 }

@@ -22,19 +22,22 @@ public class SawWave extends ReadableSound{
 		if (!running)
 			return 0;
 		time++;
-		if(time>=44100/freq.read())
-			time-=44100/freq.read();
-		return (time/(44100/freq.read()))*2-1;
+		double val = freq.read();
+		if(time>=44100/val)
+			time-=44100/val;
+		return (time/(44100/val))*2-1;
 	}
 
 	@Override
 	public void start() {
 		running = true;
+		freq.start();
 	}
 
 	@Override
 	public void stop() {
 		running = false;
+		freq.stop();
 	}
 
 }

@@ -86,7 +86,6 @@ public class InputAreaListener extends KeyAdapter {
 			if (e.getModifiersEx() == 64) {
 				String text = inputArea.getText().replaceAll("\\s+$", "");
 				outputArea.append(text);
-				CommandRecall.getInstance().add(text);
 				socketInput.println(text);
 			}
 			tabCount = 0;

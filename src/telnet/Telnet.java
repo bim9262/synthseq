@@ -45,19 +45,6 @@ public class Telnet {
 		catch (Exception e) {
 		}
 		
-		new Thread() {
-			public void run() {
-				try {
-					while (true) {
-						String line = socketOutput.readLine();
-						outputArea.append(line);
-					}
-				} catch (IOException e) {
-					System.out.println("Connection Closed.");
-				}
-			}
-		}.start();
-
 		gui.setSize(600, 500);
 		gui.setBackground(Color.BLACK);
 
@@ -133,6 +120,19 @@ public class Telnet {
 			c.gridy = 0;
 			c.weighty = 4;			
 			this.add(outputScrollPane, c);
+			
+			new Thread() {
+				public void run() {
+					try {
+						while (true) {
+							String line = socketOutput.readLine();
+							outputArea.append(line);
+						}
+					} catch (IOException e) {
+						System.out.println("Connection Closed.");
+					}
+				}
+			}.start();
 
 			
 

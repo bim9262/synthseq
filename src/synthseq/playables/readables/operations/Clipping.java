@@ -28,10 +28,12 @@ public class Clipping extends ReadableSound {
 	@Override
 	public void start() {
 		r.start();
+		max.start();
 	}
 
 	@Override
 	public void stop() {
 		r.stop();
+		max.stop();
 	}
 }

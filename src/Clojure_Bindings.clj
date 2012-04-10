@@ -14,13 +14,13 @@
   (if (= (type freq) Integer)
     (SawWave. (double freq))
     (SawWave. freq)))
-(defn 
+(defmacro testBind[bindString ] )
 (defn triangle
   "Generates a new triangle wave with the specified frequency"
    [freq] 
    (if (= (type freq) Integer)
    (TriangleWave. (double freq))
-   (TriangleWave. freq))))
+   (TriangleWave. freq)))
 (defn sine 
   "Generates a new sine wave with the specified frequency"
    [freq] 

@@ -1,5 +1,6 @@
 package synthseq.oscinterop;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,13 +10,21 @@ import synthseq.playables.readables.ReadableSound;
 import synthseq.playables.readables.Variable;
 
 public class ActionMap {
-	private HashMap<String, Bind> bindings = new HashMap<String, Bind>();
+	private static HashMap<String, Bind> bindings = new HashMap<String, Bind>();
 
-	public void interpret(String label, float x, float y) {
-		bindings.get(label).trigger(x, y);
+	public static void interpret(String label, float x, float y) {
+		System.out.println(label);
+		try {
+			clojure.lang.Compiler.load(new StringReader(label));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Bind bind = bindings.get(label);
+		if(bind!=null)
+			bind.trigger(x, y);
 	}
 
-	public void bindToggle(String s, final String codeDown, final String codeUp) {
+	public static void bindToggle(String s, final String codeDown, final String codeUp) {
 		bindings.put(s, new Bind() {
 			@Override
 			public void trigger(float x, float y) {
@@ -28,7 +37,7 @@ public class ActionMap {
 		});
 	}
 
-	public void bindToggle(String s, final ReadableSound r) {
+	public static void bindToggle(String s, final ReadableSound r) {
 		bindings.put(s, new Bind() {
 			@Override
 			public void trigger(float x, float y) {
@@ -40,7 +49,7 @@ public class ActionMap {
 		});
 	}
 
-	public void bindTouch(String s, final String codeDown) {
+	public static void bindTouch(String s, final String codeDown) {
 		bindings.put(s,new Bind(){
 			@Override
 			public void trigger(float x, float y) {
@@ -48,7 +57,7 @@ public class ActionMap {
 			}});
 	}
 
-	public void bindTouch(String s, final ReadableSound r) {
+	public static void bindTouch(String s, final ReadableSound r) {
 		bindings.put(s,new Bind(){
 			@Override
 			public void trigger(float x, float y) {
@@ -56,7 +65,7 @@ public class ActionMap {
 			}});
 	}
 
-	public void bindSlider(String s, final Variable v) {
+	public static void bindSlider(String s, final Variable v) {
 		bindings.put(s,new Bind(){
 			@Override
 			public void trigger(float x, float y) {
@@ -64,7 +73,7 @@ public class ActionMap {
 			}});
 	}
 
-	public void bind2D(String s, final Variable vx, final Variable vy) {
+	public static void bind2D(String s, final Variable vx, final Variable vy) {
 		bindings.put(s,new Bind(){
 			@Override
 			public void trigger(float x, float y) {
@@ -73,7 +82,7 @@ public class ActionMap {
 			}});
 	}
 
-	public Collection<String> generateBindings(String s,
+	public static Collection<String> generateBindings(String s,
 			Collection<Integer> xVals, Collection<Integer> yVals) {
 		ArrayList<String> strings = new ArrayList<String>();
 		if (s.contains("!1") && s.contains("!2")) {

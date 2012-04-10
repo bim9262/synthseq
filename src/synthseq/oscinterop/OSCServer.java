@@ -14,7 +14,7 @@ import java.net.DatagramSocket;
  * @author john
  */
 public class OSCServer {
-	public static void start(final ActionMap map, int port) {
+	public static void start(int port) {
 		try {
 			final DatagramSocket input = new DatagramSocket(port);
 			new Thread() {
@@ -43,7 +43,7 @@ public class OSCServer {
 									break;
 								}
 							}
-							map.interpret(label.substring(0,label.indexOf(0)), x, y);
+							ActionMap.interpret(label.substring(0,label.indexOf(0)), x, y);
 						}
 					} catch (Exception e) {
 						System.out.println(e);

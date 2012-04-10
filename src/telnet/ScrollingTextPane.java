@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -58,7 +60,7 @@ public class ScrollingTextPane extends JScrollPane {
 		return undoManager;
 	}
 
-	public class TextPane extends JTextPane {
+	public class TextPane extends JTextPane implements CaretListener{
 
 		public TextPane() {
 			super();
@@ -74,6 +76,7 @@ public class ScrollingTextPane extends JScrollPane {
 					undoManager.addEdit(e.getEdit());
 				}
 			});
+			addCaretListener(this);
 		}
 
 		public synchronized void append(String s) {
@@ -83,6 +86,11 @@ public class ScrollingTextPane extends JScrollPane {
 		public synchronized void setText(String s) {
 			super.setText(s);
 			setCaretPosition(getDocument().getLength());
+		}
+
+		@Override
+		public void caretUpdate(CaretEvent e) {
+			//TODO: stuff
 		}
 	}
 

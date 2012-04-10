@@ -3,8 +3,8 @@ package telnet;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -141,13 +141,8 @@ public class Telnet {
 				}
 			});
 
-			textArea.addFocusListener(new FocusListener() {
+			textArea.addFocusListener(new FocusAdapter() {
 
-				@Override
-				public void focusGained(FocusEvent e) {
-				}
-
-				@Override
 				public void focusLost(FocusEvent e) {
 					fileInfo.setText(file.toString());
 				}

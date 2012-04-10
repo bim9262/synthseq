@@ -20,7 +20,7 @@
    [freq] 
    (if (= (type freq) Integer)
    (TriangleWave. (double freq))
-   (TriangleWave. freq)))
+   (TriangleWave. freq))))
 (defn sine 
   "Generates a new sine wave with the specified frequency"
    [freq] 

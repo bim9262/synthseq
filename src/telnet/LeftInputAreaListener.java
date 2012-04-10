@@ -24,18 +24,17 @@ public class LeftInputAreaListener extends InputAreaListener {
 
 			// down key
 			case 40:
-				String s = inputArea.getText();
 				inputArea.setText(CommandRecall.getInstance().next());
-				CommandRecall.getInstance().add(s);
 				break;
 			}
 		}
 	}
-	
-	public void keyTyped(KeyEvent e){
+
+	public void keyTyped(KeyEvent e) {
 		super.keyTyped(e);
 		if (e.getModifiersEx() == 64 && e.getKeyChar() == '\n') {
-		inputArea.setText("");
+			CommandRecall.getInstance().add(inputArea.getText());
+			inputArea.setText("");
 		}
 	}
 }

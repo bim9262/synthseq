@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyListener;
-
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -19,6 +18,7 @@ import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.undo.UndoManager;
+import static java.lang.Math.*;
 
 @SuppressWarnings("serial")
 public class ScrollingTextPane extends JScrollPane {
@@ -55,12 +55,12 @@ public class ScrollingTextPane extends JScrollPane {
 	public TextPane getTextPane() {
 		return textPane;
 	}
-	
-	public UndoManager getUndoManager(){
+
+	public UndoManager getUndoManager() {
 		return undoManager;
 	}
 
-	public class TextPane extends JTextPane implements CaretListener{
+	public class TextPane extends JTextPane implements CaretListener {
 
 		public TextPane() {
 			super();
@@ -90,7 +90,12 @@ public class ScrollingTextPane extends JScrollPane {
 
 		@Override
 		public void caretUpdate(CaretEvent e) {
-			//TODO: stuff
+			int dot = e.getDot();
+			int mark = e.getMark();
+			if(abs(dot-mark)==1|| dot == mark){
+				int pos = min(dot, mark);
+				
+			}
 		}
 	}
 

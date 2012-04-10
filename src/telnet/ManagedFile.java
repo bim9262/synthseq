@@ -13,11 +13,11 @@ import javax.swing.filechooser.FileFilter;
 import telnet.ScrollingTextPane.TextPane;
 
 public class ManagedFile {
-	
+
 	private TextPane inputArea;
 	private File file;
 	private boolean saved = true;
-	
+
 	public void promptSaveOnQuit() {
 		if (!saved) {
 			if (prompt("Would you like to save before quitting?")) {
@@ -25,7 +25,7 @@ public class ManagedFile {
 			}
 		}
 	}
-	
+
 	public boolean promptOpen() {
 		if (selectFile("Open")) {
 			inputArea.setText("");
@@ -60,6 +60,8 @@ public class ManagedFile {
 				} else {
 					file = tempFile;
 				}
+			} else {
+				save();
 			}
 		} else {
 			save();
@@ -127,8 +129,12 @@ public class ManagedFile {
 		this.saved = saved;
 	}
 
-	public void setTextArea(TextPane inputArea) {
+	public void setInputSource(TextPane inputArea) {
 		this.inputArea = inputArea;
+	}
+
+	public String toString() {
+		return (file == null ? "File not saved" : file.getPath()) + " ";
 	}
 
 }

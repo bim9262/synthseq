@@ -11,7 +11,7 @@ public class RightInputAreaListener extends InputAreaListener {
 	public RightInputAreaListener(ScrollingTextPane scrollingInputArea,
 			TextPane outputArea, PrintWriter socketInput, ManagedFile file) {
 		super(scrollingInputArea, outputArea, socketInput);
-		file.setTextArea(inputArea);
+		file.setInputSource(inputArea);
 		this.file = file;
 	}
 

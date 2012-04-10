@@ -92,9 +92,9 @@ public class ScrollingTextPane extends JScrollPane {
 		public void caretUpdate(CaretEvent e) {
 			int dot = e.getDot();
 			int mark = e.getMark();
-			if(abs(dot-mark)==1|| dot == mark){
+			if (abs(dot - mark) == 1 || dot == mark) {
 				int pos = min(dot, mark);
-				
+
 			}
 		}
 	}

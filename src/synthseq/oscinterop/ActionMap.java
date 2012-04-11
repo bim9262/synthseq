@@ -11,20 +11,27 @@ import synthseq.playables.readables.Variable;
 
 public class ActionMap {
 	private static HashMap<String, Bind> bindings = new HashMap<String, Bind>();
-
+	private static boolean printNext = false;
 	public static void interpret(String label, float x, float y) {
-		System.out.println(label);
-		try {
-			clojure.lang.Compiler.load(new StringReader(label));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		Bind bind = bindings.get(label);
-		if(bind!=null)
+		if(printNext){
+			printNext = false;
+			try {
+				boolean isBound = bind!=null;
+				clojure.lang.Compiler.load(new StringReader("(println \""+label+" "+x+" "+y+" "+isBound+"\")"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (bind != null)
 			bind.trigger(x, y);
 	}
+	public static void printNext(){
+		printNext = true;
+	}
 
-	public static void bindToggle(String s, final String codeDown, final String codeUp) {
+	public static void bindToggle(String s, final String codeDown,
+			final String codeUp) {
 		bindings.put(s, new Bind() {
 			@Override
 			public void trigger(float x, float y) {
@@ -50,36 +57,43 @@ public class ActionMap {
 	}
 
 	public static void bindTouch(String s, final String codeDown) {
-		bindings.put(s,new Bind(){
+		System.out.println(s+" "+codeDown);
+		bindings.put(s, new Bind() {
 			@Override
 			public void trigger(float x, float y) {
-				ClojureServer.interpretInternal(codeDown);
-			}});
+				if (x != 0.0)
+					ClojureServer.interpretInternal(codeDown);
+			}
+		});
 	}
 
 	public static void bindTouch(String s, final ReadableSound r) {
-		bindings.put(s,new Bind(){
+		bindings.put(s, new Bind() {
 			@Override
 			public void trigger(float x, float y) {
-				r.play();
-			}});
+				if (x != 0.0)
+					r.play();
+			}
+		});
 	}
 
 	public static void bindSlider(String s, final Variable v) {
-		bindings.put(s,new Bind(){
+		bindings.put(s, new Bind() {
 			@Override
 			public void trigger(float x, float y) {
 				v.setValue(x);
-			}});
+			}
+		});
 	}
 
 	public static void bind2D(String s, final Variable vx, final Variable vy) {
-		bindings.put(s,new Bind(){
+		bindings.put(s, new Bind() {
 			@Override
 			public void trigger(float x, float y) {
 				vx.setValue(x);
 				vy.setValue(y);
-			}});
+			}
+		});
 	}
 
 	public static Collection<String> generateBindings(String s,

@@ -3,6 +3,8 @@ package telnet;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -14,7 +16,12 @@ import java.net.InetAddress;
 import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.text.Utilities;
 
 import telnet.ScrollingTextPane.TextPane;
 
@@ -40,11 +47,11 @@ public class Telnet {
 		}
 
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} 
-		catch (Exception e) {
+			UIManager
+					.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Exception e) {
 		}
-		
+
 		gui.setSize(600, 500);
 		gui.setBackground(Color.BLACK);
 
@@ -67,36 +74,104 @@ public class Telnet {
 		});
 
 		gui.setLayout(new GridBagLayout());
-		
-		GPanel gpanel = new GPanel();
-		
-		ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
-			
-		rightInputScrollPane.addKeyListener(new RightInputAreaListener(
-				rightInputScrollPane, outputArea, socketInput, file));
-		
 
-		GridBagConstraints c = new GridBagConstraints();		
+		LeftPanel leftPanel = new LeftPanel();
+
+		RightPanel rightPanel = new RightPanel();
+
+		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridy = 0;
 		c.weighty = 1;
 		c.weightx = 1;
-		
-		c.gridx = 1;		
-		gui.add(rightInputScrollPane, c);
-		
+
+		c.gridx = 1;
+		c.anchor = GridBagConstraints.EAST;
+		gui.add(rightPanel, c);
+
 		c.gridx = 0;
-		gui.add(gpanel, c);
+		c.anchor = GridBagConstraints.WEST;
+		gui.add(leftPanel, c);
 
 		gui.setVisible(true);
 
 	}
 
 	@SuppressWarnings("serial")
-	private class GPanel extends JPanel {
-
-		GPanel() {
+	private class RightPanel extends JPanel {
+		RightPanel() {
 			super(new GridBagLayout());
+			
+			setBackground(Color.BLACK);
+						
+			ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
+
+			final JTextField fileInfo = new JTextField();
+			fileInfo.setBackground(Color.BLACK);
+			fileInfo.setForeground(Color.GREEN);
+			fileInfo.setBorder(new LineBorder(Color.RED));
+			fileInfo.setCaretColor(Color.RED);
+			fileInfo.setEditable(false);
+			fileInfo.setFocusable(false);
+			fileInfo.setText(file.toString());
+
+			rightInputScrollPane.addKeyListener(new RightInputAreaListener(
+					rightInputScrollPane, outputArea, socketInput, file));
+
+			final TextPane textArea = rightInputScrollPane.getTextPane();
+
+			textArea.addCaretListener(new CaretListener() {
+
+				@Override
+				public void caretUpdate(CaretEvent e) {
+					try {
+						int caretPos = textArea.getCaretPosition();
+						int line = (caretPos == 0) ? 1 : 0;
+						for (int offset = caretPos; offset > 0;) {
+							offset = Utilities.getRowStart(textArea, offset) - 1;
+							line++;
+						}
+						int offset = Utilities.getRowStart(textArea, caretPos);
+						int col = caretPos - offset;
+
+						fileInfo.setText(file.toString() + " " + line + " : "
+								+ col);
+					} catch (Exception e1) {
+					}
+				}
+			});
+
+			textArea.addFocusListener(new FocusAdapter() {
+
+				public void focusLost(FocusEvent e) {
+					fileInfo.setText(file.toString());
+				}
+
+			});
+
+			GridBagConstraints c = new GridBagConstraints();
+			c.gridx = 0;
+			c.weightx = 1;
+
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.anchor = GridBagConstraints.PAGE_END;
+			c.gridy = 1;
+			add(fileInfo, c);
+
+			c.fill = GridBagConstraints.BOTH;
+			c.anchor = GridBagConstraints.PAGE_START;
+			c.weighty = 1;
+			c.gridy = 0;
+			add(rightInputScrollPane, c);
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private class LeftPanel extends JPanel {
+		LeftPanel() {
+			super(new GridBagLayout());
+			
+			setBackground(Color.BLACK);
 
 			ScrollingTextPane outputScrollPane = new ScrollingTextPane();
 			outputArea = outputScrollPane.getTextPane();
@@ -105,22 +180,24 @@ public class Telnet {
 
 			leftInputScrollPane.addKeyListener(new LeftInputAreaListener(
 					leftInputScrollPane, outputArea, socketInput));
-			
+
 			outputArea.setKeymap(null);
 
 			GridBagConstraints c = new GridBagConstraints();
 			c.fill = GridBagConstraints.BOTH;
 			c.gridx = 0;
 			c.weightx = 1;
-					
+
 			c.gridy = 1;
 			c.weighty = 1;
-			this.add(leftInputScrollPane, c);
+			c.anchor = GridBagConstraints.PAGE_END;
+			add(leftInputScrollPane, c);
 
 			c.gridy = 0;
-			c.weighty = 4;			
-			this.add(outputScrollPane, c);
-			
+			c.weighty = 4;
+			c.anchor = GridBagConstraints.PAGE_START;
+			add(outputScrollPane, c);
+
 			new Thread() {
 				public void run() {
 					try {
@@ -133,10 +210,6 @@ public class Telnet {
 					}
 				}
 			}.start();
-
-			
-
-			setBackground(Color.BLACK);
 
 		}
 	}

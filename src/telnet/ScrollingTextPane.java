@@ -60,7 +60,7 @@ public class ScrollingTextPane extends JScrollPane {
 		return undoManager;
 	}
 
-	public class TextPane extends JTextPane implements CaretListener {
+	public class TextPane extends JTextPane implements CaretListener, UndoableEditListener {
 
 		public TextPane() {
 			super();
@@ -69,13 +69,7 @@ public class ScrollingTextPane extends JScrollPane {
 			setCaretColor(Color.RED);
 			setBorder(new LineBorder(Color.BLACK));
 			setFocusTraversalKeysEnabled(false);
-			getDocument().addUndoableEditListener(new UndoableEditListener() {
-
-				@Override
-				public void undoableEditHappened(UndoableEditEvent e) {
-					undoManager.addEdit(e.getEdit());
-				}
-			});
+			getDocument().addUndoableEditListener(this);
 			addCaretListener(this);
 		}
 
@@ -89,12 +83,17 @@ public class ScrollingTextPane extends JScrollPane {
 		}
 
 		@Override
+		public void undoableEditHappened(UndoableEditEvent e) {
+			undoManager.addEdit(e.getEdit());
+		}
+		
+		@Override
 		public void caretUpdate(CaretEvent e) {
 			int dot = e.getDot();
 			int mark = e.getMark();
-			if(abs(dot-mark)==1|| dot == mark){
+			if (abs(dot - mark) == 1 || dot == mark) {
 				int pos = min(dot, mark);
-				
+
 			}
 		}
 	}

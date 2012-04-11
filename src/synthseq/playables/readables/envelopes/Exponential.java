@@ -38,7 +38,7 @@ public class Exponential extends ReadableSound{
 			running = false;
 		} else{
 			t += 2/(period * 44100);
-			amplitude = Math.pow(Math.E, -t);//TODO:Change to some equation
+			amplitude = Math.pow(Math.E, -t);
 		}
 		return amplitude*2-1;
 		

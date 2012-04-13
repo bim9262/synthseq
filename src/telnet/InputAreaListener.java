@@ -84,7 +84,7 @@ public class InputAreaListener extends KeyAdapter {
 		case 10:
 			// if shift is on
 			if (e.getModifiersEx() == 64) {
-				String text = inputArea.getText().replaceAll("\\s+$", "");
+				String text = inputArea.getText().replaceAll("\\s", "");
 				outputArea.append(text);
 				socketInput.println(text);
 			}

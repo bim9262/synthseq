@@ -8,17 +8,17 @@ import synthseq.playables.readables.ReadableSound;
 
 public class Power extends ReadableSound{
 	private double amplitude;
-	private double period;
+	private final double period;
 	private double t;
 	private boolean running = false;
 	
 	public Power(double period){
 		this.period = period;
-		t = Math.sqrt(period);
 	}
 	
 	public void start() {
 		amplitude = 1;
+		t = Math.sqrt(period);
 		running = true;
 		
 	}

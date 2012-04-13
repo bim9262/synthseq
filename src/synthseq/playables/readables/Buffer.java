@@ -15,6 +15,7 @@ public class Buffer extends ReadableSound{
 	
 	@Override
 	public void start() {
+		location = 0;
 		running = true;
 		
 	}
@@ -28,8 +29,9 @@ public class Buffer extends ReadableSound{
 	public double read() {
 		if (running) {
 			try {
-				if (location++ >= data.length - 1)
-					location = 0;
+				if (location++ >= data.length - 1){
+					stop();
+				}
 				return data[location];
 			} catch (Exception e) {
 				return 0;

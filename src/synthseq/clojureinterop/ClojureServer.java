@@ -45,22 +45,18 @@ public class ClojureServer {
 												+ "(def *out* "
 												+ "synthseq.clojureinterop.ClojureServer/clojureOut)"));
 						while (true) {
-							Object out;
+							Object out = null;
 							try {
-								
 								out = clojure.lang.Compiler
 										.load(new StringReader(commandInput
 												.readLine()));
-							} catch (NullPointerException e) {
-								break;
+								
 							} catch (Exception e) {
 								out = e;
 							}
 							output.println(out);
 							output.flush();
 						}
-						serv.close();
-						sock.close();
 					} catch (java.net.BindException e) {
 						System.out.println("Server already open. Exiting.");
 						System.exit(1);

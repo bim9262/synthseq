@@ -16,12 +16,12 @@ public class Exponential extends ReadableSound{
 
 	public Exponential(double period) {
 		this.period = period;
-		t = -Math.log(period);
 	}
 
 	@Override
 	public void start() {
 		amplitude = 1;
+		t = -Math.log(period);
 		running = true;
 	}
 

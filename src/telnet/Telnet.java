@@ -34,76 +34,84 @@ public class Telnet {
 	private JFrame gui = new JFrame("Telnet");
 	private ManagedFile file = new ManagedFile();
 
-	public Telnet(String host, int port) {
-		try {
-			gui.setIconImage(javax.imageio.ImageIO.read(new File("icon.png")));
-			s = new Socket(InetAddress.getByName(host), port);
-			s.setKeepAlive(true);
-			socketOutput = new BufferedReader(new InputStreamReader(
-					s.getInputStream()));
-			socketInput = new PrintWriter(s.getOutputStream(), true);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			UIManager
-					.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (Exception e) {
-		}
-
-		gui.setSize(600, 500);
-		gui.setBackground(Color.BLACK);
-
-		gui.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				socketInput.close();
+	public Telnet(final String host, final int port) {
+		new Thread() {
+			public void run() {
 				try {
-					socketOutput.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+					s = new Socket(InetAddress.getByName(host), port);
+					s.setKeepAlive(true);
+					socketOutput = new BufferedReader(new InputStreamReader(
+							s.getInputStream()));
+					socketInput = new PrintWriter(s.getOutputStream(), true);
+					gui.setIconImage(javax.imageio.ImageIO.read(new File(
+							"icon.png")));
+				} catch (Exception e1) {
+				}
+
+				if (s == null) {
+					System.out.println("Telnet could not connect");
+					System.exit(1);
 				}
 				try {
-					s.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+					UIManager
+							.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+				} catch (Exception e) {
 				}
-				file.promptSaveOnQuit();
-				System.exit(0);
+
+				gui.setSize(600, 500);
+				gui.setBackground(Color.BLACK);
+
+				gui.addWindowListener(new WindowAdapter() {
+					public void windowClosing(WindowEvent e) {
+						socketInput.close();
+						try {
+							socketOutput.close();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						try {
+							s.close();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						file.promptSaveOnQuit();
+						System.exit(0);
+					}
+				});
+
+				gui.setLayout(new GridBagLayout());
+
+				LeftPanel leftPanel = new LeftPanel();
+
+				RightPanel rightPanel = new RightPanel();
+
+				GridBagConstraints c = new GridBagConstraints();
+				c.fill = GridBagConstraints.BOTH;
+				c.gridy = 0;
+				c.weighty = 1;
+				c.weightx = 1;
+
+				c.gridx = 1;
+				c.anchor = GridBagConstraints.EAST;
+				gui.add(rightPanel, c);
+
+				c.gridx = 0;
+				c.anchor = GridBagConstraints.WEST;
+				gui.add(leftPanel, c);
+
+				gui.setVisible(true);
+
 			}
-		});
-
-		gui.setLayout(new GridBagLayout());
-
-		LeftPanel leftPanel = new LeftPanel();
-
-		RightPanel rightPanel = new RightPanel();
-
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
-		c.gridy = 0;
-		c.weighty = 1;
-		c.weightx = 1;
-
-		c.gridx = 1;
-		c.anchor = GridBagConstraints.EAST;
-		gui.add(rightPanel, c);
-
-		c.gridx = 0;
-		c.anchor = GridBagConstraints.WEST;
-		gui.add(leftPanel, c);
-
-		gui.setVisible(true);
-
+		}.start();
 	}
 
 	@SuppressWarnings("serial")
 	private class RightPanel extends JPanel {
 		RightPanel() {
 			super(new GridBagLayout());
-			
+
 			setBackground(Color.BLACK);
-						
+
 			ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
 
 			final JTextField fileInfo = new JTextField();
@@ -170,7 +178,7 @@ public class Telnet {
 	private class LeftPanel extends JPanel {
 		LeftPanel() {
 			super(new GridBagLayout());
-			
+
 			setBackground(Color.BLACK);
 
 			ScrollingTextPane outputScrollPane = new ScrollingTextPane();

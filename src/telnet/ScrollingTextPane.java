@@ -92,7 +92,7 @@ public class ScrollingTextPane extends JScrollPane {
 			int dot = e.getDot();
 			int mark = e.getMark();
 			if (abs(dot - mark) == 1 || dot == mark) {
-				int pos = min(dot, mark);
+				int pos = max(dot, mark);
 
 			}
 		}

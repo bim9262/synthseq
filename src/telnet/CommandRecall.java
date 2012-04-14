@@ -19,7 +19,7 @@ public class CommandRecall {
 
 	public String prev() {
 		pos -= pos == 0 ? 0 : 1;
-		return pos >= 0 ? cmds.get(pos) : "";
+		return pos >= 0 && cmds.size() > 0 ? cmds.get(pos) : "";
 	}
 
 	public void add(String cmd) {

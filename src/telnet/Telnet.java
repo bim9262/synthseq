@@ -37,25 +37,29 @@ public class Telnet {
 	public Telnet(final String host, final int port) {
 		new Thread() {
 			public void run() {
-				try {
-					s = new Socket(InetAddress.getByName(host), port);
-					s.setKeepAlive(true);
-					socketOutput = new BufferedReader(new InputStreamReader(
-							s.getInputStream()));
-					socketInput = new PrintWriter(s.getOutputStream(), true);
-					gui.setIconImage(javax.imageio.ImageIO.read(new File(
-							"icon.png")));
-				} catch (Exception e1) {
+				for (int i = 0; i < 5 && s==null; i++) {
+					try {
+						s = new Socket(InetAddress.getByName(host), port);
+						Thread.sleep(500);
+					} catch (Exception e1) {
+					}
 				}
 
 				if (s == null) {
 					System.out.println("Telnet could not connect");
 					System.exit(1);
-				}
-				try {
-					UIManager
-							.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-				} catch (Exception e) {
+				} else {
+					try {
+						s.setKeepAlive(true);
+						socketOutput = new BufferedReader(
+								new InputStreamReader(s.getInputStream()));
+						socketInput = new PrintWriter(s.getOutputStream(), true);
+						gui.setIconImage(javax.imageio.ImageIO.read(new File(
+								"icon.png")));
+						UIManager
+								.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					} catch (Exception e) {
+					}
 				}
 
 				gui.setSize(600, 500);

@@ -17,6 +17,9 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import javax.swing.undo.UndoManager;
 import static java.lang.Math.*;
 
@@ -60,7 +63,8 @@ public class ScrollingTextPane extends JScrollPane {
 		return undoManager;
 	}
 
-	public class TextPane extends JTextPane implements CaretListener, UndoableEditListener {
+	public class TextPane extends JTextPane implements CaretListener,
+			UndoableEditListener {
 
 		public TextPane() {
 			super();
@@ -86,14 +90,42 @@ public class ScrollingTextPane extends JScrollPane {
 		public void undoableEditHappened(UndoableEditEvent e) {
 			undoManager.addEdit(e.getEdit());
 		}
-		
+
 		@Override
 		public void caretUpdate(CaretEvent e) {
-			int dot = e.getDot();
-			int mark = e.getMark();
-			if (abs(dot - mark) == 1 || dot == mark) {
-				int pos = max(dot, mark);
-
+			if (getText() != null && getText().length() != 0) {
+				Highlighter highlighter = getHighlighter();
+				highlighter.removeAllHighlights();
+				int dot = e.getDot();
+				int mark = e.getMark();
+				if (abs(dot - mark) == 1 || dot == mark) {
+					int pos = max(dot, mark)-1;
+					System.out.println("pos " + pos);
+					int parCount = 0;
+					if (pos >= 0 && getText().charAt(pos) == ')') {
+						for (int i = pos; i >= 0; i--) {
+							if (getText().charAt(i) == ')') {
+								parCount++;
+							} else if (getText().charAt(i) == '(') {
+								parCount--;
+							}
+							System.out.println("parCount " + parCount);
+							if (parCount == 0) {
+								System.out.println("i " + i);
+								try {
+									highlighter
+											.addHighlight(
+													i,
+													i + 1,
+													((DefaultHighlighter) highlighter).DefaultPainter);
+								} catch (BadLocationException e1) {
+									e1.printStackTrace();
+								}
+								break;
+							}
+						}
+					} 
+				}
 			}
 		}
 	}

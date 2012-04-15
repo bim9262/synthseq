@@ -37,8 +37,8 @@ public class Variable extends ReadableSound {
 
 	@Override
 	public double read() {
-		if(!running)
-			return 0;
+		//if(!running)
+		//	return 0;
 		if (sound != null)
 			return (sound.read() + 1) / 2;
 		return value;

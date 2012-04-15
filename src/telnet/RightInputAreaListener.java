@@ -37,7 +37,7 @@ public class RightInputAreaListener extends InputAreaListener {
 			switch (e.getKeyCode()) {
 			// s key
 			case 83:
-				file.promptSaveAs("SaveAs");
+				file.promptSaveAs();
 				break;
 			}
 

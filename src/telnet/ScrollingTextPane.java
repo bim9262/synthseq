@@ -2,6 +2,7 @@ package telnet;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyListener;
@@ -17,6 +18,9 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import javax.swing.undo.UndoManager;
 import static java.lang.Math.*;
 
@@ -60,7 +64,10 @@ public class ScrollingTextPane extends JScrollPane {
 		return undoManager;
 	}
 
-	public class TextPane extends JTextPane implements CaretListener, UndoableEditListener {
+	public class TextPane extends JTextPane implements CaretListener,
+			UndoableEditListener {
+
+		private Object highlight;
 
 		public TextPane() {
 			super();
@@ -71,6 +78,9 @@ public class ScrollingTextPane extends JScrollPane {
 			setFocusTraversalKeysEnabled(false);
 			getDocument().addUndoableEditListener(this);
 			addCaretListener(this);
+			setSelectedTextColor(Color.RED);
+			setSelectionColor(Color.GREEN);
+			setFont(new Font("Courier New", Font.PLAIN, 12));
 		}
 
 		public synchronized void append(String s) {
@@ -86,17 +96,43 @@ public class ScrollingTextPane extends JScrollPane {
 		public void undoableEditHappened(UndoableEditEvent e) {
 			undoManager.addEdit(e.getEdit());
 		}
-		
+
 		@Override
 		public void caretUpdate(CaretEvent e) {
-			int dot = e.getDot();
-			int mark = e.getMark();
-			if (abs(dot - mark) == 1 || dot == mark) {
-				int pos = max(dot, mark);
-
+			if (getText() != null && getText().length() != 0) {
+				Highlighter highlighter = getHighlighter();
+				if (highlight!=null) {
+					highlighter.removeHighlight(highlight);
+				}
+				int dot = e.getDot();
+				int mark = e.getMark();
+				if (abs(dot - mark) == 1 || dot == mark) {
+					int pos = max(dot, mark) - 1;
+					int parCount = 0;
+					if (pos >= 0 && getText().charAt(pos) == ')') {
+						for (int i = pos; i >= 0; i--) {
+							if (getText().charAt(i) == ')') {
+								parCount++;
+							} else if (getText().charAt(i) == '(') {
+								parCount--;
+							}
+							if (parCount == 0) {
+								try {
+									highlight = highlighter.addHighlight(i, i + 1,
+											new DefaultHighlighter.DefaultHighlightPainter(Color.RED));
+								} catch (BadLocationException e1) {
+									e1.printStackTrace();
+								}
+								break;
+							}
+						}
+					}
+				}
 			}
 		}
 	}
+
+	
 
 	private class CoolScrollBarUI extends BasicScrollBarUI {
 

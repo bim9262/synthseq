@@ -1,6 +1,7 @@
 package telnet;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.FocusAdapter;
@@ -37,25 +38,29 @@ public class Telnet {
 	public Telnet(final String host, final int port) {
 		new Thread() {
 			public void run() {
-				try {
-					s = new Socket(InetAddress.getByName(host), port);
-					s.setKeepAlive(true);
-					socketOutput = new BufferedReader(new InputStreamReader(
-							s.getInputStream()));
-					socketInput = new PrintWriter(s.getOutputStream(), true);
-					gui.setIconImage(javax.imageio.ImageIO.read(new File(
-							"icon.png")));
-				} catch (Exception e1) {
+				for (int i = 0; i < 5 && s==null; i++) {
+					try {
+						s = new Socket(InetAddress.getByName(host), port);
+						Thread.sleep(500);
+					} catch (Exception e1) {
+					}
 				}
 
 				if (s == null) {
 					System.out.println("Telnet could not connect");
 					System.exit(1);
-				}
-				try {
-					UIManager
-							.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-				} catch (Exception e) {
+				} else {
+					try {
+						s.setKeepAlive(true);
+						socketOutput = new BufferedReader(
+								new InputStreamReader(s.getInputStream()));
+						socketInput = new PrintWriter(s.getOutputStream(), true);
+						gui.setIconImage(javax.imageio.ImageIO.read(new File(
+								"icon.png")));
+						UIManager
+								.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					} catch (Exception e) {
+					}
 				}
 
 				gui.setSize(600, 500);
@@ -122,6 +127,7 @@ public class Telnet {
 			fileInfo.setEditable(false);
 			fileInfo.setFocusable(false);
 			fileInfo.setText(file.toString());
+			fileInfo.setFont(new Font("Courier New", Font.PLAIN, 12));
 
 			rightInputScrollPane.addKeyListener(new RightInputAreaListener(
 					rightInputScrollPane, outputArea, socketInput, file));
@@ -189,7 +195,7 @@ public class Telnet {
 			leftInputScrollPane.addKeyListener(new LeftInputAreaListener(
 					leftInputScrollPane, outputArea, socketInput));
 
-			outputArea.setKeymap(null);
+			outputArea.setEditable(false);
 
 			GridBagConstraints c = new GridBagConstraints();
 			c.fill = GridBagConstraints.BOTH;

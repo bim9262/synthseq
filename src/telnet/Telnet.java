@@ -193,7 +193,7 @@ public class Telnet {
 			leftInputScrollPane.addKeyListener(new LeftInputAreaListener(
 					leftInputScrollPane, outputArea, socketInput));
 
-			outputArea.setKeymap(null);
+			outputArea.setEditable(false);
 
 			GridBagConstraints c = new GridBagConstraints();
 			c.fill = GridBagConstraints.BOTH;

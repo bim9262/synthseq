@@ -26,7 +26,7 @@ public class CommandRecall {
 		if (cmd != null && !cmd.equals("")
 				&& (cmds.size() == 0 || !cmds.get(cmds.size() - 1).equals(cmd))) {
 			cmds.add(cmd);
-			pos = cmds.size();
 		}
+		pos = cmds.size();
 	}
 }

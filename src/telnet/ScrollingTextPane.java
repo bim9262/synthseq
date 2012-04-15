@@ -84,7 +84,8 @@ public class ScrollingTextPane extends JScrollPane {
 			setFocusTraversalKeysEnabled(false);
 			getDocument().addUndoableEditListener(this);
 			addCaretListener(this);
-			// setHighlighter(new CoolHighlighter());
+			setSelectedTextColor(Color.RED);
+			setSelectionColor(Color.GREEN);
 		}
 
 		public synchronized void append(String s) {

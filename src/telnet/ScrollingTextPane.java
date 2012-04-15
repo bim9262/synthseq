@@ -2,6 +2,7 @@ package telnet;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -86,6 +87,7 @@ public class ScrollingTextPane extends JScrollPane {
 			addCaretListener(this);
 			setSelectedTextColor(Color.RED);
 			setSelectionColor(Color.GREEN);
+			setFont(new Font("Courier New", Font.PLAIN, 12));
 		}
 
 		public synchronized void append(String s) {

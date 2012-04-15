@@ -2,8 +2,10 @@ package telnet;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -19,7 +21,12 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.LayeredHighlighter;
+import javax.swing.text.Position;
+import javax.swing.text.View;
 import javax.swing.undo.UndoManager;
 import static java.lang.Math.*;
 
@@ -66,6 +73,8 @@ public class ScrollingTextPane extends JScrollPane {
 	public class TextPane extends JTextPane implements CaretListener,
 			UndoableEditListener {
 
+		private Object highlight;
+
 		public TextPane() {
 			super();
 			setBackground(Color.BLACK);
@@ -75,6 +84,7 @@ public class ScrollingTextPane extends JScrollPane {
 			setFocusTraversalKeysEnabled(false);
 			getDocument().addUndoableEditListener(this);
 			addCaretListener(this);
+			// setHighlighter(new CoolHighlighter());
 		}
 
 		public synchronized void append(String s) {
@@ -95,12 +105,13 @@ public class ScrollingTextPane extends JScrollPane {
 		public void caretUpdate(CaretEvent e) {
 			if (getText() != null && getText().length() != 0) {
 				Highlighter highlighter = getHighlighter();
-				highlighter.removeAllHighlights();
+				if (highlight!=null) {
+					highlighter.removeHighlight(highlight);
+				}
 				int dot = e.getDot();
 				int mark = e.getMark();
 				if (abs(dot - mark) == 1 || dot == mark) {
-					int pos = max(dot, mark)-1;
-					System.out.println("pos " + pos);
+					int pos = max(dot, mark) - 1;
 					int parCount = 0;
 					if (pos >= 0 && getText().charAt(pos) == ')') {
 						for (int i = pos; i >= 0; i--) {
@@ -109,26 +120,23 @@ public class ScrollingTextPane extends JScrollPane {
 							} else if (getText().charAt(i) == '(') {
 								parCount--;
 							}
-							System.out.println("parCount " + parCount);
 							if (parCount == 0) {
-								System.out.println("i " + i);
 								try {
-									highlighter
-											.addHighlight(
-													i,
-													i + 1,
-													((DefaultHighlighter) highlighter).DefaultPainter);
+									highlight = highlighter.addHighlight(i, i + 1,
+											new DefaultHighlighter.DefaultHighlightPainter(Color.RED));
 								} catch (BadLocationException e1) {
 									e1.printStackTrace();
 								}
 								break;
 							}
 						}
-					} 
+					}
 				}
 			}
 		}
 	}
+
+	
 
 	private class CoolScrollBarUI extends BasicScrollBarUI {
 

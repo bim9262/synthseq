@@ -37,10 +37,11 @@ public class Telnet {
 	public Telnet(final String host, final int port) {
 		new Thread() {
 			public void run() {
-				for (int i = 0; i < 5 && s==null; i++) {
+				for (int i = 0; i < 10 && s==null; i++) {
 					try {
-						s = new Socket(InetAddress.getByName(host), port);
 						Thread.sleep(500);
+						s = new Socket(InetAddress.getByName(host), port);
+						break;
 					} catch (Exception e1) {
 					}
 				}

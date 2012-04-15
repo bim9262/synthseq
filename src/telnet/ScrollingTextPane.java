@@ -67,7 +67,10 @@ public class ScrollingTextPane extends JScrollPane {
 	public class TextPane extends JTextPane implements CaretListener,
 			UndoableEditListener {
 
-		private Object highlight;
+		private Object highlight1;
+		private Object highlight2;
+		DefaultHighlighter.DefaultHighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(
+				Color.RED);
 
 		public TextPane() {
 			super();
@@ -101,8 +104,11 @@ public class ScrollingTextPane extends JScrollPane {
 		public void caretUpdate(CaretEvent e) {
 			if (getText() != null && getText().length() != 0) {
 				Highlighter highlighter = getHighlighter();
-				if (highlight!=null) {
-					highlighter.removeHighlight(highlight);
+				if (highlight1 != null) {
+					highlighter.removeHighlight(highlight1);
+				}
+				if (highlight2 != null) {
+					highlighter.removeHighlight(highlight2);
 				}
 				int dot = e.getDot();
 				int mark = e.getMark();
@@ -118,8 +124,12 @@ public class ScrollingTextPane extends JScrollPane {
 							}
 							if (parCount == 0) {
 								try {
-									highlight = highlighter.addHighlight(i, i + 1,
-											new DefaultHighlighter.DefaultHighlightPainter(Color.RED));
+									highlight1 = highlighter.addHighlight(i,
+											i + 1, highlightPainter);
+									if (dot == mark) {
+										highlight2 = highlighter.addHighlight(
+												dot - 1, dot, highlightPainter);
+									}
 								} catch (BadLocationException e1) {
 									e1.printStackTrace();
 								}
@@ -131,8 +141,6 @@ public class ScrollingTextPane extends JScrollPane {
 			}
 		}
 	}
-
-	
 
 	private class CoolScrollBarUI extends BasicScrollBarUI {
 

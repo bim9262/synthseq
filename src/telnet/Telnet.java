@@ -1,6 +1,7 @@
 package telnet;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.FocusAdapter;
@@ -127,6 +128,7 @@ public class Telnet {
 			fileInfo.setEditable(false);
 			fileInfo.setFocusable(false);
 			fileInfo.setText(file.toString());
+			fileInfo.setFont(new Font("Courier New", Font.PLAIN, 12));
 
 			rightInputScrollPane.addKeyListener(new RightInputAreaListener(
 					rightInputScrollPane, outputArea, socketInput, file));
@@ -194,7 +196,7 @@ public class Telnet {
 			leftInputScrollPane.addKeyListener(new LeftInputAreaListener(
 					leftInputScrollPane, outputArea, socketInput));
 
-			outputArea.setKeymap(null);
+			outputArea.setEditable(false);
 
 			GridBagConstraints c = new GridBagConstraints();
 			c.fill = GridBagConstraints.BOTH;

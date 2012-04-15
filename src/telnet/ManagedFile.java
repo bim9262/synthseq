@@ -45,13 +45,17 @@ public class ManagedFile {
 
 	public void promptSave() {
 		if (file == null) {
-			promptSaveAs("Save");
+			saveDialog("Save");
 		} else {
 			save();
 		}
 	}
 
-	public void promptSaveAs(String title) {
+	public void promptSaveAs(){
+		saveDialog("SaveAs");
+	}
+	
+	private void saveDialog(String title) {
 		File tempFile = file;
 		if (selectFile(title)) {
 			if (file.exists()) {

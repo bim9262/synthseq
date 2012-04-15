@@ -2,10 +2,9 @@ package telnet;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -21,12 +20,7 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Highlighter;
-import javax.swing.text.JTextComponent;
-import javax.swing.text.LayeredHighlighter;
-import javax.swing.text.Position;
-import javax.swing.text.View;
 import javax.swing.undo.UndoManager;
 import static java.lang.Math.*;
 
@@ -73,7 +67,10 @@ public class ScrollingTextPane extends JScrollPane {
 	public class TextPane extends JTextPane implements CaretListener,
 			UndoableEditListener {
 
-		private Object highlight;
+		private Object highlight1;
+		private Object highlight2;
+		DefaultHighlighter.DefaultHighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(
+				Color.RED);
 
 		public TextPane() {
 			super();
@@ -86,6 +83,7 @@ public class ScrollingTextPane extends JScrollPane {
 			addCaretListener(this);
 			setSelectedTextColor(Color.RED);
 			setSelectionColor(Color.GREEN);
+			setFont(new Font("Courier New", Font.PLAIN, 12));
 		}
 
 		public synchronized void append(String s) {
@@ -106,8 +104,11 @@ public class ScrollingTextPane extends JScrollPane {
 		public void caretUpdate(CaretEvent e) {
 			if (getText() != null && getText().length() != 0) {
 				Highlighter highlighter = getHighlighter();
-				if (highlight!=null) {
-					highlighter.removeHighlight(highlight);
+				if (highlight1 != null) {
+					highlighter.removeHighlight(highlight1);
+				}
+				if (highlight2 != null) {
+					highlighter.removeHighlight(highlight2);
 				}
 				int dot = e.getDot();
 				int mark = e.getMark();
@@ -123,8 +124,12 @@ public class ScrollingTextPane extends JScrollPane {
 							}
 							if (parCount == 0) {
 								try {
-									highlight = highlighter.addHighlight(i, i + 1,
-											new DefaultHighlighter.DefaultHighlightPainter(Color.RED));
+									highlight1 = highlighter.addHighlight(i,
+											i + 1, highlightPainter);
+									if (dot == mark) {
+										highlight2 = highlighter.addHighlight(
+												dot - 1, dot, highlightPainter);
+									}
 								} catch (BadLocationException e1) {
 									e1.printStackTrace();
 								}
@@ -136,8 +141,6 @@ public class ScrollingTextPane extends JScrollPane {
 			}
 		}
 	}
-
-	
 
 	private class CoolScrollBarUI extends BasicScrollBarUI {
 

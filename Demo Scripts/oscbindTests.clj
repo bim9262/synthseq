@@ -28,7 +28,9 @@
 (triangle (add (variable freq) (mult (sine (mult hatPitch 30.0)) (mult hatVolume 40.0))))
 )
 
+(def clipHeight (variable 1))
+(bind-slider "/3/fader3" clipHeight)
 (bind-toggle 
 (zipmap 
 (gen-binds "/1/push!1" (range 1 13)) 
-(map #(add (string-inst %) (saw %)) (gen-scale "chromatic" "F" 12))))
+(map saw (gen-scale "pentatonic major" "C2" 12))))

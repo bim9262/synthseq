@@ -30,7 +30,13 @@
 
 (def clipHeight (variable 1))
 (bind-slider "/3/fader3" clipHeight)
+
 (bind-toggle 
 (zipmap 
-(gen-binds "/1/push!1" (range 1 13)) 
-(map saw (gen-scale "pentatonic major" "C2" 12))))
+(gen-binds "/2/push!1" (range 1 17)) 
+(map #(add (saw %) (string-inst %)) (gen-scale "pentatonic minor" "D2" 16))))
+
+(bind-toggle
+(zipmap
+(gen-binds "/4/multitoggle/!1/!2" (range 1 9) (range 1 9))
+(map #(mult (load-clip %) 5.0) (list-files "/home/john/Beats"))))

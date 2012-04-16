@@ -4,7 +4,7 @@
         '(synthseq.oscinterop ActionMap)
         '(synthseq.musictheory Rules Scales)
         '(synthseq.playables.readables ReadableSound Clip Buffer LineIn Variable)
-        '(synthseq.playables.readables.envelopes ADSR Exponential Linear)
+        '(synthseq.playables.readables.envelopes ADSR Exponential Linear Power)
         '(synthseq.playables.readables.waveforms SawWave TriangleWave SineWave PulseWave WhiteNoise)
         '(synthseq.playables.readables.filters StringInst HighPass LowPass)
         '(synthseq.playables.readables.operations Adder Multiplier Clipping))
@@ -117,6 +117,8 @@ Ratio defaults to 0.5"
   [readable] (.stop readable))
 
 ;;Envelopes
+(defn powenv
+  [period]  (Power. period))
 (defn linenv 
   "Creates a linear sound envelope that decays over the specified period"
   [period] (Linear. period))

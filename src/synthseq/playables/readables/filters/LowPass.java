@@ -2,21 +2,18 @@ package synthseq.playables.readables.filters;
 
 import synthseq.playables.readables.ReadableSound;
 import synthseq.playables.readables.Variable;
-import synthseq.playables.readables.waveforms.PulseWave;
 
 public class LowPass extends ReadableSound {
 	private ReadableSound r;
 	private Variable alpha;
 	private double old = 0;
-	private double offset = 0;
+	private double sameCount = 0;
 	private boolean running = false;
 
 	public LowPass(ReadableSound r, Variable v) {
 		this.r = r;
 		old = r.read();
 		this.alpha = v;
-		if(r instanceof PulseWave)
-			offset = 0.5;
 	}
 	
 	public LowPass(ReadableSound r, double v){
@@ -31,7 +28,13 @@ public class LowPass extends ReadableSound {
 			return 0;
 		double out = alpha.read() * r.read() + (1 - alpha.read()) * old;
 		old = out;
-		return out+offset;
+		if(old==out)
+			sameCount++;
+		if(sameCount > 1000){
+			stop();
+			sameCount = 0;
+		}
+		return out;
 	}
 
 	@Override

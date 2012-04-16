@@ -109,7 +109,7 @@ public class ScrollingTextPane extends JScrollPane {
 				}
 				if (highlight2 != null) {
 					highlighter.removeHighlight(highlight2);
-				}
+				} 
 				int dot = e.getDot();
 				int mark = e.getMark();
 				if (abs(dot - mark) == 1 || dot == mark) {

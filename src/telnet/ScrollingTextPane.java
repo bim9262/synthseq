@@ -109,31 +109,36 @@ public class ScrollingTextPane extends JScrollPane {
 				}
 				if (highlight2 != null) {
 					highlighter.removeHighlight(highlight2);
-				} 
+				}
 				int dot = e.getDot();
 				int mark = e.getMark();
 				if (abs(dot - mark) == 1 || dot == mark) {
 					int pos = max(dot, mark) - 1;
-					int parCount = 0;
-					if (pos >= 0 && getText().charAt(pos) == ')') {
-						for (int i = pos; i >= 0; i--) {
-							if (getText().charAt(i) == ')') {
-								parCount++;
-							} else if (getText().charAt(i) == '(') {
-								parCount--;
-							}
-							if (parCount == 0) {
-								try {
-									highlight1 = highlighter.addHighlight(i,
-											i + 1, highlightPainter);
-									if (dot == mark) {
-										highlight2 = highlighter.addHighlight(
-												dot - 1, dot, highlightPainter);
-									}
-								} catch (BadLocationException e1) {
-									e1.printStackTrace();
+					int count = 0;
+					char[][] bracketTypes = { { '(', ')' }, { '[', ']' },
+							{ '{', '}' } };
+					here: for (char[] c : bracketTypes) {
+						if (pos >= 0 && getText().charAt(pos) == c[1]) {
+							for (int i = pos; i >= 0; i--) {
+								if (getText().charAt(i) == c[1]) {
+									count++;
+								} else if (getText().charAt(i) == c[0]) {
+									count--;
 								}
-								break;
+								if (count == 0) {
+									try {
+										highlight1 = highlighter.addHighlight(
+												i, i + 1, highlightPainter);
+										if (dot == mark) {
+											highlight2 = highlighter
+													.addHighlight(dot - 1, dot,
+															highlightPainter);
+										}
+									} catch (BadLocationException e1) {
+										e1.printStackTrace();
+									}
+									break here;
+								}
 							}
 						}
 					}

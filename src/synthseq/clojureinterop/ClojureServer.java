@@ -21,7 +21,6 @@ public class ClojureServer {
 	public static void start(final int i) {
 		new Thread() {
 			public void run() {
-
 				try {
 					clojure.lang.Compiler.load(new FileReader(
 							"src/Clojure_Bindings.clj"));

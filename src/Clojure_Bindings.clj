@@ -3,6 +3,7 @@
         '(synthseq.signalanalysis FrequencyDomain)
         '(synthseq.oscinterop ActionMap)
         '(synthseq.musictheory Rules Scales)
+        '(synthseq.sequencer Sequencer)
         '(synthseq.playables.readables ReadableSound Clip Buffer LineIn Variable)
         '(synthseq.playables.readables.envelopes ADSR Exponential Linear Power)
         '(synthseq.playables.readables.waveforms SawWave TriangleWave SineWave PulseWave WhiteNoise)
@@ -24,6 +25,14 @@ Example: '(gen-binds /1/push!1 [0 1 2])'"
 Beware potential latency due to costs of compilation"
   [bind code]
   (ActionMap/bindTouch bind (str code)))
+
+
+(defn apply-at
+  [time function]
+  (Sequencer/evalAtTime time function))
+(defn now []
+  (System/currentTimeMillis))
+
 (defn bind-touch 
   "Binds an OSC button to a playable"
   ([bind readable]

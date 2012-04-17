@@ -1,7 +1,6 @@
 package synthseq.synthesizer;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import synthseq.playables.readables.ReadableSound;
@@ -10,7 +9,7 @@ import synthseq.signalanalysis.Visualizer;
 
 public class Synthesizer {
 	private LineOut out;
-	private volatile Map<ReadableSound, Integer> readables = new ConcurrentHashMap<ReadableSound, Integer>();
+	private ConcurrentHashMap<ReadableSound, Integer> readables = new ConcurrentHashMap<ReadableSound, Integer>();
 	private double threshold = .01;
 	private final int quietSampling = 10000;
 	private int quietSamplingCount = 0;
@@ -35,9 +34,7 @@ public class Synthesizer {
 	}
 
 	public synchronized void addSource(ReadableSound r) {
-		if (!readables.containsKey(r)) {
-			readables.put(r, 0);
-		}
+			readables.putIfAbsent(r, 0);
 	}
 
 	public void showVisualizer() {
@@ -57,18 +54,14 @@ public class Synthesizer {
 	}
 
 	public void kill() {
-		synchronized (readables) {
 			for (ReadableSound r : readables.keySet())
 				r.stop();
-		}
 	}
 
 	public void fkill() {
-		synchronized (readables) {
 			for (ReadableSound r : readables.keySet())
 				r.stop();
 			readables.clear();
-		}
 	}
 
 	public void start() {

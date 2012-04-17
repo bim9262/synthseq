@@ -30,6 +30,9 @@ Beware potential latency due to costs of compilation"
 (defn apply-at
   [time function]
   (Sequencer/evalAtTime time function))
+(defn kill-tasks
+  []
+  (Sequencer/stopTasks))
 (defn now []
   (System/currentTimeMillis))
 

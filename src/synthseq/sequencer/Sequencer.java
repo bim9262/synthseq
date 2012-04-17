@@ -5,14 +5,21 @@ import java.util.concurrent.TimeUnit;
 
 public class Sequencer {
 	private static ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(
-			20);
+			Runtime.getRuntime().availableProcessors() + 2);
 
 	public static void evalAtTime(final long time, final Runnable code) {
-		executor.schedule(new Thread() {
-			public void run() {
-				code.run();
-				executor.remove(this);
-			}
-		}, time, TimeUnit.MILLISECONDS);
+		executor.schedule(code, time, TimeUnit.MILLISECONDS);
+	}
+
+	public static void evalPeriodic(final long startTime, final long period,
+			final Runnable code) {
+		executor.scheduleAtFixedRate(code, startTime, period,
+				TimeUnit.MILLISECONDS);
+	}
+
+	public static void stopTasks() {
+		executor.shutdownNow();
+		executor = new ScheduledThreadPoolExecutor(Runtime.getRuntime()
+				.availableProcessors() + 2);
 	}
 }

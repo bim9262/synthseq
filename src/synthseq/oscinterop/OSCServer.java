@@ -43,7 +43,7 @@ public class OSCServer {
 									break;
 								}
 							}
-							ActionMap.interpret(label.substring(0,label.indexOf(0)), x, y);
+							ActionMap.interpret(label.substring(0,label.indexOf(0)), x, y,System.currentTimeMillis());
 						}
 					} catch (Exception e) {
 						System.out.println(e);

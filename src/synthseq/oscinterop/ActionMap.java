@@ -12,7 +12,7 @@ import synthseq.playables.readables.Variable;
 public class ActionMap {
 	private static HashMap<String, Bind> bindings = new HashMap<String, Bind>();
 	private static boolean printNext = false;
-	public static void interpret(String label, float x, float y) {
+	public static void interpret(String label, float x, float y, long time) {
 		Bind bind = bindings.get(label);
 		if(printNext){
 			printNext = false;
@@ -24,7 +24,7 @@ public class ActionMap {
 			}
 		}
 		if (bind != null)
-			bind.trigger(x, y);
+			bind.trigger(x, y, time);
 	}
 	public static void printNext(){
 		printNext = true;
@@ -34,7 +34,7 @@ public class ActionMap {
 			final String codeUp) {
 		bindings.put(s, new Bind() {
 			@Override
-			public void trigger(float x, float y) {
+			public void trigger(float x, float y, long t) {
 				if (x == 0) {
 					ClojureServer.interpretInternal(codeUp);
 				} else {
@@ -47,7 +47,7 @@ public class ActionMap {
 	public static void bindToggle(String s, final ReadableSound r) {
 		bindings.put(s, new Bind() {
 			@Override
-			public void trigger(float x, float y) {
+			public void trigger(float x, float y, long t) {
 				if (x == 0)
 					r.stop();
 				else
@@ -60,7 +60,7 @@ public class ActionMap {
 		System.out.println(s+" "+codeDown);
 		bindings.put(s, new Bind() {
 			@Override
-			public void trigger(float x, float y) {
+			public void trigger(float x, float y, long t) {
 				if (x != 0.0)
 					ClojureServer.interpretInternal(codeDown);
 			}
@@ -70,7 +70,7 @@ public class ActionMap {
 	public static void bindTouch(String s, final ReadableSound r) {
 		bindings.put(s, new Bind() {
 			@Override
-			public void trigger(float x, float y) {
+			public void trigger(float x, float y, long t) {
 				if (x != 0.0)
 					r.play();
 			}
@@ -80,7 +80,7 @@ public class ActionMap {
 	public static void bindSlider(String s, final Variable v) {
 		bindings.put(s, new Bind() {
 			@Override
-			public void trigger(float x, float y) {
+			public void trigger(float x, float y, long t) {
 				v.setValue(x);
 			}
 		});
@@ -89,7 +89,7 @@ public class ActionMap {
 	public static void bind2D(String s, final Variable vx, final Variable vy) {
 		bindings.put(s, new Bind() {
 			@Override
-			public void trigger(float x, float y) {
+			public void trigger(float x, float y, long t) {
 				vx.setValue(x);
 				vy.setValue(y);
 			}

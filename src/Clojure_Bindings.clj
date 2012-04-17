@@ -9,7 +9,6 @@
         '(synthseq.playables.readables.filters StringInst HighPass LowPass)
         '(synthseq.playables.readables.operations Adder Multiplier Clipping))
 
-
 ;;OSC Bindings
 (defn gen-binds 
   "Generate multiple OSC event strings.
@@ -132,7 +131,11 @@ Decay specifies the time it takes to decay to the value specified by level
 Release is the time it takes to decay from the level value to nothing
 The level value is sustained until stop is called"
   [attack peekamp decay level release] (ADSR. attack peekamp decay level release))
-(defn string-inst [freq] (StringInst. freq))
+
+(defn string-inst 
+  ([freq] (StringInst. freq))
+  ([freq alpha] (StringInst. freq alpha))
+  ([freq alpha damper] (StringInst. freq alpha damper)))
 (defn line-in [] (LineIn.))
 (defn buffer [readable period] (Buffer. readable period))
 (defn variable 
@@ -169,14 +172,13 @@ The alpha value defaults to 0.5"
   "Hard clips a wave at the passed amplitude"
   [readable maxVal] (Clipping. readable maxVal))
 
-;;
-(def synth (Synthesizer/getInstance))
+;;Utilities
 (defn show-vis 
   "Shows the amplitude over time visualizer"
-  [] (.showVisualizer synth))
+  [] (.showVisualizer (Synthesizer/getInstance)))
 (defn show-fd 
   "Shows the frequency domain visualizer"
-  [] (.showFreqVis synth))
+  [] (.showFreqVis (Synthesizer/getInstance)))
 (defn list-files 
   "returns a list of all files in a given path"
   [directory] (map #(.getAbsolutePath %) (.listFiles (java.io.File. directory))))
@@ -187,8 +189,8 @@ Takes samples specified by 2 to the power of the accuracy parameter"
   ([readable accuracy] (.show (FrequencyDomain. readable accuracy))))
 (defn kill 
   "Stops all sounds currently being played by the synthesizer"
-  [] (.kill synth))
+  [] (.kill (Synthesizer/getInstance)))
 (defn fkill
   "Stops and removes all sounds currently being played by the synthesizer"
-  [] (.fkill synth))
-(defn testSynthAutoKill [] (.size synth))
+  [] (.fkill (Synthesizer/getInstance)))
+(defn testSynthAutoKill [] (.size (Synthesizer/getInstance)))

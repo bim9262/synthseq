@@ -15,7 +15,7 @@ public class Scales {
 		private static byte[] phrygianDominantScale = { 1, 3, 1, 2, 1, 2, 2 };
 		private static byte[] doubleHarmonicMajorScale = { 1, 3, 1, 2, 1, 3, 1 };
 		private static HashMap<String,byte[]> scaleMap = new HashMap<String,byte[]>();
-		
+
 		static{
 			scaleMap.put("major",majorScale);
 			scaleMap.put("pentatonic major",majorPentScale);
@@ -27,17 +27,17 @@ public class Scales {
 			scaleMap.put("phrygian dominant",phrygianDominantScale);
 			scaleMap.put("double harmonic major",doubleHarmonicMajorScale);
 		}
-		
+
 		public static int[] getScale(String scaleName, int baseNote, int count){
 			byte[] scale = scaleMap.get(scaleName);
 			int[] notes = new int[count];
 			notes[0] = baseNote;
 			for(int i = 1; i < count; i++){
-				notes[i] = notes[i-1] + scale[i%scale.length];
+				notes[i] = notes[i-1] + scale[(i-1)%scale.length];
 			}
 			return notes;
 		}
-		
+
 		public static Collection<String> getScales(){
 			return scaleMap.keySet();
 		}

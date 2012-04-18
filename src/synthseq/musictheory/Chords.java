@@ -43,6 +43,21 @@ public class Chords {
 	
 	static {
 		chordMap.put("M", major);
+		chordMap.put("9",ninth);
+		chordMap.put("m9",minorNinth);
+		chordMap.put("-9",flatNinth);
+		chordMap.put("m-9",minorFlatNinth);
+		chordMap.put("9+",augmentedNinth);
+		chordMap.put("9/6",nineSix);
+		chordMap.put("m9/6",minorNineSix);
+		chordMap.put("11",eleventh);
+		chordMap.put("m11",minorEleventh);
+		chordMap.put("11+",augmentedEleventh);
+		chordMap.put("m11+",minorAugmentedEleventh);
+		chordMap.put("13",thirteenth);
+		chordMap.put("m13",minorThirteenth);
+		chordMap.put("13+11",thirteenthAugmentedEleventh);
+		chordMap.put("m13+11",minorThirteenthAugmentedEleventh);
 	}
 
 	private int[] getRomanNumeral(int baseNote, int romanNumeral, boolean major) {

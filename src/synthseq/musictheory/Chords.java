@@ -40,9 +40,24 @@ public class Chords {
 	private static byte[] thirteenthAugmentedEleventh = { 4, 3, 3, 4, 4, 3 };
 	private static byte[] minorThirteenthAugmentedEleventh = { 3, 4, 3, 4, 4, 3 };
 	private static HashMap<String, byte[]> chordMap = new HashMap<String, byte[]>();
-	
+
 	static {
 		chordMap.put("M", major);
+		chordMap.put("m", minor);
+		chordMap.put("*", diminished);
+		chordMap.put("+", augmented);
+		chordMap.put("sus2", suspended2);
+		chordMap.put("sus4", suspended4);
+		chordMap.put("-5", flatFifth);
+		chordMap.put("6", sixth);
+		chordMap.put("m6", minorSixth);
+		chordMap.put("7", seventh);
+		chordMap.put("m7", minorSeventh);
+		chordMap.put("*7", diminishedSeventh);
+		chordMap.put("M7", majorSeventh);
+		chordMap.put("mM7", minorMajorSeventh);
+		chordMap.put("7/6", sevenSix);
+
 	}
 
 	private int[] getRomanNumeral(int baseNote, int romanNumeral, boolean major) {

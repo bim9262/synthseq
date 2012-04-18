@@ -2,60 +2,54 @@ package synthseq.musictheory;
 
 import static synthseq.musictheory.Scales.getScale;
 
+import java.util.Collection;
+
 import java.util.HashMap;
 
 public class Chords {
 
-	private HashMap<String,Integer> chordTypes = new HashMap<String,Integer>();
+	// Scale steps
+	private static byte[] majorChord = {4, 3};
+	private static HashMap<String, byte[]> chordMap = new HashMap<String, byte[]>();
 
-	Chords(){
-		chordTypes.put("augmented",1);
-		chordTypes.put("natural",0);
-		chordTypes.put("diminished",-1);
-		}
-
-	public int[] getChord(String chordName) {
-		return new int[]{};
+	static {
+		chordMap.put("M", majorChord);
 	}
 
-	private int[] getOddChord(int baseNote, boolean major, int length){
-		return getOddChord(baseNote, major,length, "natural");
+	private int[] getRomanNumeral(int baseNote, int romanNumeral, boolean major) {
+		return getRomanNumeral(baseNote, romanNumeral, major, 3);
 	}
 
-	private int[] getOddChord(int baseNote, boolean major, int length, String augNatDim){
-		int[] toReturn = new int[length];
-		int[] scale = getScale(major?"major":"minor", baseNote, 2*length-1);
-		for (int i = 0; i < length; i++){
-			toReturn[i] = scale[2*i] + (i==0?0:chordTypes.get(augNatDim));
-		}
-		return toReturn;
-	}
-	private int[] getSixthChord(int baseNote, boolean major) {
-		return new int[]{};
+	private int[] getRomanNumeral(int baseNote, int romanNumeral,
+			boolean major, int length) {
+		//the next line just get the note that we need to start from
+		//this note becomes the base not for the new chord
+		//getScale("major", baseNote, romanNumeral)[romanNumeral - 1]
+
+		return null;
 	}
 
-	private int[] getXSixthesChord(int baseNote, int x) {
-		return new int[]{};
+	public static Collection<String> getChords(){
+		return chordMap.keySet();
 	}
 
-	private int[] getSuspensionChord(int baseNote, boolean major, int suspension) {
-		return new int[]{};
-	}
-
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		boolean major = true;
 		int baseNote = 0;
 		int length = 5;
-		System.out.print("Scale: ");
-		for (int i: getScale(major?"major":"minor", baseNote, 2*length-1)){
+		System.out.print("M Scale: ");
+		for (int i : getScale("major", baseNote, 2 * length - 1)) {
 			System.out.print(i + ", ");
 		}
-		System.out.print("\nChord: ");
-		for (int i: new Chords().getOddChord(baseNote, major, length, "augmented")){
-			System.out.print(i + ",    ");
+		System.out.print("\nm Scale: ");
+		for (int i : getScale("minor", baseNote, 2 * length - 1)) {
+			System.out.print(i + ", ");
 		}
 
-
+		System.out.print("\n  Chord: ");
+		for (int i : new Chords().getRomanNumeral(baseNote, 3, major, 4)) {
+			System.out.print(i + ",    ");
+		}
 
 	}
 

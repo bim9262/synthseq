@@ -20,11 +20,6 @@ Example: '(gen-binds /1/push!1 [0 1 2])'"
     (ActionMap/generateBindings bindString xVals yVals))
   ([bindString xVals]
     (ActionMap/generateBindings bindString xVals [])))
-(defmacro bind-touch-code
-  "Binds an OSC button to code.
-Beware potential latency due to costs of compilation"
-  [bind code]
-  (ActionMap/bindTouch bind (str code)))
 
 
 (defn apply-at
@@ -46,14 +41,10 @@ Beware potential latency due to costs of compilation"
         (nth (keys mappedbinds) x) 
         (nth (vals mappedbinds) x)))
     ))
-(defmacro bind-toggle-code
-  "Binds an OSC button to code.
-Beware potential latency due to costs of compilation"
-  [bind codeD codeU] 
-    (ActionMap/bindToggle 
-      bind (str codeD) (str codeU)))
 (defn bind-toggle 
   "Binds an OSC button to a playable"
+  ([bind codeDown codeUp]
+    (ActionMap/bindToggle bind codeDown codeUp))
   ([bind readable]
     (ActionMap/bindToggle
       bind readable))

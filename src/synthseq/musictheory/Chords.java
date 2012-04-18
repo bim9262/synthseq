@@ -9,9 +9,23 @@ import java.util.HashMap;
 public class Chords {
 
 	// Scale steps
-	private static byte[] majorChord = {4, 3};
+	private static byte[] majorChord = { 4, 3 };
 	private static HashMap<String, byte[]> chordMap = new HashMap<String, byte[]>();
-
+	private static byte[] ninth = { 4, 3, 3, 4 };
+	private static byte[] minorNinth = { 3, 4, 3, 4 };
+	private static byte[] flatNinth = { 4, 3, 3, 3 };
+	private static byte[] minorFlatNinth = { 3, 4, 3, 3 };
+	private static byte[] augmentedNinth = { 4, 3, 3, 5 };
+	private static byte[] nineSix = { 4, 3, 2, 5 };
+	private static byte[] minorNineSix = { 3, 4, 2, 5 };
+	private static byte[] eleventh = { 4, 3, 3, 4, 3 };
+	private static byte[] minorEleventh = { 3, 4, 3, 4, 3 };
+	private static byte[] augmentedEleventh = { 4, 3, 3, 4, 4 };
+	private static byte[] minorAugmentedEleventh = { 3, 4, 3, 4, 4 };
+	private static byte[] thirteenth = { 4, 3, 3, 4, 3, 4 };
+	private static byte[] minorThirteenth = { 3, 4, 3, 4, 3, 4 };
+	private static byte[] thirteenthAugmentedEleventh = { 4, 3, 3, 4, 4, 3 };
+	private static byte[] minorThirteenthAugmentedEleventh = { 3, 4, 3, 4, 4, 3 };
 	static {
 		chordMap.put("M", majorChord);
 	}
@@ -22,14 +36,14 @@ public class Chords {
 
 	private int[] getRomanNumeral(int baseNote, int romanNumeral,
 			boolean major, int length) {
-		//the next line just get the note that we need to start from
-		//this note becomes the base not for the new chord
-		//getScale("major", baseNote, romanNumeral)[romanNumeral - 1]
+		// the next line just get the note that we need to start from
+		// this note becomes the base not for the new chord
+		// getScale("major", baseNote, romanNumeral)[romanNumeral - 1]
 
 		return null;
 	}
 
-	public static Collection<String> getChords(){
+	public static Collection<String> getChords() {
 		return chordMap.keySet();
 	}
 

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import synthseq.clojureinterop.ClojureServer;
 import synthseq.playables.readables.ReadableSound;
 import synthseq.playables.readables.Variable;
 
@@ -30,15 +29,15 @@ public class ActionMap {
 		printNext = true;
 	}
 
-	public static void bindToggle(String s, final String codeDown,
-			final String codeUp) {
+	public static void bindToggle(String s, final Runnable codeDown,
+			final Runnable codeUp) {
 		bindings.put(s, new Bind() {
 			@Override
 			public void trigger(float x, float y, long t) {
 				if (x == 0) {
-					ClojureServer.interpretInternal(codeUp);
+					new Thread(codeUp).start();
 				} else {
-					ClojureServer.interpretInternal(codeDown);
+					new Thread(codeDown).start();
 				}
 			}
 		});
@@ -56,13 +55,12 @@ public class ActionMap {
 		});
 	}
 
-	public static void bindTouch(String s, final String codeDown) {
-		System.out.println(s+" "+codeDown);
+	public static void bindTouch(String s, final Runnable codeDown) {
 		bindings.put(s, new Bind() {
 			@Override
 			public void trigger(float x, float y, long t) {
 				if (x != 0.0)
-					ClojureServer.interpretInternal(codeDown);
+					new Thread(codeDown).start();
 			}
 		});
 	}

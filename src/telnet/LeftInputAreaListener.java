@@ -20,11 +20,13 @@ public class LeftInputAreaListener extends InputAreaListener {
 			// up key
 			case 38:
 				inputArea.setText(CommandRecall.getInstance().prev());
+				undoManager.discardAllEdits();
 				break;
 
 			// down key
 			case 40:
 				inputArea.setText(CommandRecall.getInstance().next());
+				undoManager.discardAllEdits();
 				break;
 			}
 		}
@@ -35,6 +37,7 @@ public class LeftInputAreaListener extends InputAreaListener {
 		if (e.getModifiersEx() == 64 && e.getKeyChar() == '\n') {
 			CommandRecall.getInstance().add(inputArea.getText());
 			inputArea.setText("");
+			undoManager.discardAllEdits();
 		}
 	}
 }

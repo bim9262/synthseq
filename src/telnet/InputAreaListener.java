@@ -33,12 +33,7 @@ public class InputAreaListener extends KeyAdapter {
 					break;
 				// e key
 				case 69 :
-					e.consume();
-					String text = inputArea.getSelectedText();
-					if (text != null) {
-						outputArea.append(text);
-						socketInput.println(text.replaceAll("\\n", ""));
-					}
+					eval(inputArea.getSelectedText());
 					break;
 				// z key
 				case 90 :
@@ -87,15 +82,20 @@ public class InputAreaListener extends KeyAdapter {
 			case 10 :
 				// if shift is on
 				if (e.getModifiersEx() == 64) {
-					String text = inputArea.getText().replaceAll("\\n", "");
-					outputArea.append(text);
-					socketInput.println(text);
+					eval(inputArea.getText());
 				}
 				tabCount = 0;
 				break;
 			default :
 				tabCount = 0;
 				break;
+		}
+	}
+
+	private void eval(String text) {
+		if (text != null) {
+			outputArea.append(text);
+			socketInput.println(text.replaceAll("\\n", ""));
 		}
 	}
 

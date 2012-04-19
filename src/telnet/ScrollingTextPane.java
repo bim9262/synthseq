@@ -121,7 +121,7 @@ public class ScrollingTextPane extends JScrollPane {
 					int pos = max(dot, mark) - 1;
 					int count = 0;
 					char[][] bracketTypes = {{'(', ')'}, {'[', ']'}, {'{', '}'}};
-					String toSearch = getText().replace("\n", "");
+					String toSearch = getText();
 					here : for (char[] c : bracketTypes) {
 						if (pos >= 0 && toSearch.charAt(pos) == c[1]) {
 							for (int i = pos; i >= 0; i--) {
@@ -158,7 +158,7 @@ public class ScrollingTextPane extends JScrollPane {
 					} else {
 						getHighlighter().removeAllHighlights();
 					}
-					String toSearch = getText().replace("\n", "");
+					String toSearch = getText();
 					for (int i = 0; i < toSearch.length() - find.length() + 1; i++) {
 						int temp = toSearch.indexOf(find, i);
 						if (temp == -1) {

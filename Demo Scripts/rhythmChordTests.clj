@@ -1,5 +1,7 @@
-(defn inst [freq] (mult (clip (string-inst freq 0.01 0.99) 0.1) 4.0))
-(defn inst [freq] (LPF (add (mult (HPF (white-noise)) 0.2) (saw freq)) (variable (expenv 1.5))))
+(defn inst [freq] (mult (clip (string-inst freq 0.01 0.995) 0.1) 4.0))
+
+(defn inst [freq] (buffer (LPF (add (mult (white-noise) 0.2) (saw freq)) (variable (expenv 1.5))) 1.5))
+
 (comment (defn inst [freq] (LPF (saw freq) (variable (expenv 1.5)))))
 (def rhythm-time 0.0)
 
@@ -19,7 +21,7 @@ melodyString)]
 (play (nth notes (mod time (count notes))))))
 
 (defn hatMelody [time]
-(let [notes (gen-notes "A3 A3 B3 B3 A2 A2 B2 B2 E2 C3 D4 D4 D4")]
+(let [notes (gen-notes "G3 G3 G3 G3 G3 D3 D3 D3 D3 A3 A3 C3 C3 C3 C3 E3 B3 A3 D3")]
 (nth (nth notes (mod time (count notes))) 0)))
 
 (defn hat [time] 
@@ -38,8 +40,9 @@ melodyString)]
 (apply-at rate #(rhythm (inc time))))
 
 (kill-tasks)
+(fkill)
 (rhythm 0)
-(Thread/sleep 5)
+(Thread/sleep 25)
 (rhythm 0)
 (Thread/sleep 10)
 (rhythm 0)

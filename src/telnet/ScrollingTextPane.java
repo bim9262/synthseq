@@ -1,7 +1,5 @@
 package telnet;
 
-import javax.swing.JOptionPane;
-import java.util.Vector;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -22,6 +20,7 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import javax.swing.undo.UndoManager;
 import static java.lang.Math.*;
 
@@ -65,13 +64,12 @@ public class ScrollingTextPane extends JScrollPane {
 		return undoManager;
 	}
 
-	public class TextPane extends JTextPane
-			implements
-				CaretListener,
-				UndoableEditListener {
+	public class TextPane extends JTextPane implements CaretListener,
+			UndoableEditListener {
 
-		private Vector<Object> highlights = new Vector<Object>();
-		private DefaultHighlighter.DefaultHighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(
+		private Object highlight1;
+		private Object highlight2;
+		DefaultHighlighter.DefaultHighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(
 				Color.RED);
 
 		public TextPane() {
@@ -97,15 +95,6 @@ public class ScrollingTextPane extends JScrollPane {
 			setCaretPosition(getDocument().getLength());
 		}
 
-		public void highlight(int p0, int p1) {
-			try {
-				highlights.add(getHighlighter().addHighlight(p0, p1,
-						highlightPainter));
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
-
 		@Override
 		public void undoableEditHappened(UndoableEditEvent e) {
 			undoManager.addEdit(e.getEdit());
@@ -114,26 +103,39 @@ public class ScrollingTextPane extends JScrollPane {
 		@Override
 		public void caretUpdate(CaretEvent e) {
 			if (getText() != null && getText().length() != 0) {
-				clearHighlights();
+				Highlighter highlighter = getHighlighter();
+				if (highlight1 != null) {
+					highlighter.removeHighlight(highlight1);
+				}
+				if (highlight2 != null) {
+					highlighter.removeHighlight(highlight2);
+				}
 				int dot = e.getDot();
 				int mark = e.getMark();
 				if (abs(dot - mark) == 1 || dot == mark) {
 					int pos = max(dot, mark) - 1;
 					int count = 0;
-					char[][] bracketTypes = {{'(', ')'}, {'[', ']'}, {'{', '}'}};
-					String toSearch = getText().replace("\n", "");
-					here : for (char[] c : bracketTypes) {
-						if (pos >= 0 && toSearch.charAt(pos) == c[1]) {
+					char[][] bracketTypes = { { '(', ')' }, { '[', ']' },
+							{ '{', '}' } };
+					here: for (char[] c : bracketTypes) {
+						if (pos >= 0 && getText().charAt(pos) == c[1]) {
 							for (int i = pos; i >= 0; i--) {
-								if (toSearch.charAt(i) == c[1]) {
+								if (getText().charAt(i) == c[1]) {
 									count++;
-								} else if (toSearch.charAt(i) == c[0]) {
+								} else if (getText().charAt(i) == c[0]) {
 									count--;
 								}
 								if (count == 0) {
-									highlight(i, i + 1);
-									if (dot == mark) {
-										highlight(dot - 1, dot);
+									try {
+										highlight1 = highlighter.addHighlight(
+												i, i + 1, highlightPainter);
+										if (dot == mark) {
+											highlight2 = highlighter
+													.addHighlight(dot - 1, dot,
+															highlightPainter);
+										}
+									} catch (BadLocationException e1) {
+										e1.printStackTrace();
 									}
 									break here;
 								}
@@ -143,43 +145,6 @@ public class ScrollingTextPane extends JScrollPane {
 				}
 			}
 		}
-
-		public void promptFind() {
-			Object findObj = JOptionPane
-					.showInputDialog(null, "What would you like to find? ",
-							"Find All", JOptionPane.QUESTION_MESSAGE, null, null,
-							getSelectedText());
-			if (findObj != null) {
-				String find = findObj.toString();
-				if (!find.equals("")) {
-					if (getSelectedText() != null
-							&& getSelectedText().equals(find)) {
-						clearHighlights();
-					} else {
-						getHighlighter().removeAllHighlights();
-					}
-					String toSearch = getText().replace("\n", "");
-					for (int i = 0; i < toSearch.length() - find.length() + 1; i++) {
-						int temp = toSearch.indexOf(find, i);
-						if (temp == -1) {
-							break;
-						} else {
-							i = temp;
-							highlight(i, i + find.length());
-							i += find.length() - 1;
-						}
-
-					}
-				}
-			}
-		}
-
-		private void clearHighlights() {
-			for (Object highlight : highlights) {
-				getHighlighter().removeHighlight(highlight);
-			}
-		}
-
 	}
 
 	private class CoolScrollBarUI extends BasicScrollBarUI {
@@ -241,22 +206,22 @@ public class ScrollingTextPane extends JScrollPane {
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 				g.setColor(thumbCoreColor);
 				switch (orientation) {
-					case 1 :
-						new Triangle(getWidth() / 2, 3, 2, getHeight() - 4,
-								getWidth() - 3, getHeight() - 4).draw(g);
-						break;
-					case 5 :
-						new Triangle(getWidth() / 2, getHeight() - 4, 2, 3,
-								getWidth() - 3, 3).draw(g);
-						break;
-					case 7 :
-						new Triangle(2, getHeight() / 2, getWidth() - 4, 3,
-								getWidth() - 4, getHeight() - 4).draw(g);
-						break;
-					case 3 :
-						new Triangle(getWidth() - 4, getHeight() / 2, 2, 3, 2,
-								getHeight() - 4).draw(g);
-						break;
+				case 1:
+					new Triangle(getWidth() / 2, 3, 2, getHeight() - 4,
+							getWidth() - 3, getHeight() - 4).draw(g);
+					break;
+				case 5:
+					new Triangle(getWidth() / 2, getHeight() - 4, 2, 3,
+							getWidth() - 3, 3).draw(g);
+					break;
+				case 7:
+					new Triangle(2, getHeight() / 2, getWidth() - 4, 3,
+							getWidth() - 4, getHeight() - 4).draw(g);
+					break;
+				case 3:
+					new Triangle(getWidth() - 4, getHeight() / 2, 2, 3, 2,
+							getHeight() - 4).draw(g);
+					break;
 				}
 			}
 

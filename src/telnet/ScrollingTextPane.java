@@ -1,5 +1,12 @@
 package telnet;
 
+import java.io.FileNotFoundException;
+
+import java.io.File;
+
+import java.io.FileReader;
+import java.util.Scanner;
+
 import javax.swing.JOptionPane;
 import java.util.Vector;
 import java.awt.Color;
@@ -86,6 +93,9 @@ public class ScrollingTextPane extends JScrollPane {
 			setSelectedTextColor(Color.RED);
 			setSelectionColor(Color.GREEN);
 			setFont(new Font("Courier New", Font.PLAIN, 12));
+			setText("\n");
+			setText(getText().substring(0,
+					getText().length() - 1));
 		}
 
 		public synchronized void append(String s) {

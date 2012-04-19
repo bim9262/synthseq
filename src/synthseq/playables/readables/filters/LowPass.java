@@ -27,9 +27,11 @@ public class LowPass extends ReadableSound {
 		if(!running)
 			return 0;
 		double out = alpha.read() * r.read() + (1 - alpha.read()) * old;
-		old = out;
 		if(old==out)
 			sameCount++;
+		else
+			sameCount = 0;
+		old = out;
 		if(sameCount > 1000){
 			stop();
 			sameCount = 0;

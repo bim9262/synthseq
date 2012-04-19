@@ -30,10 +30,12 @@ public class HighPass extends ReadableSound {
 			return 0;
 		double x = r.read();
 		double out = alpha.read() * old + alpha.read() * (x - oldx);
-		old = out;
-		oldx=x;
 		if(old==out)
 			sameCount++;
+		else
+			sameCount = 0;
+		old = out;
+		oldx=x;
 		if(sameCount > 1000){
 			stop();
 			sameCount = 0;

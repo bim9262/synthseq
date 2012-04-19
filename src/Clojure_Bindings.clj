@@ -63,13 +63,18 @@ Example: '(gen-binds /1/push!1 [0 1 2])'"
 
 
 ;Music rules
+(def add) ;;prototype
 (defn list-scales []
   (Scales/getScales))
+(defn gen-notes [notes]
+  (Rules/stringToFreqs notes))
+(defn chord-inst [inst notes]
+  (map (fn [note-list] (add (map inst note-list))) (gen-notes notes)))
 (defn gen-scale [scaleName baseNote numNotes]
   (let [baseNote (if (= (type baseNote) Integer) 
                    baseNote 
-                   (Rules/parseNote baseNote))]
-    (map #(Rules/noteToFreq %) (Scales/getScale scaleName baseNote numNotes))))
+                   (Rules/stringToMidi baseNote))]
+    (map #(Rules/midiToFreq %) (Scales/getScale scaleName baseNote numNotes))))
 
 ;;Waveforms
 (defn saw

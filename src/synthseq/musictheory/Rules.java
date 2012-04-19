@@ -28,7 +28,6 @@ public class Rules {
 			} else {
 				String chord = str.replaceAll("[a-gA-G][s#b]?-?[0-9]?", "");
 				String baseNote = str.replace(chord, "");
-				System.out.println(baseNote+" - "+chord);
 				for(int i : Chords.getChord(stringToMidi(baseNote),chord))
 					notes.add(midiToFreq(i));
 			}

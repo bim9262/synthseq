@@ -1,12 +1,5 @@
 package telnet;
 
-import java.io.FileNotFoundException;
-
-import java.io.File;
-
-import java.io.FileReader;
-import java.util.Scanner;
-
 import javax.swing.JOptionPane;
 import java.util.Vector;
 import java.awt.Color;

@@ -28,71 +28,74 @@ public class InputAreaListener extends KeyAdapter {
 		if (e.getModifiersEx() == 128) {
 			switch (e.getKeyCode()) {
 			// l key
-			case 76:
-				outputArea.setText("");
-				break;
-			// e key
-			case 69:
-				e.consume();
-				String text = inputArea.getSelectedText();
-				if (text != null) {
-					outputArea.append(text);
-					socketInput.println(text.replaceAll("\\n", ""));
-				}
-				break;
-			// z key
-			case 90:
-				if (undoManager.canUndo())
-					undoManager.undo();
-				break;
-			// y key
-			case 89:
-				if (undoManager.canRedo())
-					undoManager.redo();
-				break;
+				case 76 :
+					outputArea.setText("");
+					break;
+				// e key
+				case 69 :
+					e.consume();
+					String text = inputArea.getSelectedText();
+					if (text != null) {
+						outputArea.append(text);
+						socketInput.println(text.replaceAll("\\n", ""));
+					}
+					break;
+				// z key
+				case 90 :
+					if (undoManager.canUndo())
+						undoManager.undo();
+					break;
+				// y key
+				case 89 :
+					if (undoManager.canRedo())
+						undoManager.redo();
+					break;
+				// f key
+				case 70 :
+					inputArea.promptFind();
+					break;
 			}
 		}
-
 	}
 
 	public void keyTyped(KeyEvent e) {
 		switch ((int) e.getKeyChar()) {
 		// tab key
-		case 9:
-			tabCount++;
-			e.consume();// Does not work
-			inputArea.setText(inputArea.getText().replaceAll("\\t", ""));
-			if (tabCount == 1) {
-				String autoCompleted = Tab.getInstance().autoComplete(
-						inputArea.getText(), inputArea.getCaretPosition());
-				if (!autoCompleted.equals(inputArea.getText())) {
-					inputArea.setText(autoCompleted);
+			case 9 :
+				tabCount++;
+				e.consume();// Does not work
+				inputArea.setText(inputArea.getText().replaceAll("\\t", ""));
+				if (tabCount == 1) {
+					String autoCompleted = Tab.getInstance().autoComplete(
+							inputArea.getText(), inputArea.getCaretPosition());
+					if (!autoCompleted.equals(inputArea.getText())) {
+						inputArea.setText(autoCompleted);
 
+					}
+				} else if (tabCount == 2) {
+					String results = Tab.getInstance().suggestions(
+							inputArea.getText(), inputArea.getCaretPosition());
+					if (results.startsWith("doc ", 1)) {
+						outputArea.append(results);
+						socketInput.println(results);
+					} else {
+						outputArea.append(results);
+					}
 				}
-			} else if (tabCount == 2) {
-				String results = Tab.getInstance().suggestions(
-						inputArea.getText(), inputArea.getCaretPosition());
-				if (results.startsWith("doc ", 1)) {
-					outputArea.append(results);
-					socketInput.println(results);
-				} else {
-					outputArea.append(results);
+				break;
+			// enter key
+			case 10 :
+				// if shift is on
+				if (e.getModifiersEx() == 64) {
+					String text = inputArea.getText().replaceAll("\\n", "");
+					outputArea.append(text);
+					socketInput.println(text);
 				}
-			}
-			break;
-		// enter key
-		case 10:
-			// if shift is on
-			if (e.getModifiersEx() == 64) {
-				String text = inputArea.getText().replaceAll("\\n", "");
-				outputArea.append(text);
-				socketInput.println(text);
-			}
-			tabCount = 0;
-			break;
-		default:
-			tabCount = 0;
-			break;
+				tabCount = 0;
+				break;
+			default :
+				tabCount = 0;
+				break;
 		}
 	}
 

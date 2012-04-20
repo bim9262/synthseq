@@ -6,11 +6,6 @@ public class CommandRecall {
 
 	private ArrayList<String> cmds = new ArrayList<String>();
 	private int pos = 0;
-	private static CommandRecall instance = new CommandRecall();
-
-	public static CommandRecall getInstance() {
-		return instance;
-	}
 
 	public String next() {
 		pos += pos >= cmds.size() ? 0 : 1;

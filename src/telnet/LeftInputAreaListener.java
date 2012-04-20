@@ -7,6 +7,8 @@ import telnet.ScrollingTextPane.TextPane;
 
 public class LeftInputAreaListener extends InputAreaListener {
 
+	CommandRecall commandRecall = new CommandRecall();
+
 	public LeftInputAreaListener(ScrollingTextPane scrollingInputArea,
 			TextPane outputArea, PrintWriter socketInput) {
 		super(scrollingInputArea, outputArea, socketInput);
@@ -19,13 +21,13 @@ public class LeftInputAreaListener extends InputAreaListener {
 			switch (e.getKeyCode()) {
 			// up key
 			case 38:
-				inputArea.setText(CommandRecall.getInstance().prev());
+				inputArea.setText(commandRecall.prev());
 				undoManager.discardAllEdits();
 				break;
 
 			// down key
 			case 40:
-				inputArea.setText(CommandRecall.getInstance().next());
+				inputArea.setText(commandRecall.next());
 				undoManager.discardAllEdits();
 				break;
 			}
@@ -35,7 +37,7 @@ public class LeftInputAreaListener extends InputAreaListener {
 	public void keyTyped(KeyEvent e) {
 		super.keyTyped(e);
 		if (e.getModifiersEx() == 64 && e.getKeyChar() == '\n') {
-			CommandRecall.getInstance().add(inputArea.getText());
+			commandRecall.add(inputArea.getText());
 			inputArea.setText("");
 			undoManager.discardAllEdits();
 		}

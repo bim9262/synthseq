@@ -1,5 +1,9 @@
 package telnet;
 
+import javax.swing.event.CaretEvent;
+
+import javax.swing.event.CaretListener;
+
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import java.awt.Color;
@@ -135,29 +139,31 @@ public class Telnet {
 
 			final TextPane textArea = rightInputScrollPane.getTextPane();
 
+			textArea.addCaretListener(new CaretListener() {
+				public void caretUpdate(CaretEvent arg0) {
+					try {
+						int caretPos = textArea.getCaretPosition();
+						int line = (caretPos == 0) ? 1 : 0;
+						for (int offset = caretPos; offset > 0;) {
+							offset = Utilities.getRowStart(textArea, offset) - 1;
+							line++;
+						}
+						int offset = Utilities.getRowStart(textArea, caretPos);
+						int col = caretPos - offset;
+
+						fileInfo.setText(file.toString() + " " + line + " : "
+								+ col);
+					} catch (Exception e1) {
+					}
+				}
+			});
+
 			textArea.getDocument().addUndoableEditListener(
 					new UndoableEditListener() {
 						public void undoableEditHappened(UndoableEditEvent e) {
 							file.setSaved(false);
-
-							try {
-								int caretPos = textArea.getCaretPosition();
-								int line = (caretPos == 0) ? 1 : 0;
-								for (int offset = caretPos; offset > 0;) {
-									offset = Utilities.getRowStart(textArea, offset) - 1;
-									line++;
-								}
-								int offset = Utilities.getRowStart(textArea, caretPos);
-								int col = caretPos - offset;
-
-								fileInfo.setText(file.toString() + " " + line + " : "
-										+ col);
-							} catch (Exception e1) {
-							}
-
 						}
 					});
-
 
 			textArea.addFocusListener(new FocusAdapter() {
 

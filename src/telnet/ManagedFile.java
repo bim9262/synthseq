@@ -26,9 +26,9 @@ public class ManagedFile {
 
 	public void promptNew() {
 		promptSave("Would you like to save before starting a new file?");
-		inputArea.setText("");
 		file = null;
 		saved = true;
+		inputArea.setText("");
 
 	}
 

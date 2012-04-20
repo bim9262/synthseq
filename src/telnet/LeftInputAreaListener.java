@@ -1,17 +1,13 @@
 package telnet;
 
 import java.awt.event.KeyEvent;
-import java.io.PrintWriter;
-
-import telnet.ScrollingTextPane.TextPane;
 
 public class LeftInputAreaListener extends InputAreaListener {
 
 	CommandRecall commandRecall = new CommandRecall();
 
-	public LeftInputAreaListener(ScrollingTextPane scrollingInputArea,
-			TextPane outputArea, PrintWriter socketInput) {
-		super(scrollingInputArea, outputArea, socketInput);
+	public LeftInputAreaListener(ScrollingTextPane scrollingInputArea) {
+		super(scrollingInputArea);
 	}
 
 	public void keyPressed(KeyEvent e) {

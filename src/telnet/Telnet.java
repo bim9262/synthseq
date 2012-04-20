@@ -32,12 +32,12 @@ import telnet.ScrollingTextPane.TextPane;
 
 public class Telnet {
 
-	private TextPane outputArea;
+	private static TextPane outputArea;
 	private Socket s;
 	private BufferedReader socketOutput;
-	private PrintWriter socketInput;
+	private static PrintWriter socketInput;
 	private JFrame gui = new JFrame("Telnet");
-	private ManagedFile file = new ManagedFile();
+	private static ManagedFile file = new ManagedFile();
 
 	public Telnet(final String host, final int port) {
 		new Thread() {
@@ -115,6 +115,18 @@ public class Telnet {
 		}.start();
 	}
 
+	public static TextPane getOutputArea() {
+		return outputArea;
+	}
+
+	public static PrintWriter getSocketInput() {
+		return socketInput;
+	}
+
+	public static ManagedFile getFile() {
+		return file;
+	}
+
 	@SuppressWarnings("serial")
 	private class RightPanel extends JPanel {
 		RightPanel() {
@@ -134,8 +146,7 @@ public class Telnet {
 			fileInfo.setText(file.toString());
 			fileInfo.setFont(new Font("Courier New", Font.PLAIN, 12));
 
-			rightInputScrollPane.addKeyListener(new RightInputAreaListener(
-					rightInputScrollPane, outputArea, socketInput, file));
+			new RightInputAreaListener(rightInputScrollPane);
 
 			final TextPane textArea = rightInputScrollPane.getTextPane();
 
@@ -202,8 +213,7 @@ public class Telnet {
 
 			ScrollingTextPane leftInputScrollPane = new ScrollingTextPane();
 
-			leftInputScrollPane.addKeyListener(new LeftInputAreaListener(
-					leftInputScrollPane, outputArea, socketInput));
+			new LeftInputAreaListener(leftInputScrollPane);
 
 			outputArea.setEditable(false);
 

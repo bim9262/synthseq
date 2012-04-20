@@ -10,18 +10,16 @@ import telnet.ScrollingTextPane.TextPane;
 public class InputAreaListener extends KeyAdapter {
 
 	protected TextPane inputArea;
-	private TextPane outputArea;
-	protected PrintWriter socketInput;
+	private TextPane outputArea = Telnet.getOutputArea();
+	protected PrintWriter socketInput = Telnet.getSocketInput();
 	private int tabCount = 0;
 	protected UndoManager undoManager;
 	private Tab tab = Tab.getInstance();
 
-	public InputAreaListener(ScrollingTextPane scrollingInputArea,
-			TextPane outputArea, PrintWriter socketInput) {
+	public InputAreaListener(ScrollingTextPane scrollingInputArea) {
 		inputArea = scrollingInputArea.getTextPane();
+		inputArea.addKeyListener(this);
 		undoManager = scrollingInputArea.getUndoManager();
-		this.outputArea = outputArea;
-		this.socketInput = socketInput;
 	}
 
 	public void keyPressed(KeyEvent e) {

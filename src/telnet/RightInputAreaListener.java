@@ -1,18 +1,14 @@
 package telnet;
 
 import java.awt.event.KeyEvent;
-import java.io.PrintWriter;
-import telnet.ScrollingTextPane.TextPane;
 
 public class RightInputAreaListener extends InputAreaListener {
 
-	ManagedFile file;
+	ManagedFile file = Telnet.getFile();
 
-	public RightInputAreaListener(ScrollingTextPane scrollingInputArea,
-			TextPane outputArea, PrintWriter socketInput, ManagedFile file) {
-		super(scrollingInputArea, outputArea, socketInput);
+	public RightInputAreaListener(ScrollingTextPane scrollingInputArea) {
+		super(scrollingInputArea);
 		file.setInputSource(inputArea);
-		this.file = file;
 	}
 
 	public void keyPressed(KeyEvent e) {

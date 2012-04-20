@@ -150,6 +150,8 @@ public class Telnet {
 
 			final TextPane textArea = rightInputScrollPane.getTextPane();
 
+			file.setInputSource(textArea);
+
 			textArea.addCaretListener(new CaretListener() {
 				public void caretUpdate(CaretEvent arg0) {
 					try {

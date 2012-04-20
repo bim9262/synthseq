@@ -6,11 +6,6 @@ public class RightInputAreaListener extends InputAreaListener {
 
 	ManagedFile file = Telnet.getFile();
 
-	public void setInputArea(ScrollingTextPane scrollingInputArea){
-		super.setInputArea(scrollingInputArea);
-		file.setInputSource(inputArea);
-	}
-
 	public void keyPressed(KeyEvent e) {
 		super.keyPressed(e);
 		// ctrl key

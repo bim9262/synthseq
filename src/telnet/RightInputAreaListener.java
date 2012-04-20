@@ -7,7 +7,7 @@ import telnet.ScrollingTextPane.TextPane;
 public class RightInputAreaListener extends InputAreaListener {
 
 	ManagedFile file;
-	
+
 	public RightInputAreaListener(ScrollingTextPane scrollingInputArea,
 			TextPane outputArea, PrintWriter socketInput, ManagedFile file) {
 		super(scrollingInputArea, outputArea, socketInput);
@@ -21,37 +21,31 @@ public class RightInputAreaListener extends InputAreaListener {
 		if (e.getModifiersEx() == 128) {
 			switch (e.getKeyCode()) {
 			// s key
-			case 83:
-				file.promptSave();
-				break;
-			// o key
-			case 79:
-				if(file.promptOpen()){
-					undoManager.discardAllEdits();
-				}
-				break;
+				case 83 :
+					file.promptSave();
+					break;
+				// o key
+				case 79 :
+					if (file.promptOpen()) {
+						undoManager.discardAllEdits();
+					}
+					break;
+				// n key
+				case 78 :
+					file.promptNew();
+					break;
 			}
+
 		}
 		// shift + ctrl
 		if (e.getModifiersEx() == 192) {
 			switch (e.getKeyCode()) {
 			// s key
-			case 83:
-				file.promptSaveAs();
-				break;
+				case 83 :
+					file.promptSaveAs();
+					break;
 			}
 
 		}
 	}
-
-	public void keyTyped(KeyEvent e) {
-		super.keyTyped(e);
-		switch ((int) e.getKeyChar()) {
-		default:
-			file.setSaved(false);
-			break;
-		}
-	}
-
-	
 }

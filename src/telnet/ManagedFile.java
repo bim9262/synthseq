@@ -20,13 +20,20 @@ public class ManagedFile {
 
 	public void promptSaveOnQuit() {
 		if (!saved) {
-			if (prompt("Would you like to save before quitting?")) {
-				promptSave();
-			}
+			promptSave("Would you like to save before quitting?");
 		}
 	}
 
+	public void promptNew() {
+		promptSave("Would you like to save before starting a new file?");
+		inputArea.setText("");
+		file = null;
+		saved = true;
+
+	}
+
 	public boolean promptOpen() {
+		promptSave("Would you like to save before opening a file?");
 		if (selectFile("Open")) {
 			inputArea.setText("");
 			try {
@@ -44,17 +51,23 @@ public class ManagedFile {
 	}
 
 	public void promptSave() {
-		if (file == null) {
-			saveDialog("Save");
-		} else {
-			save();
+		promptSave(null);
+	}
+
+	public void promptSave(String prompt) {
+		if (!saved && (prompt == null || prompt(prompt))) {
+			if (file == null) {
+				saveDialog("Save");
+			} else {
+				save();
+			}
 		}
 	}
 
-	public void promptSaveAs(){
+	public void promptSaveAs() {
 		saveDialog("SaveAs");
 	}
-	
+
 	private void saveDialog(String title) {
 		File tempFile = file;
 		if (selectFile(title)) {

@@ -162,14 +162,14 @@ public class ScrollingTextPane extends JScrollPane {
 						getHighlighter().removeAllHighlights();
 					}
 					String toSearch = getText();
-					for (int i = 0; i < toSearch.length() - find.length() + 1; i++) {
-						int temp = toSearch.indexOf(find, i);
-						if (temp == -1) {
+					int i = 0;
+					while (i < toSearch.length() - find.length() + 1) {
+						int newIndex = toSearch.indexOf(find, i);
+						if (newIndex == -1) {
 							break;
 						} else {
-							i = temp;
-							highlight(i, i + find.length());
-							i += find.length() - 1;
+							highlight(newIndex, newIndex + find.length());
+							i = newIndex + find.length() - 1;
 						}
 
 					}

@@ -16,9 +16,8 @@ public class InputAreaListener extends KeyAdapter {
 	protected UndoManager undoManager;
 	private Tab tab = Tab.getInstance();
 
-	public InputAreaListener(ScrollingTextPane scrollingInputArea) {
+	public void setInputArea(ScrollingTextPane scrollingInputArea){
 		inputArea = scrollingInputArea.getTextPane();
-		inputArea.addKeyListener(this);
 		undoManager = scrollingInputArea.getUndoManager();
 	}
 

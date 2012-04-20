@@ -6,10 +6,6 @@ public class LeftInputAreaListener extends InputAreaListener {
 
 	CommandRecall commandRecall = new CommandRecall();
 
-	public LeftInputAreaListener(ScrollingTextPane scrollingInputArea) {
-		super(scrollingInputArea);
-	}
-
 	public void keyPressed(KeyEvent e) {
 		super.keyPressed(e);
 		// if shift is on

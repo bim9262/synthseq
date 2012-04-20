@@ -42,8 +42,9 @@ public class ScrollingTextPane extends JScrollPane {
 		setViewportView(textPane);
 	}
 
-	public void addKeyListener(KeyListener keyListener) {
+	public void addKeyListener(InputAreaListener keyListener) {
 		textPane.addKeyListener(keyListener);
+		keyListener.setInputArea(this);
 	}
 
 	private void makeCorner() {

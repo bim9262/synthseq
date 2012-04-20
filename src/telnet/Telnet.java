@@ -146,7 +146,7 @@ public class Telnet {
 			fileInfo.setText(file.toString());
 			fileInfo.setFont(new Font("Courier New", Font.PLAIN, 12));
 
-			new RightInputAreaListener(rightInputScrollPane);
+			rightInputScrollPane.addKeyListener(new RightInputAreaListener());
 
 			final TextPane textArea = rightInputScrollPane.getTextPane();
 
@@ -213,7 +213,7 @@ public class Telnet {
 
 			ScrollingTextPane leftInputScrollPane = new ScrollingTextPane();
 
-			new LeftInputAreaListener(leftInputScrollPane);
+			leftInputScrollPane.addKeyListener(new LeftInputAreaListener());
 
 			outputArea.setEditable(false);
 

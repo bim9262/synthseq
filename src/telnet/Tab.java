@@ -17,16 +17,20 @@ public class Tab {
 			while (f.hasNextLine()) {
 				String word = f.nextLine();
 				if (word.startsWith("def", 1))
-					trie.addWord(word.split(" ")[1]);
+					addDefinition(word.split(" ")[1]);
 			}
 			f = new Scanner(new FileReader("src/Builtin_Clojure_Vars"));
 			while (f.hasNext()) {
-					trie.addWord(f.next());
+				addDefinition(f.next());
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void addDefinition(String def){
+		trie.addWord(def);
 	}
 
 	public static Tab getInstance() {

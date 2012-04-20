@@ -96,7 +96,12 @@ public class InputAreaListener extends KeyAdapter {
 		if (text != null) {
 			outputArea.append(text);
 			socketInput.println(text.replaceAll("\\n", ""));
+			String[] explode = text.split("[ )\n]");
+			for (int i = 0; i < explode.length - 1; i++) {
+				if (explode[i].startsWith("def", 1)) {
+					Tab.getInstance().addDefinition(explode[i + 1]);
+				}
+			}
 		}
 	}
-
 }

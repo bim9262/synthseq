@@ -18,12 +18,6 @@ public class ManagedFile {
 	private File file;
 	private boolean saved = true;
 
-	public void promptSaveOnQuit() {
-		if (!saved) {
-			promptSave("Would you like to save before quitting?");
-		}
-	}
-
 	public void promptNew() {
 		promptSave("Would you like to save before starting a new file?");
 		file = null;

@@ -80,7 +80,7 @@ public class Telnet {
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-						file.promptSaveOnQuit();
+						file.promptSave("Would you like to save before quitting?");
 						System.exit(0);
 					}
 				});

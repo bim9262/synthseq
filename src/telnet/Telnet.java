@@ -1,5 +1,7 @@
 package telnet;
 
+import java.awt.Frame;
+
 import javax.swing.event.CaretEvent;
 
 import javax.swing.event.CaretListener;
@@ -36,7 +38,7 @@ public class Telnet {
 	private Socket s;
 	private BufferedReader socketOutput;
 	private static PrintWriter socketInput;
-	private JFrame gui = new JFrame("Telnet");
+	private static JFrame gui = new JFrame("Telnet");
 	private static ManagedFile file = new ManagedFile();
 
 	public Telnet(final String host, final int port) {
@@ -113,6 +115,10 @@ public class Telnet {
 
 			}
 		}.start();
+	}
+
+	public static Frame getFrame(){
+		return gui;
 	}
 
 	public static TextPane getOutputArea() {

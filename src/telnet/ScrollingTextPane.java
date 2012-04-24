@@ -148,7 +148,7 @@ public class ScrollingTextPane extends JScrollPane {
 
 		public void promptFind() {
 			Object findObj = JOptionPane
-					.showInputDialog(null, "What would you like to find? ",
+					.showInputDialog(Telnet.getFrame(), "What would you like to find? ",
 							"Find All", JOptionPane.QUESTION_MESSAGE, null,
 							null, getSelectedText());
 			if (findObj != null) {

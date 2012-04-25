@@ -1,6 +1,5 @@
 package telnet;
 
-import java.awt.Frame;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
@@ -80,7 +79,7 @@ public class ManagedFile {
 	}
 
 	private boolean prompt(String msg) {
-		return JOptionPane.showConfirmDialog(new Frame(), msg, "Are You Sure?",
+		return JOptionPane.showConfirmDialog(Telnet.getFrame(), msg, "Are You Sure?",
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0;
 	}
 

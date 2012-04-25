@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -88,8 +87,7 @@ public class ScrollingTextPane extends JScrollPane {
 			setSelectionColor(Color.GREEN);
 			setFont(new Font("Courier New", Font.PLAIN, 12));
 			setText("\n");
-			setText(getText().substring(0,
-					getText().length() - 1));
+			setText(getText().substring(0, getText().length() - 1));
 		}
 
 		public synchronized void append(String s) {
@@ -150,9 +148,9 @@ public class ScrollingTextPane extends JScrollPane {
 
 		public void promptFind() {
 			Object findObj = JOptionPane
-					.showInputDialog(null, "What would you like to find? ",
-							"Find All", JOptionPane.QUESTION_MESSAGE, null, null,
-							getSelectedText());
+					.showInputDialog(Telnet.getFrame(), "What would you like to find? ",
+							"Find All", JOptionPane.QUESTION_MESSAGE, null,
+							null, getSelectedText());
 			if (findObj != null) {
 				String find = findObj.toString();
 				if (!find.equals("")) {
@@ -184,6 +182,18 @@ public class ScrollingTextPane extends JScrollPane {
 			}
 		}
 
+		public void selectBlock(boolean up) {
+			int start = getSelectionStart();
+			int end = getSelectionEnd();
+			String toSearch = getText();
+			if(up){
+
+			}
+			else {
+
+			}
+			System.out.println("start: " + start + "\n  end: " + end);
+		}
 	}
 
 	private class CoolScrollBarUI extends BasicScrollBarUI {

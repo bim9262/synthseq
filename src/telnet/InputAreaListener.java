@@ -16,7 +16,7 @@ public class InputAreaListener extends KeyAdapter {
 	protected UndoManager undoManager;
 	private Tab tab = Tab.getInstance();
 
-	public void setInputArea(ScrollingTextPane scrollingInputArea){
+	public void setInputArea(ScrollingTextPane scrollingInputArea) {
 		inputArea = scrollingInputArea.getTextPane();
 		undoManager = scrollingInputArea.getUndoManager();
 	}
@@ -49,6 +49,23 @@ public class InputAreaListener extends KeyAdapter {
 					break;
 			}
 		}
+		// if alt is on
+		if (e.getModifiersEx() == 512) {
+			switch (e.getKeyCode()) {
+			// up key
+				case 38 :
+					inputArea.selectBlock(true);
+					break;
+				// down key
+				case 40 :
+					inputArea.selectBlock(false);
+					break;
+					//a key
+				case 65:
+					//TODO: Select the entire code block.
+					break;
+			}
+		}
 	}
 
 	public void keyTyped(KeyEvent e) {
@@ -59,15 +76,15 @@ public class InputAreaListener extends KeyAdapter {
 				e.consume();// Does not work
 				inputArea.setText(inputArea.getText().replaceAll("\\t", ""));
 				if (tabCount == 1) {
-					String autoCompleted = tab .autoComplete(
+					String autoCompleted = tab.autoComplete(
 							inputArea.getText(), inputArea.getCaretPosition());
 					if (!autoCompleted.equals(inputArea.getText())) {
 						inputArea.setText(autoCompleted);
 
 					}
 				} else if (tabCount == 2) {
-					String results = tab.suggestions(
-							inputArea.getText(), inputArea.getCaretPosition());
+					String results = tab.suggestions(inputArea.getText(),
+							inputArea.getCaretPosition());
 					if (results.startsWith("doc ", 1)) {
 						outputArea.append(results);
 						socketInput.println(results);

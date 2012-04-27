@@ -8,8 +8,6 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
-import synthseq.synthesizer.Synthesizer;
-
 public class Clip extends ReadableSound {
 	private double[] audio;
 	private boolean playing = false;
@@ -17,38 +15,41 @@ public class Clip extends ReadableSound {
 	private int location = 0;
 
 	public static void main(String[] args) throws Exception {
-		Clip clip = new Clip("/home/john/Desktop/Beats/39452__the-bizniss__gotcha.wav");
+		Clip clip = new Clip("/home/john/Desktop/Beats/misc/bass.wav");
 		clip.play();
-		Synthesizer.getInstance().showFreqVis();
-		Synthesizer.getInstance().showVisualizer();
 		Thread.sleep(2000);
 	}
 
-	public Clip(String f) {
-		try {
-			File file = new File(f);
-			AudioInputStream audioStream = AudioSystem
-					.getAudioInputStream(file);
-			AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
-			frameSize =  ((byte) (format
-					.getFormat().getFrameSize()));
-			byte[] frame = new byte[frameSize];
-			audio = new double[AudioSystem.getAudioFileFormat(file)
-					.getByteLength() / frameSize];
-			for (int i = 0; audioStream.available() > frameSize + 1
-					&& i < audio.length; i++) {
-				audioStream.read(frame);
-				byte[] used = new byte[2];
-				used[0] = frame[0];
-				used[1] = frame[1];
-				ByteBuffer bb = ByteBuffer.wrap(frame);
-				bb.order(ByteOrder.LITTLE_ENDIAN);
-				short out = bb.getShort();
-				audio[i] = (out / (double) Short.MAX_VALUE);
+	public Clip(final String f) {
+		new Thread() {
+			public void run() {
+				try {
+					File file = new File(f);
+					AudioInputStream audioStream = AudioSystem
+							.getAudioInputStream(file);
+					AudioFileFormat format = AudioSystem
+							.getAudioFileFormat(file);
+					frameSize = ((byte) (format.getFormat().getFrameSize()));
+					byte[] frame = new byte[frameSize];
+					audio = new double[AudioSystem.getAudioFileFormat(file)
+							.getByteLength() / (frameSize)];
+					for (int i = 0; audioStream.available() > frameSize + 1
+							&& i < audio.length; i++) {
+						audioStream.read(frame);
+						byte[] used = new byte[4];
+						int max = format.getFormat().getSampleSizeInBits() / 8 / format.getFormat().getChannels();
+						for (int j = 0; j < max && j < 4; j++)
+							used[3-j] = frame[frame.length-j-1];
+						ByteBuffer bb = ByteBuffer.wrap(used);
+						bb.order(ByteOrder.LITTLE_ENDIAN);
+						int out = bb.getInt();
+						audio[i] = out / (double) (Integer.MAX_VALUE);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		}.start();
 	}
 
 	@Override
@@ -60,14 +61,17 @@ public class Clip extends ReadableSound {
 	@Override
 	public void stop() {
 		playing = false;
+		location = 0;
 	}
 
 	@Override
 	public double read() {
 		if (playing) {
 			try {
-				if (location++ >= audio.length - 1)
+				if (location++ >= audio.length - 1){
+					stop();
 					location = 0;
+				}
 				return audio[location];
 			} catch (Exception e) {
 				return 0;

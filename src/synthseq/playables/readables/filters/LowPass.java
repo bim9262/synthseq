@@ -32,7 +32,7 @@ public class LowPass extends ReadableSound {
 		else
 			sameCount = 0;
 		old = out;
-		if(sameCount > 1000){
+		if(sameCount > 44100){
 			stop();
 			sameCount = 0;
 		}

@@ -8,12 +8,12 @@ public class Sequencer {
 			Runtime.getRuntime().availableProcessors() + 2);
 
 	public static void evalAtTime(final long time, final Runnable code) {
-		executor.schedule(code, time, TimeUnit.MILLISECONDS);
+		executor.schedule(code, time-System.currentTimeMillis(), TimeUnit.MILLISECONDS);
 	}
 
 	public static void evalPeriodic(final long startTime, final long period,
 			final Runnable code) {
-		executor.scheduleAtFixedRate(code, startTime, period,
+		executor.scheduleAtFixedRate(code, startTime-System.currentTimeMillis(), period,
 				TimeUnit.MILLISECONDS);
 	}
 

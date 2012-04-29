@@ -1,4 +1,4 @@
-package synthseq.oscinterop;
+package synthseq.sequencer;
 
 public class Metronome {
 	private double bpms;

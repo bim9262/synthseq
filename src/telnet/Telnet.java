@@ -41,8 +41,13 @@ public class Telnet {
 	private static JFrame gui = new JFrame("Telnet");
 	private static ManagedFile file;
 
+	public Telnet(final String host, final int port) {
+		this(host, port, null, null, null);
+	}
+
 	public Telnet(final String host, final int port,
-			final String defaultDirectory, final String ext, final String fileDescription) {
+			final String defaultDirectory, final String ext,
+			final String fileDescription) {
 		new Thread() {
 			public void run() {
 				for (int i = 0; i < 10 && s == null; i++) {
@@ -71,12 +76,6 @@ public class Telnet {
 					}
 				}
 
-				try {
-					file = new ManagedFile(defaultDirectory, ext, fileDescription);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
 				gui.setSize(600, 500);
 				gui.setBackground(Color.BLACK);
 
@@ -93,7 +92,9 @@ public class Telnet {
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-						file.promptSave("Would you like to save before quitting?");
+						if (file != null) {
+							file.promptSave("Would you like to save before quitting?");
+						}
 						System.exit(0);
 					}
 				});
@@ -102,17 +103,21 @@ public class Telnet {
 
 				LeftPanel leftPanel = new LeftPanel();
 
-				RightPanel rightPanel = new RightPanel();
-
 				GridBagConstraints c = new GridBagConstraints();
 				c.fill = GridBagConstraints.BOTH;
 				c.gridy = 0;
 				c.weighty = 1;
 				c.weightx = 1;
 
-				c.gridx = 1;
-				c.anchor = GridBagConstraints.EAST;
-				gui.add(rightPanel, c);
+				if (defaultDirectory != null && ext != null
+						&& fileDescription != null) {
+					RightPanel rightPanel = new RightPanel(defaultDirectory,
+							ext, fileDescription);
+
+					c.gridx = 1;
+					c.anchor = GridBagConstraints.EAST;
+					gui.add(rightPanel, c);
+				}
 
 				c.gridx = 0;
 				c.anchor = GridBagConstraints.WEST;
@@ -123,7 +128,6 @@ public class Telnet {
 			}
 		}.start();
 	}
-
 	public static Frame getFrame() {
 		return gui;
 	}
@@ -142,12 +146,18 @@ public class Telnet {
 
 	@SuppressWarnings("serial")
 	private class RightPanel extends JPanel {
-		RightPanel() {
+		RightPanel(String defaultDirectory, String ext, String fileDescription) {
 			super(new GridBagLayout());
 
 			setBackground(Color.BLACK);
 
 			ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
+
+			try {
+				file = new ManagedFile(defaultDirectory, ext, fileDescription);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			final JTextField fileInfo = new JTextField();
 			fileInfo.setBackground(Color.BLACK);

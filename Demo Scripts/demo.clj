@@ -32,4 +32,3 @@ res (mult (add sqr noise) (expenv 0.2))]
 [noise (white-noise)
 env (expenv 0.5)]
 (play (LPF noise (variable env)))))
-

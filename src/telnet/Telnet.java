@@ -39,9 +39,10 @@ public class Telnet {
 	private BufferedReader socketOutput;
 	private static PrintWriter socketInput;
 	private static JFrame gui = new JFrame("Telnet");
-	private static ManagedFile file = new ManagedFile();
+	private static ManagedFile file;
 
-	public Telnet(final String host, final int port) {
+	public Telnet(final String host, final int port,
+			final String defaultDirectory, final String ext, final String fileDescription) {
 		new Thread() {
 			public void run() {
 				for (int i = 0; i < 10 && s == null; i++) {
@@ -68,6 +69,12 @@ public class Telnet {
 								.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 					} catch (Exception e) {
 					}
+				}
+
+				try {
+					file = new ManagedFile(defaultDirectory, ext, fileDescription);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 
 				gui.setSize(600, 500);
@@ -117,7 +124,7 @@ public class Telnet {
 		}.start();
 	}
 
-	public static Frame getFrame(){
+	public static Frame getFrame() {
 		return gui;
 	}
 

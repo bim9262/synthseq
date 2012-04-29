@@ -13,9 +13,22 @@ import telnet.ScrollingTextPane.TextPane;
 
 public class ManagedFile {
 
+	private final String ext;
 	private TextPane inputArea;
 	private File file;
 	private boolean saved = true;
+	private final File defaultDirectory;
+	private final String fileDescription;
+
+
+	ManagedFile(String defaultDirectory, String ext, String fileDescription) throws Exception{
+		this.defaultDirectory = new File(defaultDirectory);
+		this.ext = ext.replace(".", "");
+		this.fileDescription = fileDescription;
+		if (!this.defaultDirectory.isDirectory()){
+			throw new Exception("This is not a directory");
+		}
+	}
 
 	public void promptNew() {
 		promptSave("Would you like to save before starting a new file?");
@@ -36,6 +49,7 @@ public class ManagedFile {
 				}
 				inputArea.setText(inputArea.getText().substring(0,
 						inputArea.getText().length() - 1));
+				saved=true;
 			} catch (Exception e1) {
 			}
 			return true;
@@ -88,6 +102,7 @@ public class ManagedFile {
 		fc.setDialogTitle(dialogType);
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fc.setAcceptAllFileFilterUsed(false);
+		fc.setCurrentDirectory(getCurrentDirectory());
 		fc.setFileFilter(new FileFilter() {
 
 			@Override
@@ -95,26 +110,30 @@ public class ManagedFile {
 				if (f.isDirectory()) {
 					return true;
 				}
-				return isClojureFile(f);
+				return isFileType(f);
 			}
 
 			@Override
 			public String getDescription() {
-				return "Clojure Files";
+				return fileDescription + " (*." +ext + ")";
 			}
 		});
 
 		boolean toReturn = fc.showSaveDialog(fc) == JFileChooser.APPROVE_OPTION;
 		if (toReturn) {
 			file = fc.getSelectedFile();
-			if (!isClojureFile(file)) {
-				file = new File(file.toString() + ".clj");
+			if (!isFileType(file)) {
+				file = new File(file.toString() + "." + ext);
 			}
 		}
 		return toReturn;
 	}
 
-	private boolean isClojureFile(File f) {
+	private File getCurrentDirectory() {
+		return (file!=null?file.getParentFile():defaultDirectory);
+	}
+
+	private boolean isFileType(File f) {
 		String ext = null;
 		String s = f.getName();
 		int i = s.lastIndexOf('.');
@@ -122,7 +141,7 @@ public class ManagedFile {
 		if (i > 0 && i < s.length() - 1) {
 			ext = s.substring(i + 1).toLowerCase();
 		}
-		return (ext == null ? false : ext.equals("clj"));
+		return (ext == null ? false : ext.equals(this.ext));
 	}
 
 	private void save() {

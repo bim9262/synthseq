@@ -23,14 +23,12 @@ public class ManagedFile {
 	public ManagedFile(String defaultFile, String ext, String fileDescription) {
 		this.ext = ext.replace(".", "");
 		this.fileDescription = fileDescription;
-		File loadFile = new File(defaultFile);
-		 if (isFileType(loadFile)) {
-				defaultDirectory = loadFile.getParentFile();
-				file = loadFile;
+		defaultDirectory = new File(defaultFile);
+		if (!defaultDirectory.isDirectory()) {
+			if (isFileType(defaultDirectory)) {
+				file = defaultDirectory;
 			}
-		 else if (!loadFile.exists() || loadFile.isDirectory()) {
-			defaultDirectory = loadFile;
-			loadFile.mkdir();
+			defaultDirectory = defaultDirectory.getParentFile();
 		}
 	}
 

@@ -42,12 +42,11 @@ public class Telnet {
 	private static ManagedFile file;
 
 	public Telnet(final String host, final int port) {
-		this(host, port, null, null, null);
+		this(host, port, null);
 	}
 
-	public Telnet(final String host, final int port,
-			final String defaultDirectory, final String ext,
-			final String fileDescription) {
+	public Telnet(final String host, final int port, final ManagedFile loadFile) {
+
 		new Thread() {
 			public void run() {
 				for (int i = 0; i < 10 && s == null; i++) {
@@ -109,10 +108,10 @@ public class Telnet {
 				c.weighty = 1;
 				c.weightx = 1;
 
-				if (defaultDirectory != null && ext != null
-						&& fileDescription != null) {
-					RightPanel rightPanel = new RightPanel(defaultDirectory,
-							ext, fileDescription);
+				file = loadFile;
+
+				if (file!=null) {
+					RightPanel rightPanel = new RightPanel();
 
 					c.gridx = 1;
 					c.anchor = GridBagConstraints.EAST;
@@ -146,18 +145,12 @@ public class Telnet {
 
 	@SuppressWarnings("serial")
 	private class RightPanel extends JPanel {
-		RightPanel(String defaultDirectory, String ext, String fileDescription) {
+		RightPanel() {
 			super(new GridBagLayout());
 
 			setBackground(Color.BLACK);
 
 			ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
-
-			try {
-				file = new ManagedFile(defaultDirectory, ext, fileDescription);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 
 			final JTextField fileInfo = new JTextField();
 			fileInfo.setBackground(Color.BLACK);

@@ -17,16 +17,20 @@ public class ManagedFile {
 	private TextPane inputArea;
 	private File file;
 	private boolean saved = true;
-	private final File defaultDirectory;
+	private File defaultDirectory;
 	private final String fileDescription;
 
-
-	ManagedFile(String defaultDirectory, String ext, String fileDescription) throws Exception{
-		this.defaultDirectory = new File(defaultDirectory);
+	public ManagedFile(String defaultFile, String ext, String fileDescription) {
 		this.ext = ext.replace(".", "");
 		this.fileDescription = fileDescription;
-		if (!this.defaultDirectory.isDirectory()){
-			throw new Exception("This is not a directory");
+		File loadFile = new File(defaultFile);
+		 if (isFileType(loadFile)) {
+				defaultDirectory = loadFile.getParentFile();
+				file = loadFile;
+			}
+		 else if (!loadFile.exists() || loadFile.isDirectory()) {
+			defaultDirectory = loadFile;
+			loadFile.mkdir();
 		}
 	}
 
@@ -41,17 +45,7 @@ public class ManagedFile {
 	public boolean promptOpen() {
 		promptSave("Would you like to save before opening a file?");
 		if (selectFile("Open")) {
-			inputArea.setText("");
-			try {
-				Scanner f = new Scanner(new FileReader(file));
-				while (f.hasNextLine()) {
-					inputArea.append(f.nextLine());
-				}
-				inputArea.setText(inputArea.getText().substring(0,
-						inputArea.getText().length() - 1));
-				saved=true;
-			} catch (Exception e1) {
-			}
+			open();
 			return true;
 		}
 		return false;
@@ -93,8 +87,9 @@ public class ManagedFile {
 	}
 
 	private boolean prompt(String msg) {
-		return JOptionPane.showConfirmDialog(Telnet.getFrame(), msg, "Are You Sure?",
-				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0;
+		return JOptionPane.showConfirmDialog(Telnet.getFrame(), msg,
+				"Are You Sure?", JOptionPane.YES_NO_OPTION,
+				JOptionPane.WARNING_MESSAGE) == 0;
 	}
 
 	private boolean selectFile(String dialogType) {
@@ -115,7 +110,7 @@ public class ManagedFile {
 
 			@Override
 			public String getDescription() {
-				return fileDescription + " (*." +ext + ")";
+				return fileDescription + " (*." + ext + ")";
 			}
 		});
 
@@ -130,7 +125,7 @@ public class ManagedFile {
 	}
 
 	private File getCurrentDirectory() {
-		return (file!=null?file.getParentFile():defaultDirectory);
+		return (file != null ? file.getParentFile() : defaultDirectory);
 	}
 
 	private boolean isFileType(File f) {
@@ -154,12 +149,29 @@ public class ManagedFile {
 		}
 	}
 
+	private void open() {
+		inputArea.setText("");
+		try {
+			Scanner f = new Scanner(new FileReader(file));
+			while (f.hasNextLine()) {
+				inputArea.append(f.nextLine());
+			}
+			inputArea.setText(inputArea.getText().substring(0,
+					inputArea.getText().length() - 1));
+			saved = true;
+		} catch (Exception e1) {
+		}
+	}
+
 	public void setSaved(boolean saved) {
 		this.saved = saved;
 	}
 
 	public void setInputSource(TextPane inputArea) {
 		this.inputArea = inputArea;
+		if (file != null) {
+			open();
+		}
 	}
 
 	public String toString() {

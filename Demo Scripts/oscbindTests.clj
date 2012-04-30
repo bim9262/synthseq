@@ -34,7 +34,15 @@
 (bind-toggle 
 (zipmap 
 (gen-binds "/2/push!1" (range 1 17)) 
-(map #(add (saw %) (string-inst %)) (gen-scale "pentatonic minor" "D2" 16))))
+(map #(add (mult (triangle %) (variable (LPF(saw 4.666) 0.2))) (string-inst % 0.5 0.97)) (gen-scale "minor" "Cb1" 16))))
+
+(bind-touch 
+(zipmap 
+(gen-binds "/2/push!1" (range 1 17))
+(for [x (range 1 17)] (fn [] 
+            (do-at (m (+ (m) 1)) 
+                   #(play (nth beats x)))))))
+
 
 (bind-toggle
 (zipmap

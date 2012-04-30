@@ -13,9 +13,24 @@ import telnet.ScrollingTextPane.TextPane;
 
 public class ManagedFile {
 
+	private final String ext;
 	private TextPane inputArea;
 	private File file;
 	private boolean saved = true;
+	private File defaultDirectory;
+	private final String fileDescription;
+
+	public ManagedFile(String defaultFile, String ext, String fileDescription) {
+		this.ext = ext.replace(".", "");
+		this.fileDescription = fileDescription;
+		defaultDirectory = new File(defaultFile);
+		if (!defaultDirectory.isDirectory()) {
+			if (isFileType(defaultDirectory)) {
+				file = defaultDirectory;
+			}
+			defaultDirectory = defaultDirectory.getParentFile();
+		}
+	}
 
 	public void promptNew() {
 		promptSave("Would you like to save before starting a new file?");
@@ -28,16 +43,7 @@ public class ManagedFile {
 	public boolean promptOpen() {
 		promptSave("Would you like to save before opening a file?");
 		if (selectFile("Open")) {
-			inputArea.setText("");
-			try {
-				Scanner f = new Scanner(new FileReader(file));
-				while (f.hasNextLine()) {
-					inputArea.append(f.nextLine());
-				}
-				inputArea.setText(inputArea.getText().substring(0,
-						inputArea.getText().length() - 1));
-			} catch (Exception e1) {
-			}
+			open();
 			return true;
 		}
 		return false;
@@ -79,8 +85,9 @@ public class ManagedFile {
 	}
 
 	private boolean prompt(String msg) {
-		return JOptionPane.showConfirmDialog(Telnet.getFrame(), msg, "Are You Sure?",
-				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0;
+		return JOptionPane.showConfirmDialog(Telnet.getFrame(), msg,
+				"Are You Sure?", JOptionPane.YES_NO_OPTION,
+				JOptionPane.WARNING_MESSAGE) == 0;
 	}
 
 	private boolean selectFile(String dialogType) {
@@ -88,6 +95,7 @@ public class ManagedFile {
 		fc.setDialogTitle(dialogType);
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fc.setAcceptAllFileFilterUsed(false);
+		fc.setCurrentDirectory(getCurrentDirectory());
 		fc.setFileFilter(new FileFilter() {
 
 			@Override
@@ -95,26 +103,30 @@ public class ManagedFile {
 				if (f.isDirectory()) {
 					return true;
 				}
-				return isClojureFile(f);
+				return isFileType(f);
 			}
 
 			@Override
 			public String getDescription() {
-				return "Clojure Files";
+				return fileDescription + " (*." + ext + ")";
 			}
 		});
 
 		boolean toReturn = fc.showSaveDialog(fc) == JFileChooser.APPROVE_OPTION;
 		if (toReturn) {
 			file = fc.getSelectedFile();
-			if (!isClojureFile(file)) {
-				file = new File(file.toString() + ".clj");
+			if (!isFileType(file)) {
+				file = new File(file.toString() + "." + ext);
 			}
 		}
 		return toReturn;
 	}
 
-	private boolean isClojureFile(File f) {
+	private File getCurrentDirectory() {
+		return (file != null ? file.getParentFile() : defaultDirectory);
+	}
+
+	private boolean isFileType(File f) {
 		String ext = null;
 		String s = f.getName();
 		int i = s.lastIndexOf('.');
@@ -122,7 +134,7 @@ public class ManagedFile {
 		if (i > 0 && i < s.length() - 1) {
 			ext = s.substring(i + 1).toLowerCase();
 		}
-		return (ext == null ? false : ext.equals("clj"));
+		return (ext == null ? false : ext.equals(this.ext));
 	}
 
 	private void save() {
@@ -135,12 +147,29 @@ public class ManagedFile {
 		}
 	}
 
+	private void open() {
+		inputArea.setText("");
+		try {
+			Scanner f = new Scanner(new FileReader(file));
+			while (f.hasNextLine()) {
+				inputArea.append(f.nextLine());
+			}
+			inputArea.setText(inputArea.getText().substring(0,
+					inputArea.getText().length() - 1));
+			saved = true;
+		} catch (Exception e1) {
+		}
+	}
+
 	public void setSaved(boolean saved) {
 		this.saved = saved;
 	}
 
 	public void setInputSource(TextPane inputArea) {
 		this.inputArea = inputArea;
+		if (file != null) {
+			open();
+		}
 	}
 
 	public String toString() {

@@ -3,7 +3,7 @@
         '(synthseq.signalanalysis FrequencyDomain)
         '(synthseq.oscinterop ActionMap)
         '(synthseq.musictheory Rules Scales)
-        '(synthseq.sequencer Sequencer)
+        '(synthseq.sequencer Sequencer Metronome)
         '(synthseq.playables.readables ReadableSound Clip Buffer LineIn Variable)
         '(synthseq.playables.readables.envelopes ADSR Exponential Linear Power)
         '(synthseq.playables.readables.waveforms SawWave TriangleWave SineWave PulseWave WhiteNoise)
@@ -22,9 +22,14 @@ Example: '(gen-binds /1/push!1 [0 1 2])'"
     (ActionMap/generateBindings bindString xVals [])))
 
 
-(defn apply-at
+(defn do-at
   [time function]
   (Sequencer/evalAtTime time function))
+(defn metronome [bpm]
+  (let [metr (Metronome. bpm)] 
+    (fn 
+      ([] (.getBeat metr))
+      ([beat] (.getTime metr beat)))))
 (defn kill-tasks
   []
   (Sequencer/stopTasks))

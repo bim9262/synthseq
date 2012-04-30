@@ -39,9 +39,14 @@ public class Telnet {
 	private BufferedReader socketOutput;
 	private static PrintWriter socketInput;
 	private static JFrame gui = new JFrame("Telnet");
-	private static ManagedFile file = new ManagedFile();
+	private static ManagedFile file;
 
 	public Telnet(final String host, final int port) {
+		this(host, port, null);
+	}
+
+	public Telnet(final String host, final int port, final ManagedFile loadFile) {
+
 		new Thread() {
 			public void run() {
 				for (int i = 0; i < 10 && s == null; i++) {
@@ -86,7 +91,9 @@ public class Telnet {
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-						file.promptSave("Would you like to save before quitting?");
+						if (file != null) {
+							file.promptSave("Would you like to save before quitting?");
+						}
 						System.exit(0);
 					}
 				});
@@ -95,17 +102,21 @@ public class Telnet {
 
 				LeftPanel leftPanel = new LeftPanel();
 
-				RightPanel rightPanel = new RightPanel();
-
 				GridBagConstraints c = new GridBagConstraints();
 				c.fill = GridBagConstraints.BOTH;
 				c.gridy = 0;
 				c.weighty = 1;
 				c.weightx = 1;
 
-				c.gridx = 1;
-				c.anchor = GridBagConstraints.EAST;
-				gui.add(rightPanel, c);
+				file = loadFile;
+
+				if (file!=null) {
+					RightPanel rightPanel = new RightPanel();
+
+					c.gridx = 1;
+					c.anchor = GridBagConstraints.EAST;
+					gui.add(rightPanel, c);
+				}
 
 				c.gridx = 0;
 				c.anchor = GridBagConstraints.WEST;
@@ -116,8 +127,7 @@ public class Telnet {
 			}
 		}.start();
 	}
-
-	public static Frame getFrame(){
+	public static Frame getFrame() {
 		return gui;
 	}
 

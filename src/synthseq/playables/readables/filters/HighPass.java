@@ -36,7 +36,7 @@ public class HighPass extends ReadableSound {
 			sameCount = 0;
 		old = out;
 		oldx=x;
-		if(sameCount > 1000){
+		if(sameCount > 44100){
 			stop();
 			sameCount = 0;
 		}

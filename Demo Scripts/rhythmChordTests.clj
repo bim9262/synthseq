@@ -1,5 +1,7 @@
 ;;Rhythm Demo. Not intended for full evaluation.
 
+(def m (metronome 120))
+
 (defn inst [freq] (mult (clip (string-inst freq 0.01 0.995) 0.1) 4.0))
 (defn inst [freq] (string-inst freq 0.05 ))
 
@@ -26,19 +28,22 @@ melodyString)]
 (nth (nth notes (mod time (count notes))) 0)))
 
 (defn hat [time] 
-(play (mult (LPF (HPF (add (triangle (hatMelody time)))) (variable (expenv 0.5))) 10.1)))
+(play (mult (LPF (HPF (add (triangle (hatMelody time)))) (variable (expenv 1.5))) 5.1)))
 
 (defn drumThing []
-(play (mult (LPF (white-noise) (variable (expenv 0.5))) 2.0)))
+(play (mult (LPF (add (mult (white-noise) 0.1) (LPF (saw 60) 0.01)) (variable (expenv 0.5))) 2.0)))
 
 (drumThing)
 
-(hatMelody 4)
-(def rate 200)
+
+(bind-touch (zipmap (gen-binds "/2/push!1" (range 1 17)) drums))
+
+(def drums (map load-clip (list-files "/home/john/Desktop/Beats/drums606/warm kit")))
+
 
 (defn rhythm [time]
 (melody time)
-(apply-at (* (mod time 4) rate) #(rhythm (inc time))))
+(do-at (m (+ (m) 1))#(rhythm (inc time))))
 
 (fkill)
 (kill-tasks)

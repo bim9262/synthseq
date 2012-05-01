@@ -1,12 +1,34 @@
 package telnet;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Scanner;
+
 import java.util.ArrayList;
 
 public class Tab {
 
 	private static Trie trie = new Trie();
 
-	private Tab() {}
+	private Tab(){};
+
+	static {
+		Scanner f;
+		try {
+			f = new Scanner(new FileReader("src/Clojure_Bindings.clj"));
+			while (f.hasNextLine()) {
+				String word = f.nextLine();
+				if (word.startsWith("def", 1))
+					addDefinition(word.split(" ")[1]);
+			}
+			f = new Scanner(new FileReader("src/Builtin_Clojure_Vars"));
+			while (f.hasNext()) {
+				addDefinition(f.next());
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static void addDefinition(String def){
 		trie.addWord(def);

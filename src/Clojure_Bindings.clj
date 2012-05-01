@@ -143,7 +143,7 @@ Attack specifies the time it takes to reach the peek value, specified by peekamp
 Decay specifies the time it takes to decay to the value specified by level
 Release is the time it takes to decay from the level value to nothing
 The level value is sustained until stop is called"
-  [attack peekamp decay level release] (ADSR. attack peekamp decay level release))
+  [sound attack peekamp decay level release] (ADSR. sound attack peekamp decay level release))
 
 (defn string-inst 
   ([freq] (StringInst. freq))

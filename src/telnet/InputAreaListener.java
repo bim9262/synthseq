@@ -14,7 +14,6 @@ public class InputAreaListener extends KeyAdapter {
 	protected PrintWriter socketInput = Telnet.getSocketInput();
 	private int tabCount = 0;
 	protected UndoManager undoManager;
-	private Tab tab = Tab.getInstance();
 
 	public void setInputArea(ScrollingTextPane scrollingInputArea) {
 		inputArea = scrollingInputArea.getTextPane();
@@ -76,14 +75,14 @@ public class InputAreaListener extends KeyAdapter {
 				e.consume();// Does not work
 				inputArea.setText(inputArea.getText().replaceAll("\\t", ""));
 				if (tabCount == 1) {
-					String autoCompleted = tab.autoComplete(
+					String autoCompleted = Tab.autoComplete(
 							inputArea.getText(), inputArea.getCaretPosition());
 					if (!autoCompleted.equals(inputArea.getText())) {
 						inputArea.setText(autoCompleted);
 
 					}
 				} else if (tabCount == 2) {
-					String results = tab.suggestions(inputArea.getText(),
+					String results = Tab.suggestions(inputArea.getText(),
 							inputArea.getCaretPosition());
 					if (results.startsWith("doc ", 1)) {
 						outputArea.append(results);
@@ -114,7 +113,7 @@ public class InputAreaListener extends KeyAdapter {
 			String[] explode = text.split("[ )\n]");
 			for (int i = 0; i < explode.length - 1; i++) {
 				if (explode[i].startsWith("def", 1)) {
-					tab.addDefinition(explode[i + 1]);
+					Tab.addDefinition(explode[i + 1]);
 				}
 			}
 		}

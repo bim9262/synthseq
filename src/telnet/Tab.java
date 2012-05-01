@@ -1,43 +1,18 @@
 package telnet;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Tab {
 
-	private static Tab instance = new Tab();
-	private Trie trie = new Trie();
+	private static Trie trie = new Trie();
 
-	private Tab() {
-		Scanner f;
-		try {
-			f = new Scanner(new FileReader("src/Clojure_Bindings.clj"));
-			while (f.hasNextLine()) {
-				String word = f.nextLine();
-				if (word.startsWith("def", 1))
-					addDefinition(word.split(" ")[1]);
-			}
-			f = new Scanner(new FileReader("src/Builtin_Clojure_Vars"));
-			while (f.hasNext()) {
-				addDefinition(f.next());
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	private Tab() {}
 
-	public void addDefinition(String def){
+	public static void addDefinition(String def){
 		trie.addWord(def);
 	}
 
-	public static Tab getInstance() {
-		return instance;
-	}
-
-	public String autoComplete(String s, int caretPos) {
+	public static String autoComplete(String s, int caretPos) {
 		SuperString string = findWordAndPos(s, caretPos);
 		if (string != null) {
 			return s.substring(0, string.end)
@@ -47,7 +22,7 @@ public class Tab {
 		return s;
 	}
 
-	public String suggestions(String s, int caretPos) {
+	public static String suggestions(String s, int caretPos) {
 		SuperString string = findWordAndPos(s, caretPos);
 		String toReturn = "";
 		if (string != null) {
@@ -67,7 +42,7 @@ public class Tab {
 		return toReturn;
 	}
 
-	private SuperString findWordAndPos(String s, int caretPos) {
+	private static SuperString findWordAndPos(String s, int caretPos) {
 		caretPos--;
 		if (s.length() != 0 && containsSeparator(s, caretPos)) {
 			caretPos--;
@@ -87,7 +62,7 @@ public class Tab {
 		return null;
 	}
 
-	private boolean containsSeparator(String s, int caretPos) {
+	private static boolean containsSeparator(String s, int caretPos) {
 		String toCheck = " \n().";
 		for (char c : toCheck.toCharArray()) {
 			if (s.charAt(caretPos) == c)
@@ -96,7 +71,7 @@ public class Tab {
 		return false;
 	}
 
-	private class SuperString {
+	private static class SuperString {
 		public String string;
 		public int end;
 
@@ -106,7 +81,7 @@ public class Tab {
 		}
 	}
 
-	private class Trie {
+	private static class Trie {
 		private Node top;
 		private Node location;
 

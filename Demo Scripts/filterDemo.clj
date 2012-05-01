@@ -11,13 +11,13 @@
 
 (def beats (map load-clip (list-files "/home/john/Desktop/Beats/drum3/tape clean")))
 
-(def beats (map load-clip (list-files "/home/john/Desktop/Beats/drums3/driven kit/")))
+(def beats (map load-clip (list-files "/home/john/Desktop/Beats/waves/")))
 
 
 (map println (list-files "/home/john/Desktop/Beats/drums3/driven kit/"))
 
 
-(def m (metronome 480))
+(def m (metronome 240))
 
 (bind-touch 
 (zipmap 
@@ -25,6 +25,17 @@
 (for [x (range 1 17)] (fn [] 
             (do-at (m (+ (m) 1)) 
                    #(play (nth beats x)))))))
+
+(def noise (saw (add (variable 10000) (mult (sine 2) (variable 10000)))))
+
+(defn wub [freq] (LPF (saw freq) (variable (LPF (saw 10) 0.05))))
+
+(bind-toggle
+(zipmap
+(gen-binds "/2/push!1" (range 1 17))
+(map wub (gen-scale "minor" "C1" 16))))
+
+(bind-toggle "/2/push1" noise)
 
 
 (bind-touch 

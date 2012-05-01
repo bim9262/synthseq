@@ -148,7 +148,8 @@ The level value is sustained until stop is called"
 (defn string-inst 
   ([freq] (StringInst. freq))
   ([freq alpha] (StringInst. freq alpha))
-  ([freq alpha damper] (StringInst. freq alpha damper)))
+  ([freq alpha damper] (StringInst. freq alpha damper))
+  ([freq alpha damper stopDamper] (StringInst. freq alpha damper stopDamper)))
 (defn line-in [] (LineIn.))
 (defn buffer [readable period] (Buffer. readable period))
 (defn variable 

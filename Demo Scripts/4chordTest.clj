@@ -13,11 +13,22 @@
 (bind-toggle
 (zipmap
 (gen-binds "/2/push!1" (range 1 17))
-(chord-inst triangle 
+(chord-inst string-inst
 "E2M B2M Cs2m A2M
  E3M B3M Cs3m A3M
  E4M B4M Cs4m A4M
  A3M EM  Fs3m DM")))
+
+(bind-toggle
+(zipmap
+(gen-binds "/2/push!1" (range 1 17))
+(map #(ADSRenv (triangle %) 0.1 1 0.1 0.9 0.2)(gen-scale "pentatonic major" "C2" 16))))
+
+
+(bind-toggle
+(zipmap
+(gen-binds "/2/push!1" (range 1 17))
+(map saw (gen-scale "pentatonic major" "C2" 16))))
 
 (bind-toggle
 (zipmap

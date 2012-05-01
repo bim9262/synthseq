@@ -23,7 +23,11 @@ public class ActionMap {
 			}
 		}
 		if (bind != null)
+			try{
 			bind.trigger(x, y, time);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 	}
 	public static void printNext(){
 		printNext = true;

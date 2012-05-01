@@ -8,9 +8,18 @@
 (bind-toggle
 (zipmap
 (gen-binds "/2/push!1" (range 1 17))
-(chord-inst string-inst 
+(chord-inst saw "Cm C5M Fm GM AM DM")))
+
+(bind-toggle
+(zipmap
+(gen-binds "/2/push!1" (range 1 17))
+(chord-inst triangle 
 "E2M B2M Cs2m A2M
  E3M B3M Cs3m A3M
  E4M B4M Cs4m A4M
  A3M EM  Fs3m DM")))
 
+(bind-toggle
+(zipmap
+(gen-binds "/1/push!1" (range 1 17))
+(map string-inst (gen-scale "chromatic" "E4" 16))))

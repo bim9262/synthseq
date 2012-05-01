@@ -8,7 +8,7 @@ public class StringInst extends ReadableSound {
 	private int last = 0;
 	private double damper = .999;
 	private double playDamper = 0.999;
-	private final double stopDamper = 0.99;
+	private final double stopDamper = 0.92;
 	private double alpha = 0.5;
 
 	public StringInst(double freq) {

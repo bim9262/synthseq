@@ -11,6 +11,7 @@ public class ADSR extends ReadableSound {
 	private boolean running = false;
 	private double amplitude = -1;
 	private double time;
+	private ReadableSound sound;
 
 	/*
 	 * See http://en.wikipedia.org/wiki/Synthesizer#ADSR_envelope This is
@@ -24,8 +25,9 @@ public class ADSR extends ReadableSound {
 	 * by decay. The value should stay at the level value until stop is called,
 	 * then decay to -1 over the period specified by release.
 	 */
-	public ADSR(double attack, double peek, double decay, double level,
+	public ADSR(ReadableSound sound, double attack, double peek, double decay, double level,
 			double release) {
+		this.sound = sound;
 		this.attack = attack;
 		this.peek = peek;
 		this.decay = decay;
@@ -36,9 +38,10 @@ public class ADSR extends ReadableSound {
 
 	@Override
 	public void start() {
-		amplitude = -1;
+		amplitude = 0;
 		time = 0;
 		running = true;
+		sound.start();
 	}
 
 	@Override
@@ -48,29 +51,18 @@ public class ADSR extends ReadableSound {
 
 	@Override
 	public double read() {
+		time += 1.0 / 44100;
 		if (!running) {
-			return 0;
-		} else {
-			time += 0.5 / 44100;
-		}
-		if (time <= attack) {
+			amplitude = (amplitude>0 ?(amplitude - (level) / (release * 44100)) : 0);
+		} else if (time <= attack) {
 			amplitude += peek / (attack * 44100);
 		} else if (time > attack && time <= attack + decay) {
 			amplitude += (level - peek) / (decay * 44100);
-		} else if (time > attack + decay && time <= attack + decay + release) {
-			amplitude += (-level) / (release * 44100);
-		} else {
-			running = false;
+		} else if (time > attack + decay) {
+			amplitude = level;
 		}
-		return amplitude;
+		return amplitude * sound.read();
 	}
-	
-	public static void main(String[]args){
-		ADSR env = new ADSR(1,1,1,0.5,1);
-		env.start();
-		for(int i = 0; i< 10; i++){
-			System.out.println(env.running+" r: "+env.read()+" t:"+env.time+" t<=atk: "+(env.time<=env.attack)+" p: "+env.peek+" p/fs: "+(env.peek / (env.attack * 44100)));
-		}
-	}
+
 
 }

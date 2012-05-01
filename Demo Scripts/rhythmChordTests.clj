@@ -43,7 +43,7 @@ melodyString)]
 
 (defn rhythm [time]
 (melody time)
-(do-at (m (+ (m) 1))#(rhythm (inc time))))
+(do-at (m (+ (m) 1))#(do (rhythm (inc time)))))
 
 (fkill)
 (kill-tasks)

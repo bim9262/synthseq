@@ -28,7 +28,7 @@ public class TriangleWave extends ReadableSound{
 			time-=44100/val;
 			direction*=-1;
 		}
-		return (direction-direction*2*time/(44100/freq.read()))*2-1;
+		return (direction-direction*4*time/(44100/freq.read()))-0.5;
 	}
 
 	@Override

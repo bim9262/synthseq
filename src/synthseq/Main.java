@@ -1,5 +1,6 @@
 package synthseq;
 
+import telnet.ClojureTab;
 import telnet.ManagedFile;
 import synthseq.clojureinterop.ClojureServer;
 import synthseq.oscinterop.OSCServer;
@@ -11,7 +12,7 @@ public class Main {
 		OSCServer.start(8000);
 
 		new Telnet("localhost", 9000, new ManagedFile("Demo Scripts", ".clj",
-				"Clojure Scipt"));
+				"Clojure Scipt"), new ClojureTab());
 	}
 
 }

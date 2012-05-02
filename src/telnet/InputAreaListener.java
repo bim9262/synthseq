@@ -59,9 +59,9 @@ public class InputAreaListener extends KeyAdapter {
 				case 40 :
 					inputArea.selectBlock(false);
 					break;
-					//a key
-				case 65:
-					//TODO: Select the entire code block.
+				// a key
+				case 65 :
+					// TODO: Select the entire code block.
 					break;
 			}
 		}
@@ -72,22 +72,21 @@ public class InputAreaListener extends KeyAdapter {
 		// tab key
 			case 9 :
 				tabCount++;
-				e.consume();// Does not work
-				inputArea.setText(inputArea.getText().replaceAll("\\t", ""));
-				if (tabCount == 1) {
-					String autoCompleted = Tab.autoComplete(
-							inputArea.getText(), inputArea.getCaretPosition());
-					if (!autoCompleted.equals(inputArea.getText())) {
-						inputArea.setText(autoCompleted);
+				if (Telnet.getTab() != null) {
+					inputArea
+							.setText(inputArea.getText().replaceAll("\\t", ""));
+					if (tabCount == 1) {
+						String autoCompleted = Telnet.getTab().autoComplete(
+								inputArea.getText(),
+								inputArea.getCaretPosition());
+						if (!autoCompleted.equals(inputArea.getText())) {
+							inputArea.setText(autoCompleted);
 
-					}
-				} else if (tabCount == 2) {
-					String results = Tab.suggestions(inputArea.getText(),
-							inputArea.getCaretPosition());
-					if (results.startsWith("doc ", 1)) {
-						outputArea.append(results);
-						socketInput.println(results);
-					} else {
+						}
+					} else if (tabCount == 2) {
+						String results = Telnet.getTab().suggestions(
+								inputArea.getText(),
+								inputArea.getCaretPosition());
 						outputArea.append(results);
 					}
 				}
@@ -105,7 +104,6 @@ public class InputAreaListener extends KeyAdapter {
 				break;
 		}
 	}
-
 	private void eval(String text) {
 		if (text != null) {
 			outputArea.append(text);

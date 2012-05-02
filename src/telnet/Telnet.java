@@ -1,11 +1,8 @@
 package telnet;
 
 import java.awt.Frame;
-
 import javax.swing.event.CaretEvent;
-
 import javax.swing.event.CaretListener;
-
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import java.awt.Color;
@@ -40,13 +37,22 @@ public class Telnet {
 	private static PrintWriter socketInput;
 	private static JFrame gui = new JFrame("Telnet");
 	private static ManagedFile file;
+	private static Tab tab;
 
 	public Telnet(final String host, final int port) {
-		this(host, port, null);
+		this(host, port, null, null);
+	}
+
+	public Telnet(final String host, final int port, Tab useTab) {
+		this(host, port, null, useTab);
 	}
 
 	public Telnet(final String host, final int port, final ManagedFile loadFile) {
+		this(host, port, loadFile, null);
+	}
 
+	public Telnet(final String host, final int port, final ManagedFile loadFile, Tab useTab) {
+		tab = useTab;
 		new Thread() {
 			public void run() {
 				for (int i = 0; i < 10 && s == null; i++) {
@@ -141,6 +147,10 @@ public class Telnet {
 
 	public static ManagedFile getFile() {
 		return file;
+	}
+
+	public static Tab getTab(){
+		return tab;
 	}
 
 	@SuppressWarnings("serial")

@@ -1,70 +1,20 @@
 package telnet;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.Scanner;
-
 import java.util.ArrayList;
 
-public class Tab {
+public abstract class Tab {
 
-	private static Trie trie = new Trie();
-
-	private Tab(){};
-
-	static {
-		Scanner f;
-		try {
-			f = new Scanner(new FileReader("src/Clojure_Bindings.clj"));
-			while (f.hasNextLine()) {
-				String word = f.nextLine();
-				if (word.startsWith("def", 1))
-					addDefinition(word.split(" ")[1]);
-			}
-			f = new Scanner(new FileReader("src/Builtin_Clojure_Vars"));
-			while (f.hasNext()) {
-				addDefinition(f.next());
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+	protected static Trie trie = new Trie();
 
 	public static void addDefinition(String def){
 		trie.addWord(def);
 	}
 
-	public static String autoComplete(String s, int caretPos) {
-		SuperString string = findWordAndPos(s, caretPos);
-		if (string != null) {
-			return s.substring(0, string.end)
-					+ trie.autoComplete(string.string)
-					+ s.substring(string.end, s.length());
-		}
-		return s;
-	}
+	abstract String autoComplete(String s, int caretPos);
 
-	public static String suggestions(String s, int caretPos) {
-		SuperString string = findWordAndPos(s, caretPos);
-		String toReturn = "";
-		if (string != null) {
-			toReturn = "Sugestions for " + string.string + ": ";
-			ArrayList<String> posibilities = trie.getMutations(string.string);
-			if (posibilities.size() == 0) {
-				toReturn += "NONE FOUND";
-			} else if(posibilities.size() == 1 && posibilities.get(0).equals(string.string)){
-				toReturn = "(doc " + string.string + ")";
-			}else{
-				for (int i = 0; i < posibilities.size(); i++) {
-					toReturn += posibilities.get(i)
-							+ (i != posibilities.size() - 1 ? ", " : "");
-				}
-			}
-		}
-		return toReturn;
-	}
+	abstract String suggestions(String s, int caretPos);
 
-	private static SuperString findWordAndPos(String s, int caretPos) {
+	protected static SuperString findWordAndPos(String s, int caretPos) {
 		caretPos--;
 		if (s.length() != 0 && containsSeparator(s, caretPos)) {
 			caretPos--;
@@ -93,7 +43,7 @@ public class Tab {
 		return false;
 	}
 
-	private static class SuperString {
+	protected static class SuperString {
 		public String string;
 		public int end;
 
@@ -103,7 +53,7 @@ public class Tab {
 		}
 	}
 
-	private static class Trie {
+	protected static class Trie {
 		private Node top;
 		private Node location;
 

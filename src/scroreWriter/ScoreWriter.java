@@ -1,25 +1,12 @@
 package scroreWriter;
 
 import common.TextPane;
-
 import java.awt.Dimension;
-
 import javax.swing.event.UndoableEditEvent;
-
 import javax.swing.event.UndoableEditListener;
-
 import java.awt.GridBagConstraints;
-
 import java.awt.GridBagLayout;
-
 import common.ScrollPane;
-
-import abc.ui.swing.JScoreComponent;
-
-import abc.parser.TuneParser;
-
-import abc.notation.Tune;
-
 import common.ManagedFile;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -44,14 +31,7 @@ public class ScoreWriter {
 		j.setSize(new Dimension(400, 500));
 		final TextPane textPane = new TextPane(j);
 
-		final JScoreComponent scoreUI =new JScoreComponent();
-
-		textPane.getDocument().addUndoableEditListener(new UndoableEditListener(){
-			public void undoableEditHappened(UndoableEditEvent arg0) {
-				Tune tune = new TuneParser().parse(textPane.getText());
-		        scoreUI.setTune(tune);
-			}
-        });
+		final Score score =  new Score();
 
         file.setFrame(j);
         file.setInputSource(textPane);
@@ -64,7 +44,7 @@ public class ScoreWriter {
 
 		c.gridy = 1;
 		c.anchor = GridBagConstraints.PAGE_END;
-		j.add(new ScrollPane(scoreUI), c);
+		j.add(new ScrollPane(score), c);
 
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.PAGE_START;

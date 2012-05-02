@@ -1,8 +1,7 @@
 package telnet;
 
-import common.ScrollingTextPane;
-import common.ScrollingTextPane.TextPane;
 
+import common.TextPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
@@ -17,9 +16,10 @@ public class InputAreaListener extends KeyAdapter {
 	private int tabCount = 0;
 	protected UndoManager undoManager;
 
-	public void setInputArea(ScrollingTextPane scrollingInputArea) {
-		inputArea = scrollingInputArea.getTextPane();
-		undoManager = scrollingInputArea.getUndoManager();
+	InputAreaListener(TextPane inputArea){
+		this.inputArea = inputArea;
+		undoManager = inputArea.getUndoManager();
+
 	}
 
 	public void keyPressed(KeyEvent e) {

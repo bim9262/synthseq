@@ -1,7 +1,7 @@
 package telnet;
 
-import common.ScrollingTextPane;
-import common.ScrollingTextPane.TextPane;
+import common.ScrollPane;
+import common.TextPane;
 import common.ManagedFile;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -159,7 +159,7 @@ public class Telnet {
 
 			setBackground(Color.BLACK);
 
-			ScrollingTextPane rightInputScrollPane = new ScrollingTextPane(gui);
+			final TextPane rightInputPane = new TextPane(gui);
 
 			final JTextField fileInfo = new JTextField();
 			fileInfo.setBackground(Color.BLACK);
@@ -171,22 +171,22 @@ public class Telnet {
 			fileInfo.setText(file.toString());
 			fileInfo.setFont(new Font("Courier New", Font.PLAIN, 12));
 
-			rightInputScrollPane.addKeyListener(new RightInputAreaListener());
+			rightInputPane.addKeyListener(new RightInputAreaListener(rightInputPane));
 
-			final TextPane textArea = rightInputScrollPane.getTextPane();
 
-			file.setInputSource(textArea);
 
-			textArea.addCaretListener(new CaretListener() {
+			file.setInputSource(rightInputPane);
+
+			rightInputPane.addCaretListener(new CaretListener() {
 				public void caretUpdate(CaretEvent arg0) {
 					try {
-						int caretPos = textArea.getCaretPosition();
+						int caretPos = rightInputPane.getCaretPosition();
 						int line = (caretPos == 0) ? 1 : 0;
 						for (int offset = caretPos; offset > 0;) {
-							offset = Utilities.getRowStart(textArea, offset) - 1;
+							offset = Utilities.getRowStart(rightInputPane, offset) - 1;
 							line++;
 						}
-						int offset = Utilities.getRowStart(textArea, caretPos);
+						int offset = Utilities.getRowStart(rightInputPane, caretPos);
 						int col = caretPos - offset;
 
 						fileInfo.setText(file.toString() + " " + line + " : "
@@ -196,14 +196,14 @@ public class Telnet {
 				}
 			});
 
-			textArea.getDocument().addUndoableEditListener(
+			rightInputPane.getDocument().addUndoableEditListener(
 					new UndoableEditListener() {
 						public void undoableEditHappened(UndoableEditEvent e) {
 							file.setSaved(false);
 						}
 					});
 
-			textArea.addFocusListener(new FocusAdapter() {
+			rightInputPane.addFocusListener(new FocusAdapter() {
 
 				public void focusLost(FocusEvent e) {
 					fileInfo.setText(file.toString());
@@ -224,7 +224,7 @@ public class Telnet {
 			c.anchor = GridBagConstraints.PAGE_START;
 			c.weighty = 1;
 			c.gridy = 0;
-			add(rightInputScrollPane, c);
+			add(new ScrollPane(rightInputPane), c);
 		}
 	}
 
@@ -235,12 +235,12 @@ public class Telnet {
 
 			setBackground(Color.BLACK);
 
-			ScrollingTextPane outputScrollPane = new ScrollingTextPane(gui);
-			outputArea = outputScrollPane.getTextPane();
+			outputArea = new TextPane(gui);
 
-			ScrollingTextPane leftInputScrollPane = new ScrollingTextPane(gui);
+			TextPane leftInputPane = new TextPane(gui);
 
-			leftInputScrollPane.addKeyListener(new LeftInputAreaListener());
+			leftInputPane.addKeyListener(new LeftInputAreaListener(leftInputPane));
+
 
 			outputArea.setEditable(false);
 
@@ -252,12 +252,12 @@ public class Telnet {
 			c.gridy = 1;
 			c.weighty = 1;
 			c.anchor = GridBagConstraints.PAGE_END;
-			add(leftInputScrollPane, c);
+			add(new ScrollPane(leftInputPane), c);
 
 			c.gridy = 0;
 			c.weighty = 4;
 			c.anchor = GridBagConstraints.PAGE_START;
-			add(outputScrollPane, c);
+			add(new ScrollPane(outputArea), c);
 
 			new Thread() {
 				public void run() {

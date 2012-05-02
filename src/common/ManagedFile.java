@@ -1,7 +1,6 @@
 package common;
 
 import java.awt.Frame;
-import common.ScrollingTextPane.TextPane;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;

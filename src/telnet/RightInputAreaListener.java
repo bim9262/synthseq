@@ -1,9 +1,15 @@
 package telnet;
 
+import common.TextPane;
+
 import common.ManagedFile;
 import java.awt.event.KeyEvent;
 
 public class RightInputAreaListener extends InputAreaListener {
+
+	RightInputAreaListener(TextPane inputArea) {
+		super(inputArea);
+	}
 
 	ManagedFile file = Telnet.getFile();
 

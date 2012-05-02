@@ -1,8 +1,14 @@
 package telnet;
 
+import common.TextPane;
+
 import java.awt.event.KeyEvent;
 
 public class LeftInputAreaListener extends InputAreaListener {
+
+	LeftInputAreaListener(TextPane inputArea) {
+		super(inputArea);
+	}
 
 	CommandRecall commandRecall = new CommandRecall();
 

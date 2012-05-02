@@ -1,6 +1,8 @@
 package telnet;
 
-import java.awt.Frame;
+import common.ScrollingTextPane;
+import common.ScrollingTextPane.TextPane;
+import common.ManagedFile;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.UndoableEditEvent;
@@ -27,7 +29,6 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.text.Utilities;
 
-import telnet.ScrollingTextPane.TextPane;
 
 public class Telnet {
 
@@ -117,6 +118,7 @@ public class Telnet {
 				file = loadFile;
 
 				if (file!=null) {
+					file.setFrame(gui);
 					RightPanel rightPanel = new RightPanel();
 
 					c.gridx = 1;
@@ -132,9 +134,6 @@ public class Telnet {
 
 			}
 		}.start();
-	}
-	public static Frame getFrame() {
-		return gui;
 	}
 
 	public static TextPane getOutputArea() {
@@ -160,7 +159,7 @@ public class Telnet {
 
 			setBackground(Color.BLACK);
 
-			ScrollingTextPane rightInputScrollPane = new ScrollingTextPane();
+			ScrollingTextPane rightInputScrollPane = new ScrollingTextPane(gui);
 
 			final JTextField fileInfo = new JTextField();
 			fileInfo.setBackground(Color.BLACK);
@@ -236,10 +235,10 @@ public class Telnet {
 
 			setBackground(Color.BLACK);
 
-			ScrollingTextPane outputScrollPane = new ScrollingTextPane();
+			ScrollingTextPane outputScrollPane = new ScrollingTextPane(gui);
 			outputArea = outputScrollPane.getTextPane();
 
-			ScrollingTextPane leftInputScrollPane = new ScrollingTextPane();
+			ScrollingTextPane leftInputScrollPane = new ScrollingTextPane(gui);
 
 			leftInputScrollPane.addKeyListener(new LeftInputAreaListener());
 

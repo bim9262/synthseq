@@ -1,11 +1,13 @@
 package telnet;
 
+import common.ScrollingTextPane;
+import common.ScrollingTextPane.TextPane;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
 import javax.swing.undo.UndoManager;
 
-import telnet.ScrollingTextPane.TextPane;
 
 public class InputAreaListener extends KeyAdapter {
 

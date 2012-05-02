@@ -1,5 +1,6 @@
 package telnet;
 
+import common.ManagedFile;
 import java.awt.event.KeyEvent;
 
 public class RightInputAreaListener extends InputAreaListener {

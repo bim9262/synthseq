@@ -1,11 +1,10 @@
 package common;
 
 import static java.lang.Math.*;
-
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.Frame;
-
 import javax.swing.undo.UndoManager;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.util.Vector;
@@ -19,10 +18,12 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 
+@SuppressWarnings("serial")
 public class TextPane extends JTextPane
 		implements
 			CaretListener,
-			UndoableEditListener {
+			UndoableEditListener,
+			KeyListener {
 
 	private UndoManager undoManager = new UndoManager();
 	private Frame frame;
@@ -33,13 +34,14 @@ public class TextPane extends JTextPane
 
 	public TextPane(Frame frame) {
 		super();
-		this.frame= frame;
+		this.frame = frame;
 		setBackground(Color.BLACK);
 		setForeground(Color.GREEN);
 		setCaretColor(Color.RED);
 		setBorder(new LineBorder(Color.BLACK));
 		setFocusTraversalKeysEnabled(false);
 		getDocument().addUndoableEditListener(this);
+		addKeyListener(this);
 		addCaretListener(this);
 		setSelectedTextColor(Color.RED);
 		setSelectionColor(Color.GREEN);
@@ -147,11 +149,60 @@ public class TextPane extends JTextPane
 		} else {
 
 		}
-		System.out.println("start: " + start + "\n  end: " + end);
+		// TODO: Write this section, probably need to make a stack.
+		// System.out.println("start: " + start + "\n  end: " + end);
 	}
 
 	public UndoManager getUndoManager() {
 		return undoManager;
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// if control is on
+		if (e.getModifiersEx() == 128) {
+			switch (e.getKeyCode()) {
+			// z key
+				case 90 :
+					if (undoManager.canUndo())
+						undoManager.undo();
+					break;
+				// y key
+				case 89 :
+					if (undoManager.canRedo())
+						undoManager.redo();
+					break;
+				// f key
+				case 70 :
+					promptFind();
+					break;
+			}
+		}
+		// if alt is on
+		if (e.getModifiersEx() == 512) {
+			switch (e.getKeyCode()) {
+			// up key
+				case 38 :
+					selectBlock(true);
+					break;
+				// down key
+				case 40 :
+					selectBlock(false);
+					break;
+				// a key
+				case 65 :
+					// TODO: Select the entire code block.
+					break;
+			}
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
 	}
 
 }

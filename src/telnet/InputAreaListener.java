@@ -34,37 +34,6 @@ public class InputAreaListener extends KeyAdapter {
 				case 69 :
 					eval(inputArea.getSelectedText());
 					break;
-				// z key
-				case 90 :
-					if (undoManager.canUndo())
-						undoManager.undo();
-					break;
-				// y key
-				case 89 :
-					if (undoManager.canRedo())
-						undoManager.redo();
-					break;
-				// f key
-				case 70 :
-					inputArea.promptFind();
-					break;
-			}
-		}
-		// if alt is on
-		if (e.getModifiersEx() == 512) {
-			switch (e.getKeyCode()) {
-			// up key
-				case 38 :
-					inputArea.selectBlock(true);
-					break;
-				// down key
-				case 40 :
-					inputArea.selectBlock(false);
-					break;
-				// a key
-				case 65 :
-					// TODO: Select the entire code block.
-					break;
 			}
 		}
 	}

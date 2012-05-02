@@ -72,6 +72,7 @@ public class InputAreaListener extends KeyAdapter {
 		// tab key
 			case 9 :
 				tabCount++;
+				// TODO: Fix tabbing and add auto indentation
 				if (Telnet.getTab() != null) {
 					inputArea
 							.setText(inputArea.getText().replaceAll("\\t", ""));

@@ -2,7 +2,8 @@ package scroreWriter;
 
 public class Note {
 
-	private static enum length {
+	public static enum length {
+		DOUBLE(2.0),
 		FULL(1.0),
 		HALF(1.0 / 2),
 		QUARTER(1.0 / 4),
@@ -24,10 +25,9 @@ public class Note {
 	private boolean selected;
 	private char note;
 	private int octave;
-	private length length;
+	private length duration;
 
 	Note(String s) {
-
 	}
 
 }

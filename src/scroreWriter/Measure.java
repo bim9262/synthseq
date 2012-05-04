@@ -18,11 +18,11 @@ public class Measure extends JPanel {
 
 	private Clef clef = Clef.BASS;
 	private Note center = clef.getCenter();
-	private ArrayList<Note> notes = new ArrayList<Note>();
+	private ArrayList<MusicalObject> musicalObjects = new ArrayList<MusicalObject>();
 
 	Measure() {
 		setBackground(Color.gray);
-		setPreferredSize(new Dimension(400, 300));
+		setPreferredSize(new Dimension(400, 200));
 
 		this.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
@@ -35,7 +35,13 @@ public class Measure extends JPanel {
 
 	}
 
-
+	public boolean isFull(){
+		double time = 0;
+		for (MusicalObject m :musicalObjects){
+			time += m.duration.getLength();
+		}
+		return time==1.0;
+	}
 
 	public void paint(Graphics g) {
 		super.paint(g);

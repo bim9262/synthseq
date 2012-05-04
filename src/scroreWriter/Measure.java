@@ -17,23 +17,27 @@ public class Measure extends JPanel {
 	final int startDrawLine = 4;
 	final int numberOfLines = 12;
 
-	private Clef clef = Clef.Treble;
+	private Clef clef = Clef.Bass;
 	private ArrayList<Note> notes = new ArrayList<Note>();
 
-	Measure(){
+	Measure() {
 		setBackground(Color.gray);
-		this.setPreferredSize(new Dimension(200, 300));
+		this.setPreferredSize(new Dimension(400, 300));
 	}
 
-	public void paint(Graphics g){
+	public void paint(Graphics g) {
 		super.paint(g);
-		int j = getHeight()/numberOfLines;
+		int j = getHeight() / numberOfLines;
 		int h = j * startDrawLine;
 		int top = h;
-		for (int i = startDrawLine; i < startDrawLine + 5; i++){
+		for (int i = startDrawLine; i < startDrawLine + 5; i++) {
 			g.drawLine(0, h, getWidth(), h);
-			h+=j;
+			h += j;
 		}
-		g.drawImage(clef.getImage(), 5, top, 20, top-h,  null);
+		int clefHeight = h - top - j;
+		int clefWidth = (int)((double)clefHeight / clef.getImage().getHeight()
+				* clef.getImage().getWidth());
+		System.out.println(clefHeight + ", " + clefWidth);
+		g.drawImage(clef.getImage(), 5, top, clefWidth, clefHeight, null);
 	}
 }

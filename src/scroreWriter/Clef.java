@@ -1,11 +1,8 @@
 package scroreWriter;
 
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
-
 import java.io.File;
 
 public enum Clef {
@@ -17,13 +14,17 @@ public enum Clef {
 	private Note center;
 	private BufferedImage image;
 
-	Clef(String center, String imageLocation){
+	private Clef(String center, String imageLocation){
 		this.center = new Note(center);
 		try {
-			image = ImageIO.read(new File (imageLocation));
+			image = ImageIO.read(new File(imageLocation));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public BufferedImage getImage(){
+		return image;
 	}
 
 }

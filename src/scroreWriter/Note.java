@@ -26,6 +26,7 @@ public class Note {
 	private char note;
 	private int octave;
 	private length duration;
+	private Accidental accidental = Accidental.NUTRAL;
 
 	Note(String s) {
 	}

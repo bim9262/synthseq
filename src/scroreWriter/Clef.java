@@ -23,6 +23,10 @@ public enum Clef {
 		}
 	}
 
+	public Note getCenter(){
+		return center;
+	}
+
 	public BufferedImage getImage(){
 		return image;
 	}

@@ -7,17 +7,17 @@ import java.io.File;
 
 public enum Clef {
 
-	Treble("G4", "Images/Clefs/Treble.png"),
-	Alto("C4", "Images/Clefs/Alto.png"),
-	Bass("D3", "Images/Clefs/Bass.png");
+	TREBLE("G4"),
+	ALTO("C4"),
+	BASS("D3");
 
-	private Note center;
+	private final Note center;
 	private BufferedImage image;
 
-	private Clef(String center, String imageLocation){
+	private Clef(String center){
 		this.center = new Note(center);
 		try {
-			image = ImageIO.read(new File(imageLocation));
+			image = ImageIO.read(new File("Images/Clefs/" + toString() + ".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

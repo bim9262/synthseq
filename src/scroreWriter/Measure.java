@@ -16,13 +16,14 @@ public class Measure extends JPanel {
 	final int startDrawLine = 4;
 	final int numberOfLines = 12;
 
-	private Clef clef = Clef.Bass;
+	private Clef clef = Clef.BASS;
 	private Note center = clef.getCenter();
 	private ArrayList<Note> notes = new ArrayList<Note>();
 
 	Measure() {
 		setBackground(Color.gray);
 		setPreferredSize(new Dimension(400, 300));
+
 		this.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				double noteHeight = getHeight() / numberOfLines;
@@ -31,6 +32,7 @@ public class Measure extends JPanel {
 				System.out.println(noteYPos);
 			}
 		});
+
 	}
 
 

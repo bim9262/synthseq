@@ -1,34 +1,42 @@
 package scroreWriter;
 
-public class Note {
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
-	public static enum length {
-		DOUBLE(2.0),
-		FULL(1.0),
-		HALF(1.0 / 2),
-		QUARTER(1.0 / 4),
-		EIGHTH(1.0 / 8),
-		SIXTEENTH(1.0 / 16),
-		THIRTYSECOND(1.0 / 32);
-
-		private final double length;
-
-		private length(double length) {
-			this.length = length;
-		}
-
-		public double getLength(){
-			return length;
-		}
-	}
+public class Note implements CustomCursor {
 
 	private boolean selected;
 	private char note;
 	private int octave;
-	private length duration;
+	private Duration duration;
 	private Accidental accidental = Accidental.NUTRAL;
+	private BufferedImage image;
 
 	Note(String s) {
+	}
+
+	@Override
+	public BufferedImage getImage() {
+		try {
+			image = ImageIO.read(new File("Images/Notes/" + duration.toString()
+					+ ".gif"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return image;
+	}
+
+	@Override
+	public String getName() {
+		return duration.toString() + " Note";
+	}
+
+	@Override
+	public Point getHotspot() {
+		return new Point(0, 0);
 	}
 
 }

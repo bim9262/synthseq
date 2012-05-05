@@ -1,21 +1,14 @@
 package scroreWriter;
 
-import java.awt.Graphics2D;
-
-import java.awt.Graphics;
+import java.util.ArrayList;
 
 import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public class Note extends MusicalObject {
 
 	private char note;
 	private int octave;
-	private Accidental accidental = Accidental.NUTRAL;
-	private BufferedImage image;
+	private ArrayList<Accidental> accidentals = new ArrayList<Accidental>() ;
 
 	Note(Duration duration) {
 		this.duration = duration;
@@ -26,26 +19,16 @@ public class Note extends MusicalObject {
 	}
 
 	@Override
-	public BufferedImage getImage() {
-		if (image == null) {
-			try {
-				image = ImageIO.read(new File("Images/Notes/"
-						+ duration.toString() + ".gif"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return image;
-	}
-
-	@Override
-	public String getName() {
-		return duration.toString() + " Note";
-	}
-
-	@Override
 	public Point getHotspot() {
 		return new Point(3, 25);
+	}
+
+	public int getMIDIOffset(){
+		int sum = 0;
+		for (Accidental accidental: accidentals){
+			sum+=accidental.getMIDIOffset();
+		}
+		return sum;
 	}
 
 }

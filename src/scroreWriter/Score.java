@@ -27,13 +27,12 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Score extends JPanel {
 
-
 	Score() {
 		setLayout(new GridBagLayout());
 		add(new Measure());
 		setBackground(Color.YELLOW);
 
-		setCursor(new Note(Duration.THIRTYSECOND));
+		setCursor(new Note(Duration.WHOLE));
 	}
 
 	public void setCursor(MusicalObject m) {

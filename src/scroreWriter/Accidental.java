@@ -6,14 +6,14 @@ public enum Accidental {
 	NUTRAL(0),
 	FLAT(-1);
 
-	private int inc;
+	private int offset;
 
-	private Accidental(int inc){
-		this.inc=inc;
+	private Accidental(int offset){
+		this.offset=offset;
 	}
 
-	public int getMIDIIncrement(){
-		return inc;
+	public int getMIDIOffset(){
+		return offset;
 	}
 
 }

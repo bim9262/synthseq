@@ -1,5 +1,7 @@
 package scroreWriter;
 
+import java.awt.Cursor;
+
 import java.awt.event.MouseEvent;
 
 import java.awt.event.MouseAdapter;
@@ -22,14 +24,13 @@ public class Measure extends JPanel {
 
 	Measure() {
 		setBackground(Color.gray);
-		setPreferredSize(new Dimension(400, 200));
-
+		setPreferredSize(new Dimension(400, 100));
 		this.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				double noteHeight = getHeight() / numberOfLines;
 				double center = noteHeight * (startDrawLine + 2);
 				double noteYPos = (center - e.getY())/noteHeight;
-				System.out.println(noteYPos);
+				System.out.println(noteYPos +", " + getCursor().getName());
 			}
 		});
 

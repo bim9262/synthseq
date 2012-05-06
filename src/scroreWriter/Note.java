@@ -10,17 +10,16 @@ public class Note extends MusicalObject {
 	private int octave;
 	private ArrayList<Accidental> accidentals = new ArrayList<Accidental>() ;
 
-	Note(Duration duration) {
+	Note (Duration duration){
 		this.duration = duration;
 	}
 
 	Note(String s) {
-
 	}
 
 	@Override
 	public Point getHotspot() {
-		return new Point(3, 25);
+		return new Point(image.getWidth()/2, 25);
 	}
 
 	public int getMIDIOffset(){

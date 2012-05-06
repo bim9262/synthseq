@@ -27,7 +27,8 @@ abstract class MusicalObject {
 
 	protected boolean selected;
 	protected Duration duration;
-	private BufferedImage image;
+	protected BufferedImage image;
+
 
 	public final String getName() {
 		return duration.toString() + " " + getClass().getSimpleName();
@@ -44,9 +45,6 @@ abstract class MusicalObject {
 						+ getClass().getSimpleName() + "s/"
 						+ duration.toString() + ".png"));
 			} catch (IOException e) {
-				System.out.println("Images/"
-						+ getClass().getSimpleName() + "/"
-						+ duration.toString() + ".png");
 				e.printStackTrace();
 			}
 		}

@@ -1,17 +1,8 @@
 package scroreWriter;
 
-import java.awt.geom.Point2D;
-
 import java.awt.Point;
-
 import java.awt.event.MouseListener;
-
-import java.awt.Cursor;
-
 import java.awt.event.MouseEvent;
-
-import java.awt.event.MouseAdapter;
-
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -21,8 +12,8 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Measure extends JPanel implements MouseListener {
 
-	final int startDrawLine = 4;
-	final int numberOfLines = 12;
+	final int startDrawLine = 5;
+	final int numberOfLines = 13;
 
 	private Clef clef = Clef.BASS;
 	private Note center = clef.getCenter();

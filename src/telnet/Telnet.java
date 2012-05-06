@@ -1,5 +1,9 @@
 package telnet;
 
+import javax.swing.WindowConstants;
+
+import javax.swing.JOptionPane;
+
 import common.ScrollPane;
 import common.TextPane;
 import common.ManagedFile;
@@ -29,7 +33,6 @@ import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.text.Utilities;
 
-
 public class Telnet {
 
 	private static TextPane outputArea;
@@ -52,7 +55,8 @@ public class Telnet {
 		this(host, port, loadFile, null);
 	}
 
-	public Telnet(final String host, final int port, final ManagedFile loadFile, Tab useTab) {
+	public Telnet(final String host, final int port,
+			final ManagedFile loadFile, Tab useTab) {
 		tab = useTab;
 		new Thread() {
 			public void run() {
@@ -84,24 +88,29 @@ public class Telnet {
 
 				gui.setSize(600, 500);
 				gui.setBackground(Color.BLACK);
+				gui.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 				gui.addWindowListener(new WindowAdapter() {
 					public void windowClosing(WindowEvent e) {
-						socketInput.close();
-						try {
-							socketOutput.close();
-						} catch (IOException e1) {
-							e1.printStackTrace();
+						if (JOptionPane.showConfirmDialog(gui, "Are you sure you would like to quit?",
+								"Exit", JOptionPane.YES_NO_OPTION,
+								JOptionPane.WARNING_MESSAGE) == 0) {
+							socketInput.close();
+							try {
+								socketOutput.close();
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+							try {
+								s.close();
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+							if (file != null) {
+								file.promptSave("Would you like to save before quitting?");
+							}
+							System.exit(0);
 						}
-						try {
-							s.close();
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-						if (file != null) {
-							file.promptSave("Would you like to save before quitting?");
-						}
-						System.exit(0);
 					}
 				});
 
@@ -117,7 +126,7 @@ public class Telnet {
 
 				file = loadFile;
 
-				if (file!=null) {
+				if (file != null) {
 					file.setFrame(gui);
 					RightPanel rightPanel = new RightPanel();
 
@@ -148,7 +157,7 @@ public class Telnet {
 		return file;
 	}
 
-	public static Tab getTab(){
+	public static Tab getTab() {
 		return tab;
 	}
 
@@ -171,9 +180,8 @@ public class Telnet {
 			fileInfo.setText(file.toString());
 			fileInfo.setFont(new Font("Courier New", Font.PLAIN, 12));
 
-			rightInputPane.addKeyListener(new RightInputAreaListener(rightInputPane));
-
-
+			rightInputPane.addKeyListener(new RightInputAreaListener(
+					rightInputPane));
 
 			file.setInputSource(rightInputPane);
 
@@ -183,10 +191,12 @@ public class Telnet {
 						int caretPos = rightInputPane.getCaretPosition();
 						int line = (caretPos == 0) ? 1 : 0;
 						for (int offset = caretPos; offset > 0;) {
-							offset = Utilities.getRowStart(rightInputPane, offset) - 1;
+							offset = Utilities.getRowStart(rightInputPane,
+									offset) - 1;
 							line++;
 						}
-						int offset = Utilities.getRowStart(rightInputPane, caretPos);
+						int offset = Utilities.getRowStart(rightInputPane,
+								caretPos);
 						int col = caretPos - offset;
 
 						fileInfo.setText(file.toString() + " " + line + " : "
@@ -239,8 +249,8 @@ public class Telnet {
 
 			TextPane leftInputPane = new TextPane(gui);
 
-			leftInputPane.addKeyListener(new LeftInputAreaListener(leftInputPane));
-
+			leftInputPane.addKeyListener(new LeftInputAreaListener(
+					leftInputPane));
 
 			outputArea.setEditable(false);
 

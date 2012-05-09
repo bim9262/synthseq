@@ -6,16 +6,17 @@ import java.awt.Point;
 
 public class Note extends MusicalObject {
 
-	private char note;
-	private int octave;
-	private ArrayList<Accidental> accidentals = new ArrayList<Accidental>() ;
-
-	Note (Duration duration){
-		this.duration = duration;
+	Note(){
+		super();
 	}
 
 	Note(String s) {
+		super(s);
 	}
+
+	private char note;
+	private int octave;
+	private ArrayList<Accidental> accidentals = new ArrayList<Accidental>() ;
 
 	@Override
 	public Point getHotspot() {

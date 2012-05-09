@@ -115,7 +115,7 @@ public class ManagedFile {
 	}
 
 	private boolean prompt(String msg) {
-		return JOptionPane.showConfirmDialog(frame, msg, "Are You Sure?",
+		return JOptionPane.showConfirmDialog(frame, msg, "Warning!",
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0;
 	}
 

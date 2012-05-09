@@ -18,7 +18,7 @@ public class ManagedFile {
 	private boolean saved = true;
 	private File defaultDirectory;
 	private final String fileDescription;
-	private Frame frame;
+	private Frame frame = new Frame();
 	private Thread fileWatcher = new Thread() {
 		public void run() {
 			while (true) {
@@ -94,8 +94,32 @@ public class ManagedFile {
 	}
 
 	public void promptSaveAs() {
-		saveDialog("SaveAs");
+		saveDialog("Save As");
 	}
+
+	public void setSaved(boolean saved) {
+		this.saved = saved;
+	}
+
+	public void setInputSource(TextPane inputArea) {
+		this.inputArea = inputArea;
+		if (file != null) {
+			open();
+		}
+	}
+
+	public void setFrame(Frame frame) {
+		this.frame = frame;
+	}
+
+	public String toString() {
+		return (file == null ? "File not saved" : file.getPath()) + " ";
+	}
+
+	public void close() {
+		fileWatcher.interrupt();
+	}
+
 
 	private void saveDialog(String title) {
 		File tempFile = file;
@@ -198,28 +222,4 @@ public class ManagedFile {
 		inputArea.setCaretPosition(inputArea.getText().length());
 		saved = true;
 	}
-
-	public void setSaved(boolean saved) {
-		this.saved = saved;
-	}
-
-	public void setInputSource(TextPane inputArea) {
-		this.inputArea = inputArea;
-		if (file != null) {
-			open();
-		}
-	}
-
-	public void setFrame(Frame frame) {
-		this.frame = frame;
-	}
-
-	public String toString() {
-		return (file == null ? "File not saved" : file.getPath()) + " ";
-	}
-
-	public void close() {
-		fileWatcher.interrupt();
-	}
-
 }

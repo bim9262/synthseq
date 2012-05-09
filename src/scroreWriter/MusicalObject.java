@@ -29,9 +29,22 @@ abstract class MusicalObject {
 	protected Duration duration;
 	protected BufferedImage image;
 
+	MusicalObject() {
+	}
+
+	MusicalObject(String s) {
+	}
+
+	public final Duration getDuration(){
+		return duration;
+	}
+
+	public final void setDuration(Duration duration){
+		this.duration = duration;
+	}
 
 	public final String getName() {
-		return duration.toString() + " " + getClass().getSimpleName();
+		return duration.toString() + " " + getClass().getName();
 	}
 
 	public final String toString(){

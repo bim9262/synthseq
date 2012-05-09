@@ -1,5 +1,7 @@
 package scroreWriter;
 
+import scroreWriter.MusicalObject.Duration;
+
 import java.awt.Point;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
@@ -53,14 +55,32 @@ public class Measure extends JPanel implements MouseListener {
 	private Point getStaffPossition(MouseEvent e) {
 		double noteHeight = getHeight() / numberOfLines;
 		double center = noteHeight * (startDrawLine + 2);
-		int noteYPos = (int) (2* (center - e.getY()) / noteHeight);
-		return new Point(0, noteYPos);
+		int yPos = (int) (2 * (center - e.getY()) / noteHeight);
+		int xPos = 0;
+		int pixelThreshold = 5;
+		for (int i = 0; i < musicalObjects.size(); i++) {
+			xPos += musicalObjects.get(i).get(0).getImage().getWidth();
+			if (true) {
+				xPos += 0 * pixelThreshold * i;
+				break;
+			}
+		}
+		return new Point(xPos, yPos);
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Point staffPos = getStaffPossition(e);
-		// musicalObjects.get((int)staffPos.getX()).add(/*new MusicalObject()*/)
+		try {
+			MusicalObject store = (MusicalObject) Class.forName(getCursor().getName().split(" ")[1]).newInstance();
+			store.setDuration(Duration.valueOf(getCursor().getName().split(" ")[0]));
+			ArrayList<MusicalObject> musicalObjectsPos = musicalObjects.get((int)staffPos.getX());
+			if (musicalObjectsPos == null) musicalObjectsPos = new ArrayList<MusicalObject>();
+			musicalObjectsPos.add(store);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+
 		System.out.println(staffPos.getX() + " , " + staffPos.getY() + ", "
 				+ getCursor().getName());
 

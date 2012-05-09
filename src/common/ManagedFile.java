@@ -19,6 +19,35 @@ public class ManagedFile {
 	private File defaultDirectory;
 	private final String fileDescription;
 	private Frame frame;
+	private Thread fileWatcher = new Thread() {
+		public void run() {
+			while (true) {
+				String prevContents = null;
+				String newContents = null;
+				File oldFile = null;
+				boolean saveStatus = saved;
+				if (file != null) {
+					prevContents = getFileContents();
+					oldFile = file;
+				}
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+				}
+				if (file != null && (newContents = getFileContents()) != null
+						&& prevContents != null && saveStatus == saved
+						&& !newContents.equals(prevContents)
+						&& oldFile.equals(file)) {
+					if (prompt("This file has been modified by another program."
+							+ "\nWould you like to use the modified file?")) {
+						open();
+					} else {
+						saved = false;
+					}
+				}
+			}
+		}
+	};
 
 	public ManagedFile(String defaultFile, String ext, String fileDescription) {
 		this.ext = ext.replace(".", "");
@@ -30,6 +59,7 @@ public class ManagedFile {
 			}
 			defaultDirectory = defaultDirectory.getParentFile();
 		}
+		fileWatcher.start();
 	}
 
 	public void promptNew() {
@@ -85,9 +115,8 @@ public class ManagedFile {
 	}
 
 	private boolean prompt(String msg) {
-		return JOptionPane.showConfirmDialog(frame, msg,
-				"Are You Sure?", JOptionPane.YES_NO_OPTION,
-				JOptionPane.WARNING_MESSAGE) == 0;
+		return JOptionPane.showConfirmDialog(frame, msg, "Are You Sure?",
+				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0;
 	}
 
 	private boolean selectFile(String dialogType) {
@@ -147,18 +176,27 @@ public class ManagedFile {
 		}
 	}
 
-	private void open() {
-		inputArea.setText("");
+	private String getFileContents() {
+		String toReturn = "";
 		try {
-			Scanner f = new Scanner(new FileReader(file));
-			while (f.hasNextLine()) {
-				inputArea.append(f.nextLine());
+			Scanner in = new Scanner(new FileReader(file));
+			while (in.hasNextLine()) {
+				toReturn += in.nextLine() + "\n";
 			}
-			inputArea.setText(inputArea.getText().substring(0,
-					inputArea.getText().length() - 1));
-			saved = true;
+			in.close();
 		} catch (Exception e1) {
 		}
+		return toReturn;
+	}
+
+	private void open() {
+		inputArea.setText(getFileContents());
+		if (inputArea.getText().length() != 0) {
+			inputArea.setText(inputArea.getText().substring(0,
+					inputArea.getText().length() - 1));
+		}
+		inputArea.setCaretPosition(inputArea.getText().length());
+		saved = true;
 	}
 
 	public void setSaved(boolean saved) {
@@ -172,12 +210,16 @@ public class ManagedFile {
 		}
 	}
 
-	public void setFrame(Frame frame){
-		this.frame=frame;
+	public void setFrame(Frame frame) {
+		this.frame = frame;
 	}
 
 	public String toString() {
 		return (file == null ? "File not saved" : file.getPath()) + " ";
+	}
+
+	public void close() {
+		fileWatcher.interrupt();
 	}
 
 }

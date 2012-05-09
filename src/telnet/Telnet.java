@@ -92,8 +92,9 @@ public class Telnet {
 
 				gui.addWindowListener(new WindowAdapter() {
 					public void windowClosing(WindowEvent e) {
-						if (JOptionPane.showConfirmDialog(gui, "Are you sure you would like to quit?",
-								"Exit", JOptionPane.YES_NO_OPTION,
+						if (JOptionPane.showConfirmDialog(gui,
+								"Are you sure you would like to quit?", "Exit",
+								JOptionPane.YES_NO_OPTION,
 								JOptionPane.WARNING_MESSAGE) == 0) {
 							socketInput.close();
 							try {
@@ -108,6 +109,7 @@ public class Telnet {
 							}
 							if (file != null) {
 								file.promptSave("Would you like to save before quitting?");
+								file.close();
 							}
 							System.exit(0);
 						}
@@ -163,14 +165,16 @@ public class Telnet {
 
 	@SuppressWarnings("serial")
 	private class RightPanel extends JPanel {
+
+		private final TextPane rightInputPane = new TextPane(gui);
+
+		private final JTextField fileInfo = new JTextField();
+
 		RightPanel() {
 			super(new GridBagLayout());
 
 			setBackground(Color.BLACK);
 
-			final TextPane rightInputPane = new TextPane(gui);
-
-			final JTextField fileInfo = new JTextField();
 			fileInfo.setBackground(Color.BLACK);
 			fileInfo.setForeground(Color.GREEN);
 			fileInfo.setBorder(new LineBorder(Color.RED));
@@ -187,22 +191,7 @@ public class Telnet {
 
 			rightInputPane.addCaretListener(new CaretListener() {
 				public void caretUpdate(CaretEvent arg0) {
-					try {
-						int caretPos = rightInputPane.getCaretPosition();
-						int line = (caretPos == 0) ? 1 : 0;
-						for (int offset = caretPos; offset > 0;) {
-							offset = Utilities.getRowStart(rightInputPane,
-									offset) - 1;
-							line++;
-						}
-						int offset = Utilities.getRowStart(rightInputPane,
-								caretPos);
-						int col = caretPos - offset;
-
-						fileInfo.setText(file.toString() + " " + line + " : "
-								+ col);
-					} catch (Exception e1) {
-					}
+					updateFileInfo();
 				}
 			});
 
@@ -210,6 +199,7 @@ public class Telnet {
 					new UndoableEditListener() {
 						public void undoableEditHappened(UndoableEditEvent e) {
 							file.setSaved(false);
+							updateFileInfo();
 						}
 					});
 
@@ -235,6 +225,22 @@ public class Telnet {
 			c.weighty = 1;
 			c.gridy = 0;
 			add(new ScrollPane(rightInputPane), c);
+		}
+
+		private void updateFileInfo() {
+			try {
+				int caretPos = rightInputPane.getCaretPosition();
+				int line = (caretPos == 0) ? 1 : 0;
+				for (int offset = caretPos; offset > 0;) {
+					offset = Utilities.getRowStart(rightInputPane, offset) - 1;
+					line++;
+				}
+				int offset = Utilities.getRowStart(rightInputPane, caretPos);
+				int col = caretPos - offset;
+
+				fileInfo.setText(file.toString() + " " + line + " : " + col);
+			} catch (Exception e1) {
+			}
 		}
 	}
 

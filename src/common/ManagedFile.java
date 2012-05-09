@@ -205,7 +205,7 @@ public class ManagedFile {
 		try {
 			Scanner in = new Scanner(new FileReader(file));
 			while (in.hasNextLine()) {
-				toReturn += in.nextLine() + "\n";
+				toReturn += in.nextLine() + (in.hasNextLine()?"\n":"");
 			}
 			in.close();
 		} catch (Exception e1) {
@@ -215,10 +215,6 @@ public class ManagedFile {
 
 	private void open() {
 		inputArea.setText(getFileContents());
-		if (inputArea.getText().length() != 0) {
-			inputArea.setText(inputArea.getText().substring(0,
-					inputArea.getText().length() - 1));
-		}
 		inputArea.setCaretPosition(inputArea.getText().length());
 		saved = true;
 	}

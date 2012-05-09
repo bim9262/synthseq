@@ -32,7 +32,9 @@ public class Score extends JPanel {
 		add(new Measure());
 		setBackground(Color.YELLOW);
 
-		setCursor(new Note(Duration.WHOLE));
+		Note note = new Note();
+		note.setDuration(Duration.WHOLE);
+		setCursor(note);
 	}
 
 	public void setCursor(MusicalObject m) {

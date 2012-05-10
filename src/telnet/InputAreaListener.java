@@ -32,6 +32,7 @@ public class InputAreaListener extends KeyAdapter {
 					break;
 				// e key
 				case 69 :
+					e.consume();
 					eval(inputArea.getSelectedText());
 					break;
 			}

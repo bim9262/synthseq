@@ -7,14 +7,14 @@
 (bind-slider "/1/fader4" hfilter)
 (bind-slider "/1/fader3" lfilter)
 
-(play (HPF (LPF (mult (load-clip "/home/john/Desktop/partyrock.wav") (mult filter 10.0)) lfilter) hfilter))
+(play (HPF (LPF (mult (load-clip "Sample Sounds/partyrock.wav") (mult filter 10.0)) lfilter) hfilter))
 
-(def beats (map load-clip (list-files "/home/john/Desktop/Beats/drum3/tape clean")))
+(def beats (map load-clip (list-files "Sample Sounds/Beats/drum3/tape clean")))
 
-(def beats (map load-clip (list-files "/home/john/Desktop/Beats/waves/")))
+(def beats (map load-clip (list-files "Sample Sounds/Beats/waves/")))
 
 
-(map println (list-files "/home/john/Desktop/Beats/drums3/driven kit/"))
+(map println (list-files "Sample Sounds/Beats/drums3/driven kit/"))
 
 
 (def m (metronome 240))
@@ -44,7 +44,7 @@
 beats))
 
 
-(def thx (load-clip "/home/john/Desktop/thx.wav"))
+(def thx (load-clip "Sample Sounds/thx.wav"))
 
 (def beat1 [1 1 9 1])
 (def beat2 [1 1 0 9 1 1 2 1 1 0 1 9 1 1 2 1])

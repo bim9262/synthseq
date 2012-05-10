@@ -1,5 +1,5 @@
 ;;get wave files
-(def files (list-files "/home/john/Beats"))
+(def files (list-files "Sound Samples/Beats"))
 
 ;;load wave files
 (def clips (map load-clip files))

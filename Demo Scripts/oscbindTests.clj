@@ -18,7 +18,7 @@
 (def dialvars (map variable [0 0 0 0 0 0]))
 (doseq [x (range 0 6)] (bind-slider (nth dialevents x) (nth dialvars x)))
 
-(def drums (map #(mult (buffer % 0.75) 10.0) (map load-clip (list-files "/home/john/Desktop/drums"))))
+(def drums (map #(mult (buffer % 0.75) 10.0) (map load-clip (list-files "Sample Sounds/drums"))))
 (do drums)
 (def binds (gen-binds "/1/push!1" (range 1 13)))
 (for [x (range 0 12)] (bind-touch (nth binds x) (nth drums (+ x 5))))

@@ -38,7 +38,7 @@ melodyString)]
 
 (bind-touch (zipmap (gen-binds "/2/push!1" (range 1 17)) drums))
 
-(def drums (map load-clip (list-files "/home/john/Desktop/Beats/drums606/warm kit")))
+(def drums (map load-clip (list-files "Sample Sounds/drums606/warm kit")))
 
 
 (defn rhythm [time]

@@ -10,18 +10,5 @@ To do:
 			Companding
 			Speed, [Pitch, Timbre](filters?)
 			Smooth Clipping
-	Music Theory:
-		Notes from scale + base note
-			Ex: C4 pentatonic minor
-		Notes from chords
-			Ex: C B A Cm Cb C# v vii iv VI IIm III7 C6 Csus4 C#m13#11
-	Sequencer.
-	OSC
-		-String input for osc format
-			Something like "/1/push/[1-9]"
-			Returns a collection of bindings for push 1 through push 9
-			Bound to clojure code
 	Wave Analysis
 		Spectrogram (frequency domain over time)
-
-**Use Collections for all parameters to facilitate Clojure interop**

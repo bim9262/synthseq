@@ -28,7 +28,7 @@ public class ClojureTab extends Tab {
 		SuperString string = findWordAndPos(s, caretPos);
 		if (string != null) {
 			return s.substring(0, string.end)
-					+ trie.autoComplete(string.string)
+					+ arrayListToString(trie.autoComplete(stringToArrayList(string.string)))
 					+ s.substring(string.end, s.length());
 		}
 		return s;
@@ -39,7 +39,7 @@ public class ClojureTab extends Tab {
 		String toReturn = "";
 		if (string != null) {
 			toReturn = "Sugestions for " + string.string + ": ";
-			ArrayList<String> posibilities = trie.getMutations(string.string);
+			ArrayList<String> posibilities = multiArrayListToString(trie.getMutations(stringToArrayList(string.string)));
 			if (posibilities.size() == 0) {
 				toReturn += "NONE FOUND";
 			} else if (posibilities.size() == 1

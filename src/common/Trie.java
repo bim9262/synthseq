@@ -1,11 +1,16 @@
 package common;
 
+import java.util.List;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class Trie<E extends Comparable<? super E>> implements Set<ArrayList<E>> {
+public class Trie<E extends Comparable<? super E>>
+		implements
+			Set<List<E>>,
+			Cloneable {
 
 	private Node top;
 	private Node location;
@@ -36,13 +41,22 @@ public class Trie<E extends Comparable<? super E>> implements Set<ArrayList<E>> 
 
 	public ArrayList<ArrayList<E>> getMutations(ArrayList<E> word) {
 		ArrayList<ArrayList<E>> toReturn = new ArrayList<ArrayList<E>>();
-		ArrayList<Node> nodes = advanceLocationToNode(word);
-		nodes.remove(nodes.size() - 1);
-		nodes.add(location);
+		ArrayList<Node> nodes;
+		if (word == null) {
+			nodes = new ArrayList<Node>();
+			nodes.add(top);
+		} else {
+			nodes = advanceLocationToNode(word);
+		}
 		if (location != null) {
 			for (ArrayList<E> combo : getPossibleCombos(nodes)) {
-				combo.remove(combo.size() - 1);
-				toReturn.add(combo);
+				ArrayList<E> toAdd = new ArrayList<E>();
+				for (E e : combo) {
+					if (e != null) {
+						toAdd.add(e);
+					}
+				}
+				toReturn.add(toAdd);
 			}
 		}
 		location = top;
@@ -82,8 +96,8 @@ public class Trie<E extends Comparable<? super E>> implements Set<ArrayList<E>> 
 	}
 
 	@Override
-	public boolean add(ArrayList<E> word) {
-		if (!contains(word)) {
+	public boolean add(List<E> word) {
+		if (!word.isEmpty() && !contains(word)) {
 			for (E c : word) {
 				location = location.addNode(c);
 			}
@@ -97,9 +111,9 @@ public class Trie<E extends Comparable<? super E>> implements Set<ArrayList<E>> 
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends ArrayList<E>> words) {
+	public boolean addAll(Collection<? extends List<E>> words) {
 		boolean toReturn = false;
-		for (ArrayList<E> word : words) {
+		for (List<E> word : words) {
 			if (add(word)) {
 				toReturn = true;
 			}
@@ -138,9 +152,10 @@ public class Trie<E extends Comparable<? super E>> implements Set<ArrayList<E>> 
 		return top.getBranch().isEmpty();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<ArrayList<E>> iterator() {
-		return getMutations(new ArrayList<E>()).iterator();
+	public Iterator<List<E>> iterator() {
+		return (Iterator<List<E>>) ((List<E>) getMutations(null)).iterator();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -203,6 +218,20 @@ public class Trie<E extends Comparable<? super E>> implements Set<ArrayList<E>> 
 	public <T> T[] toArray(T[] arg0) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Trie<E> clone() {
+		Trie<E> toReturn = new Trie<E>();
+		for (List<E> e : this) {
+			toReturn.add(e);
+		}
+		return toReturn;
+	}
+
+	@Override
+	public boolean equals(Object o){
+		return o instanceof Trie<?> && getMutations(null).equals(((Trie<?>)o).getMutations(null));
 	}
 
 	private class Node implements Comparable<Node> {

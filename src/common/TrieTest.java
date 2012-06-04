@@ -45,6 +45,8 @@ public class TrieTest {
 		assertTrue(trieAdd("test"));
 		assertTrue(trieContains("test"));
 		assertFalse(trieAdd("test"));
+		assertFalse(trieAdd(""));
+		assertFalse(trieContains(""));
 	}
 
 
@@ -85,9 +87,7 @@ public class TrieTest {
 		assertFalse(trieContains("abc"));
 
 		trieAdd("");
-		assertTrue(trieRemove(""));
-		assertFalse(trieContains(""));
-
+		assertFalse(trieRemove(""));
 
 	}
 
@@ -126,6 +126,18 @@ public class TrieTest {
 		 assertTrue(trie.size()==0);
 		 trieRemove("");
 		 assertTrue(trie.size()==0);
+	}
+
+	@Test
+	public void testCloneAndEquals() {
+		trieAdd("test");
+		Trie<Character> trie2 = trie.clone();
+		assertFalse(trie==trie2);
+		assertTrue(trie.equals(trie2));
+		trie.clear();
+		assertFalse(trie.equals(trie2));
+
+
 	}
 
 	@Test

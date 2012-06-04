@@ -148,18 +148,18 @@ public class Trie<E extends Comparable<? super E>> implements Set<ArrayList<E>> 
 	public boolean remove(Object word) {
 		boolean toReturn = false;
 		if (word instanceof ArrayList<?>) {
-			ArrayList<Node> nodes = advanceLocationToNode((ArrayList<E>) word);
+			int nodeSize = advanceLocationToNode((ArrayList<E>) word).size();
 			if (location != null) {
 				location = location.getNode(null);
 				if (location != null) {
-					for (int i = nodes.size() - 1; i >= 0; i--) {
-						location = nodes.get(i).getParent();
-						ArrayList<Node> branch = location.getBranch();
-						if (branch.size() == 1) {
-							branch.clear();
+					for (int i = 0; i <= nodeSize; i++) {
+						Node parent = location.getParent();
+						if (location.getBranch().size() == 0) {
+							parent.getBranch().remove(location);
 						} else {
 							break;
 						}
+						location = parent;
 					}
 					size--;
 					toReturn = true;
@@ -237,7 +237,8 @@ public class Trie<E extends Comparable<? super E>> implements Set<ArrayList<E>> 
 
 		public Node getNode(E c) {
 			for (Node n : branch) {
-				if ((c==null && n.c==null) || (n.c!=null && n.c.equals(c))) {
+				if ((c == null && n.c == null)
+						|| (n.c != null && n.c.equals(c))) {
 					return n;
 				}
 			}
@@ -268,137 +269,89 @@ public class Trie<E extends Comparable<? super E>> implements Set<ArrayList<E>> 
 			}
 			return toReturn;
 		}
-	}
 
-	/*private class BinarySearchTree<T extends Comparable<? super T>>
-			implements
-				Iterable<T> {
-		private BinaryNode<T> root;
-
-		public BinarySearchTree() {
-			root = null;
-		}
-
-		public void add(T x) {
-				root = add(x, root);
-		}
-
-		public T get(T x) {
-			return elementAt(get(x, root));
-		}
-
-		public void clear() {
-			root = null;
-		}
-
-		public boolean isEmpty() {
-			return root == null;
-		}
-
-		public int size() {
-			return root.size();
-		}
-
-		private T elementAt(BinaryNode<T> node) {
-			return (node == null) ? null : node.getElement();
-		}
-
-		private BinaryNode<T> add(T x, BinaryNode<T> node) {
-			if (node == null) {
-				return new BinaryNode<T>(x);
-			} else if (x.compareTo(node.getElement()) < 0) {
-				node.setLeft(add(x, node.getLeft()));
-			} else if (x.compareTo(node.getElement()) > 0) {
-				node.setRight(add(x, node.getRight()));
-			}
-
-			 else {
-				throw new RuntimeException(x.toString() + " already exists");
-			}
-
-
-			return node;
-		}
-
-		private BinaryNode<T> get(T x, BinaryNode<T> node) {
-			if (node == null) {
-				return null;
-			} else if (x.compareTo(node.getElement()) < 0) {
-				return get(x, node.getLeft());
-			} else if (x.compareTo(node.getElement()) > 0) {
-				return get(x, node.getRight());
-			} else {
-				return node;
-			}
-		}
-
+		@SuppressWarnings("unchecked")
 		@Override
-		public Iterator<T> iterator() {
-			return root.toInOrderArray().iterator();
+		public boolean equals(Object o) {
+			boolean toReturn = false;
+			if (o instanceof Trie.Node) {
+				toReturn = compareTo((Node) o) == 0;
+			} else if (o instanceof Comparable<?>) {
+				toReturn = compareTo(new Node((E) o, null)) == 0;
+			}
+			return toReturn;
 		}
 	}
 
-	private class BinaryNode<T extends Comparable<? super T>> {
-
-		private T element;
-		private BinaryNode<T> left;
-		private BinaryNode<T> right;
-
-		BinaryNode(T theElement) {
-			element = theElement;
-			left = null;
-			right = null;
-		}
-
-		public T getElement() {
-			return element;
-		}
-
-		public BinaryNode<T> getLeft() {
-			return left;
-		}
-
-		public void setLeft(BinaryNode<T> value) {
-			left = value;
-		}
-
-		public BinaryNode<T> getRight() {
-			return right;
-		}
-
-		public void setRight(BinaryNode<T> value) {
-			right = value;
-		}
-
-		public int size() {
-			int size = 1;
-			if (left != null) {
-				size += left.size();
-			}
-
-			if (right != null) {
-				size += right.size();
-			}
-
-			return size;
-		}
-
-		public ArrayList<T> toInOrderArray()
-	    {
-	       ArrayList<T> toReturn = new ArrayList<T>();
-	        if (left != null)
-	        {
-	            toReturn.addAll(left.toInOrderArray());
-	        }
-	        toReturn.add(element);
-	        if (right != null)
-	        {
-	         // Add a space before the next element
-	            toReturn.addAll(right.toInOrderArray());
-	        }
-
-	        return toReturn;
-	    }
-	}
-	*/
+	/*
+	 * private class BinarySearchTree<T extends Comparable<? super T>>
+	 * implements Iterable<T> { private BinaryNode<T> root;
+	 *
+	 * public BinarySearchTree() { root = null; }
+	 *
+	 * public void add(T x) { root = add(x, root); }
+	 *
+	 * public T get(T x) { return elementAt(get(x, root)); }
+	 *
+	 * public void clear() { root = null; }
+	 *
+	 * public boolean isEmpty() { return root == null; }
+	 *
+	 * public int size() { return root.size(); }
+	 *
+	 * private T elementAt(BinaryNode<T> node) { return (node == null) ? null :
+	 * node.getElement(); }
+	 *
+	 * private BinaryNode<T> add(T x, BinaryNode<T> node) { if (node == null) {
+	 * return new BinaryNode<T>(x); } else if (x.compareTo(node.getElement()) <
+	 * 0) { node.setLeft(add(x, node.getLeft())); } else if
+	 * (x.compareTo(node.getElement()) > 0) { node.setRight(add(x,
+	 * node.getRight())); }
+	 *
+	 * else { throw new RuntimeException(x.toString() + " already exists"); }
+	 *
+	 *
+	 * return node; }
+	 *
+	 * private BinaryNode<T> get(T x, BinaryNode<T> node) { if (node == null) {
+	 * return null; } else if (x.compareTo(node.getElement()) < 0) { return
+	 * get(x, node.getLeft()); } else if (x.compareTo(node.getElement()) > 0) {
+	 * return get(x, node.getRight()); } else { return node; } }
+	 *
+	 * @Override public Iterator<T> iterator() { return
+	 * root.toInOrderArray().iterator(); } }
+	 *
+	 * private class BinaryNode<T extends Comparable<? super T>> {
+	 *
+	 * private T element; private BinaryNode<T> left; private BinaryNode<T>
+	 * right;
+	 *
+	 * BinaryNode(T theElement) { element = theElement; left = null; right =
+	 * null; }
+	 *
+	 * public T getElement() { return element; }
+	 *
+	 * public BinaryNode<T> getLeft() { return left; }
+	 *
+	 * public void setLeft(BinaryNode<T> value) { left = value; }
+	 *
+	 * public BinaryNode<T> getRight() { return right; }
+	 *
+	 * public void setRight(BinaryNode<T> value) { right = value; }
+	 *
+	 * public int size() { int size = 1; if (left != null) { size +=
+	 * left.size(); }
+	 *
+	 * if (right != null) { size += right.size(); }
+	 *
+	 * return size; }
+	 *
+	 * public ArrayList<T> toInOrderArray() { ArrayList<T> toReturn = new
+	 * ArrayList<T>(); if (left != null) {
+	 * toReturn.addAll(left.toInOrderArray()); } toReturn.add(element); if
+	 * (right != null) { // Add a space before the next element
+	 * toReturn.addAll(right.toInOrderArray()); }
+	 *
+	 * return toReturn; } }
+	 */
 }

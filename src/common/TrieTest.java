@@ -3,6 +3,7 @@ package common;
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.fail;
 
 public class TrieTest {
 
@@ -15,7 +16,6 @@ public class TrieTest {
 		list = new ArrayList<ArrayList<Character>>();
 	}
 
-	/*
 	 @Test
 	public void testAutoComplete() {
 		fail("Not yet implemented");
@@ -25,7 +25,7 @@ public class TrieTest {
 	public void testGetMutations() {
 		fail("Not yet implemented");
 	}
-	*/
+
 
 	@Test
 	public void testAddAll() {
@@ -47,12 +47,12 @@ public class TrieTest {
 		assertFalse(trieAdd("test"));
 	}
 
-	/*
+
 	@Test
 	public void testContainsAll() {
 		 fail("Not yet implemented");
 	}
-	 */
+
 
 	@Test
 	public void testIsEmptyAndClear() {
@@ -73,29 +73,40 @@ public class TrieTest {
 		assertTrue(trieRemove("test"));
 		assertFalse(trieContains("test"));
 		assertTrue(trieContains("test2"));
-		//assertTrue(trieContains("abc"));
-		//assertTrue(trieRemove("test2"));
-		// assertFalse(trieContains("test2"));
-		// assertTrue(trieContains("abc"));
+		assertTrue(trieContains("abc"));
+
+		trieAdd("test");
+		assertTrue(trieRemove("test2"));
+		assertFalse(trieContains("test2"));
+		assertTrue(trieContains("test"));
+		assertTrue(trieContains("abc"));
+
+		assertTrue(trieRemove("abc"));
+		assertFalse(trieContains("abc"));
+
+		trieAdd("");
+		assertTrue(trieRemove(""));
+		assertFalse(trieContains(""));
+
 
 	}
 
 	@Test
 	public void testRemoveAll() {
-		/*
+
 		listAdd("test");
 		listAdd("test2");
 		trieAdd("abc");
 		assertFalse(trie.removeAll(list));
 		trie.addAll(list);
 		assertTrue(trie.removeAll(list));
-		// assertFalse(trieContains("test"));
-		// assertFalse(trieContains("test2"));
-		// assertTrue(trieContains("abc"));
-		 */
+		assertFalse(trieContains("test"));
+		assertFalse(trieContains("test2"));
+		assertTrue(trieContains("abc"));
+
 
 	}
-	/*
+
 	@Test
 	public void testRetainAll() {
 		 fail("Not yet implemented");
@@ -103,7 +114,18 @@ public class TrieTest {
 
 	@Test
 	public void testSize() {
-		 fail("Not yet implemented");
+		 assertTrue(trie.size()==0);
+		 trieAdd("test");
+		 assertTrue(trie.size()==1);
+		 trieAdd("test");
+		 assertTrue(trie.size()==1);
+		 trieRemove("test");
+		 assertTrue(trie.size()==0);
+
+		 trieAdd("");
+		 assertTrue(trie.size()==0);
+		 trieRemove("");
+		 assertTrue(trie.size()==0);
 	}
 
 	@Test
@@ -115,7 +137,7 @@ public class TrieTest {
 	public void testToArrayTArray() {
 		 fail("Not yet implemented");
 	}
-	 */
+
 
 	protected void listAdd(String word){
 		list.add(stringToArrayList(word));

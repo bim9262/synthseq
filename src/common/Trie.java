@@ -307,10 +307,7 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 			boolean toReturn = contains(n.c);
 			if (!toReturn) {
 				if (n != null && n.c != null && n.c instanceof Comparable<?>) {
-					int index = binarySearch(this, n);
-					if (index < 0) {
-						add(-1 * index - 1, n);
-					}
+						add(-1 * (binarySearch(this, n) - 1), n);
 				} else {
 					super.add(n);
 				}

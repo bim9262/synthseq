@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import static java.util.Collections.binarySearch;
 
-public class Trie<E> implements Set<List<E>>, Cloneable {
+public class Trie<T extends List<E>, E> implements Set<T>, Cloneable {
 
 	private Node top;
 	private Node location;
@@ -16,7 +16,7 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 		clear();
 	}
 
-	public ArrayList<E> autoComplete(List<E> word) {
+	public ArrayList<E> autoComplete(T word) {
 		ArrayList<E> toReturn = new ArrayList<E>();
 		advanceLocationToNode(word);
 		if (location != null) {
@@ -31,8 +31,8 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 		return toReturn;
 	}
 
-	public List<ArrayList<E>> getMutations(List<E> word) {
-		List<Node> nodes = advanceLocationToNode(word);
+	public List<ArrayList<E>> getMutations(T word) {
+		ArrayList<Node> nodes = advanceLocationToNode(word);
 		return generateMutations(nodes);
 	}
 
@@ -59,8 +59,8 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 		return toReturn;
 	}
 
-	private List<Node> advanceLocationToNode(List<E> word) {
-		List<Node> nodes = new ArrayList<Node>();
+	private ArrayList<Node> advanceLocationToNode(T word) {
+		ArrayList<Node> nodes = new ArrayList<Node>();
 		for (E c : word) {
 			if (location != null) {
 				location = location.getNode(c);
@@ -92,31 +92,6 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 	}
 
 	@Override
-	public boolean add(List<E> word) {
-		if (!word.isEmpty() && !contains(word)) {
-			for (E c : word) {
-				location = location.addNode(c);
-			}
-			location.addNode();
-			location = top;
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends List<E>> words) {
-		boolean toReturn = false;
-		for (List<E> word : words) {
-			if (add(word)) {
-				toReturn = true;
-			}
-		}
-		return toReturn;
-	}
-
-	@Override
 	public void clear() {
 		top = new Node();
 		location = top;
@@ -126,8 +101,8 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 	@Override
 	public boolean contains(Object word) {
 		boolean toReturn = false;
-		if (word instanceof ArrayList<?>) {
-			advanceLocationToNode((ArrayList<E>) word);
+		if (word instanceof List<?>) {
+			advanceLocationToNode((T) word);
 			if (location != null) {
 				toReturn = location.getNode(null) != null;
 			}
@@ -153,16 +128,10 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<List<E>> iterator() {
-		return (Iterator<List<E>>) ((List<E>) getAllMutations()).iterator();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
 	public boolean remove(Object word) {
 		boolean toReturn = false;
-		if (word instanceof ArrayList<?>) {
-			int nodeSize = advanceLocationToNode((ArrayList<E>) word).size();
+		if (word instanceof List<?>) {
+			int nodeSize = advanceLocationToNode((T) word).size();
 			if (location != null) {
 				location = location.getNode(null);
 				if (location != null) {
@@ -195,17 +164,6 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 		return toReturn;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean retainAll(Collection<?> words) {
-		boolean toReturn = equals(words) && !words.containsAll(this);
-		if (!toReturn){
-			clear();
-			addAll((Collection<? extends List<E>>) words);
-		}
-		return toReturn;
-	}
-
 	@Override
 	public int size() {
 		return getAllMutations().size();
@@ -217,24 +175,21 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 	}
 
 	@Override
-	public <T> T[] toArray(T[] a) {
-		return getAllMutations().toArray(a);
-	}
-
-	@Override
-	public Trie<E> clone() {
-		Trie<E> toReturn = new Trie<E>();
-		for (List<E> e : this) {
+	public Trie<T, E> clone() {
+		Trie<T, E> toReturn = new Trie<T, E>();
+		for (T e : this) {
 			toReturn.add(e);
 		}
 		return toReturn;
 	}
 
+
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof Trie<?>
-				&& getAllMutations().equals(((Trie<?>) o).getAllMutations());
+		return o instanceof Trie<?, ?>
+				&& getAllMutations().equals(((Trie<?, ?>) o).getAllMutations());
 	}
+
 
 	private class Node implements Comparable<Node>, Iterable<Node> {
 		private E c;
@@ -363,6 +318,56 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 			}
 			return null;
 		}
+
+	}
+
+	@Override
+	public boolean add(T word) {
+		if (!word.isEmpty() && !contains(word)) {
+			for (E c : word) {
+				location = location.addNode(c);
+			}
+			location.addNode();
+			location = top;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends T> words) {
+		boolean toReturn = false;
+		for (T word : words) {
+			if (add(word)) {
+				toReturn = true;
+			}
+		}
+		return toReturn;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterator<T> iterator() {
+		return (Iterator<T>) getAllMutations().iterator();
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean retainAll(Collection<?> words) {
+		boolean toReturn = equals(words) && !words.containsAll(this);
+		if (!toReturn){
+			clear();
+			addAll((Collection<? extends T>) words);
+		}
+		return toReturn;
+	}
+
+	@SuppressWarnings("hiding")
+	@Override
+	public <T> T[] toArray(T[] a) {
+		return getAllMutations().toArray(a);
 
 	}
 

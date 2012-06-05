@@ -1,9 +1,11 @@
 package common;
 
+import java.util.List;
+
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class TrieTest {
 
@@ -167,17 +169,6 @@ public class TrieTest {
 		return trie.contains(stringToArrayList(word));
 	}
 
-	protected void assertTrue(boolean b){
-		 org.junit.Assert.assertTrue(b);
-		 org.junit.Assert.assertTrue(trie.locationIsTop());
-	}
-
-	protected void assertFalse(boolean b){
-		 org.junit.Assert.assertFalse(b);
-		 org.junit.Assert.assertTrue(trie.locationIsTop());
-	}
-
-
 	private ArrayList<Character> stringToArrayList(String word) {
 		ArrayList<Character> toReturn = new ArrayList<Character>();
 		for (Character c : word.toCharArray()) {
@@ -187,7 +178,7 @@ public class TrieTest {
 	}
 
 	private ArrayList<String> multiArrayListToString(
-			ArrayList<ArrayList<Character>> pos) {
+			List<ArrayList<Character>> pos) {
 		ArrayList<String> toReturn = new ArrayList<String>();
 		for (ArrayList<Character> w : pos) {
 			toReturn.add(arrayListToString(w));

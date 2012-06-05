@@ -1,7 +1,5 @@
 package common;
 
-import java.util.Collections;
-
 import java.util.List;
 import java.util.Collection;
 import java.util.Iterator;
@@ -272,6 +270,7 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 			return c;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public int compareTo(Node o) {
 			int toReturn;

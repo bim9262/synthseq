@@ -7,12 +7,12 @@ import static org.junit.Assert.*;
 
 public class TrieTest {
 
-	Trie<Character> trie;
+	Trie<ArrayList<Character>, Character> trie;
 	ArrayList<ArrayList<Character>> list;
 
 	@Before
 	public void setUp() throws Exception {
-		trie = new Trie<Character>();
+		trie = new Trie<ArrayList<Character>, Character>();
 		list = new ArrayList<ArrayList<Character>>();
 	}
 
@@ -127,7 +127,7 @@ public class TrieTest {
 	@Test
 	public void testCloneAndEquals() {
 		trieAdd("test");
-		Trie<Character> trie2 = trie.clone();
+		Trie<ArrayList<Character>, Character> trie2 = trie.clone();
 		assertFalse(trie==trie2);
 		assertTrue(trie.equals(trie2));
 		trie.clear();

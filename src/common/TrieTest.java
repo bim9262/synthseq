@@ -1,7 +1,5 @@
 package common;
 
-import java.util.List;
-
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,17 +15,6 @@ public class TrieTest {
 		trie = new Trie<Character>();
 		list = new ArrayList<ArrayList<Character>>();
 	}
-
-	 @Test
-	public void testAutoComplete() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetMutations() {
-		fail("Not yet implemented");
-	}
-
 
 	@Test
 	public void testAddAll() {
@@ -171,22 +158,5 @@ public class TrieTest {
 			toReturn.add(c);
 		}
 		return toReturn;
-	}
-
-	private ArrayList<String> multiArrayListToString(
-			List<ArrayList<Character>> pos) {
-		ArrayList<String> toReturn = new ArrayList<String>();
-		for (ArrayList<Character> w : pos) {
-			toReturn.add(arrayListToString(w));
-		}
-		return toReturn;
-	}
-
-	private String arrayListToString(ArrayList<Character> w) {
-		String word = "";
-		for (Character c : w) {
-			word += c;
-		}
-		return word;
 	}
 }

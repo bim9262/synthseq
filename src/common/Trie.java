@@ -11,7 +11,6 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 
 	private Node top;
 	private Node location;
-	private int size;
 
 	public Trie() {
 		clear();
@@ -96,7 +95,6 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 			}
 			location.addNode();
 			location = top;
-			size++;
 			return true;
 		} else {
 			return false;
@@ -118,7 +116,6 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 	public void clear() {
 		top = new Node();
 		location = top;
-		size = 0;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -134,10 +131,15 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 		}
 		return toReturn;
 	}
+
 	@Override
-	public boolean containsAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean containsAll(Collection<?> words) {
+		for (Object word : words) {
+			if (!contains(word)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -169,7 +171,6 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 						}
 						location = parent;
 					}
-					size--;
 					toReturn = true;
 				}
 			}
@@ -198,19 +199,17 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 
 	@Override
 	public int size() {
-		return size;
+		return getMutations(null).size();
 	}
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		return getMutations(null).toArray();
 	}
 
 	@Override
-	public <T> T[] toArray(T[] arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> T[] toArray(T[] a) {
+		return getMutations(null).toArray(a);
 	}
 
 	@Override

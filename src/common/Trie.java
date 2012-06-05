@@ -1,16 +1,15 @@
 package common;
 
-import java.util.List;
+import java.util.Collections;
 
+import java.util.List;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Set;
+import static java.util.Collections.binarySearch;
 
-public class Trie<E extends Comparable<? super E>>
-		implements
-			Set<List<E>>,
-			Cloneable {
+public class Trie<E> implements Set<List<E>>, Cloneable {
 
 	private Node top;
 	private Node location;
@@ -20,7 +19,7 @@ public class Trie<E extends Comparable<? super E>>
 		clear();
 	}
 
-	public ArrayList<E> autoComplete(ArrayList<E> word) {
+	public ArrayList<E> autoComplete(List<E> word) {
 		ArrayList<E> toReturn = new ArrayList<E>();
 		advanceLocationToNode(word);
 		if (location != null) {
@@ -35,14 +34,10 @@ public class Trie<E extends Comparable<? super E>>
 		return toReturn;
 	}
 
-	public boolean locationIsTop() {
-		return top == location;
-	}
-
-	public ArrayList<ArrayList<E>> getMutations(ArrayList<E> word) {
-		ArrayList<ArrayList<E>> toReturn = new ArrayList<ArrayList<E>>();
-		ArrayList<Node> nodes;
-		if (word == null) {
+	public List<ArrayList<E>> getMutations(List<E> word) {
+		List<ArrayList<E>> toReturn = new ArrayList<ArrayList<E>>();
+		List<Node> nodes;
+		if (word == null || word.isEmpty()) {
 			nodes = new ArrayList<Node>();
 			nodes.add(top);
 		} else {
@@ -63,8 +58,8 @@ public class Trie<E extends Comparable<? super E>>
 		return toReturn;
 	}
 
-	private ArrayList<Node> advanceLocationToNode(ArrayList<E> word) {
-		ArrayList<Node> nodes = new ArrayList<Node>();
+	private List<Node> advanceLocationToNode(List<E> word) {
+		List<Node> nodes = new ArrayList<Node>();
 		for (E c : word) {
 			if (location != null) {
 				location = location.getNode(c);
@@ -74,14 +69,14 @@ public class Trie<E extends Comparable<? super E>>
 		return nodes;
 	}
 
-	private ArrayList<ArrayList<E>> getPossibleCombos(ArrayList<Node> nodes) {
+	private ArrayList<ArrayList<E>> getPossibleCombos(List<Node> nodes) {
 		ArrayList<ArrayList<E>> toReturn = new ArrayList<ArrayList<E>>();
 		for (Node n : nodes.get(nodes.size() - 1).getBranch()) {
 			ArrayList<Node> newFoundTiles = new ArrayList<Node>();
 			for (int i = 0; i < nodes.size(); i++)
 				newFoundTiles.add(nodes.get(i));
 			newFoundTiles.add(n);
-			if (n.getBranch().size() == 0) {
+			if (n.getBranch().isEmpty()) {
 				ArrayList<E> toAdd = new ArrayList<E>();
 				for (Node nf : newFoundTiles) {
 					toAdd.add(nf.getCharacter());
@@ -169,7 +164,7 @@ public class Trie<E extends Comparable<? super E>>
 				if (location != null) {
 					for (int i = 0; i <= nodeSize; i++) {
 						Node parent = location.getParent();
-						if (location.getBranch().size() == 0) {
+						if (location.getBranch().isEmpty()) {
 							parent.getBranch().remove(location);
 						} else {
 							break;
@@ -230,13 +225,14 @@ public class Trie<E extends Comparable<? super E>>
 	}
 
 	@Override
-	public boolean equals(Object o){
-		return o instanceof Trie<?> && getMutations(null).equals(((Trie<?>)o).getMutations(null));
+	public boolean equals(Object o) {
+		return o instanceof Trie<?>
+				&& getMutations(null).equals(((Trie<?>) o).getMutations(null));
 	}
 
 	private class Node implements Comparable<Node> {
 		private E c;
-		private ArrayList<Node> branch = new ArrayList<Node>();
+		private MyArrayList branch = new MyArrayList();
 		private Node parent;
 
 		public Node() {
@@ -247,7 +243,7 @@ public class Trie<E extends Comparable<? super E>>
 			this.parent = parent;
 		}
 
-		public ArrayList<Node> getBranch() {
+		public MyArrayList getBranch() {
 			return branch;
 		}
 
@@ -265,13 +261,7 @@ public class Trie<E extends Comparable<? super E>>
 		}
 
 		public Node getNode(E c) {
-			for (Node n : branch) {
-				if ((c == null && n.c == null)
-						|| (n.c != null && n.c.equals(c))) {
-					return n;
-				}
-			}
-			return null;
+			return branch.get(c);
 		}
 
 		public Node getParent() {
@@ -294,7 +284,7 @@ public class Trie<E extends Comparable<? super E>>
 			} else if (o.c == null) {
 				toReturn = -1;
 			} else {
-				toReturn = c.compareTo(o.getCharacter());
+				toReturn = ((Comparable<E>) c).compareTo(o.getCharacter());
 			}
 			return toReturn;
 		}
@@ -312,75 +302,46 @@ public class Trie<E extends Comparable<? super E>>
 		}
 	}
 
-	/*
-	 * private class BinarySearchTree<T extends Comparable<? super T>>
-	 * implements Iterable<T> { private BinaryNode<T> root;
-	 *
-	 * public BinarySearchTree() { root = null; }
-	 *
-	 * public void add(T x) { root = add(x, root); }
-	 *
-	 * public T get(T x) { return elementAt(get(x, root)); }
-	 *
-	 * public void clear() { root = null; }
-	 *
-	 * public boolean isEmpty() { return root == null; }
-	 *
-	 * public int size() { return root.size(); }
-	 *
-	 * private T elementAt(BinaryNode<T> node) { return (node == null) ? null :
-	 * node.getElement(); }
-	 *
-	 * private BinaryNode<T> add(T x, BinaryNode<T> node) { if (node == null) {
-	 * return new BinaryNode<T>(x); } else if (x.compareTo(node.getElement()) <
-	 * 0) { node.setLeft(add(x, node.getLeft())); } else if
-	 * (x.compareTo(node.getElement()) > 0) { node.setRight(add(x,
-	 * node.getRight())); }
-	 *
-	 * else { throw new RuntimeException(x.toString() + " already exists"); }
-	 *
-	 *
-	 * return node; }
-	 *
-	 * private BinaryNode<T> get(T x, BinaryNode<T> node) { if (node == null) {
-	 * return null; } else if (x.compareTo(node.getElement()) < 0) { return
-	 * get(x, node.getLeft()); } else if (x.compareTo(node.getElement()) > 0) {
-	 * return get(x, node.getRight()); } else { return node; } }
-	 *
-	 * @Override public Iterator<T> iterator() { return
-	 * root.toInOrderArray().iterator(); } }
-	 *
-	 * private class BinaryNode<T extends Comparable<? super T>> {
-	 *
-	 * private T element; private BinaryNode<T> left; private BinaryNode<T>
-	 * right;
-	 *
-	 * BinaryNode(T theElement) { element = theElement; left = null; right =
-	 * null; }
-	 *
-	 * public T getElement() { return element; }
-	 *
-	 * public BinaryNode<T> getLeft() { return left; }
-	 *
-	 * public void setLeft(BinaryNode<T> value) { left = value; }
-	 *
-	 * public BinaryNode<T> getRight() { return right; }
-	 *
-	 * public void setRight(BinaryNode<T> value) { right = value; }
-	 *
-	 * public int size() { int size = 1; if (left != null) { size +=
-	 * left.size(); }
-	 *
-	 * if (right != null) { size += right.size(); }
-	 *
-	 * return size; }
-	 *
-	 * public ArrayList<T> toInOrderArray() { ArrayList<T> toReturn = new
-	 * ArrayList<T>(); if (left != null) {
-	 * toReturn.addAll(left.toInOrderArray()); } toReturn.add(element); if
-	 * (right != null) { // Add a space before the next element
-	 * toReturn.addAll(right.toInOrderArray()); }
-	 *
-	 * return toReturn; } }
-	 */
+	@SuppressWarnings("serial")
+	private class MyArrayList extends ArrayList<Node> {
+
+		public boolean add(Node n) {
+			boolean toReturn = contains(n.c);
+			if (!toReturn) {
+				if (n != null && n.c != null && n.c instanceof Comparable<?>) {
+					int index = binarySearch(this, n);
+					if (index < 0) {
+						add(-1 * index - 1, n);
+					}
+				} else {
+					super.add(n);
+				}
+			}
+			return toReturn;
+		}
+
+		@SuppressWarnings("unchecked")
+		public boolean contains(Object c) {
+			return get((E) c) != null;
+		}
+
+		public Node get(E c) {
+			if (c instanceof Comparable<?>) {
+				int index = binarySearch(this, new Node(c, null));
+				if (index >= 0) {
+					return get(index);
+				}
+			} else {
+				for (Node n : this) {
+					if ((c == null && n.c == null)
+							|| (n.c != null && n.c.equals(c))) {
+						return n;
+					}
+				}
+			}
+			return null;
+		}
+
+	}
+
 }

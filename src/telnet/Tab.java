@@ -1,5 +1,7 @@
 package telnet;
 
+import java.util.List;
+
 import java.util.ArrayList;
 
 import common.Trie;
@@ -64,7 +66,7 @@ public abstract class Tab {
 	}
 
 	protected static ArrayList<String> multiArrayListToString(
-			ArrayList<ArrayList<Character>> pos) {
+			List<ArrayList<Character>> pos) {
 		ArrayList<String> toReturn = new ArrayList<String>();
 		for (ArrayList<Character> w : pos) {
 			toReturn.add(arrayListToString(w));

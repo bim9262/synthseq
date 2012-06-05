@@ -1,5 +1,7 @@
 package telnet;
 
+import java.util.Vector;
+
 import java.util.List;
 
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import common.Trie;
 
 public abstract class Tab {
 
-	protected static Trie<Character> trie = new Trie<Character>();
+	protected static Trie<Vector<Character>, Character> trie = new Trie<Vector<Character>, Character>();
 
 	public static void addDefinition(String def) {
 		trie.add(stringToArrayList(def));
@@ -57,8 +59,8 @@ public abstract class Tab {
 		}
 	}
 
-	protected static ArrayList<Character> stringToArrayList(String word) {
-		ArrayList<Character> toReturn = new ArrayList<Character>();
+	protected static Vector<Character> stringToArrayList(String word) {
+		Vector<Character> toReturn = new Vector<Character>();
 		for (Character c : word.toCharArray()) {
 			toReturn.add(c);
 		}

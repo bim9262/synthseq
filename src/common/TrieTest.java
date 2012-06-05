@@ -54,7 +54,14 @@ public class TrieTest {
 
 	@Test
 	public void testContainsAll() {
-		 fail("Not yet implemented");
+		listAdd("test");
+		listAdd("test2");
+		trie.addAll(list);
+		assertTrue(trie.containsAll(list));
+		trieAdd("test3");
+		assertTrue(trie.containsAll(list));
+		listAdd("test4");
+		assertFalse(trie.containsAll(list));
 	}
 
 
@@ -141,17 +148,6 @@ public class TrieTest {
 
 
 	}
-
-	@Test
-	public void testToArray() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testToArrayTArray() {
-		 fail("Not yet implemented");
-	}
-
 
 	protected void listAdd(String word){
 		list.add(stringToArrayList(word));

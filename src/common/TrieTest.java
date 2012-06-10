@@ -105,7 +105,19 @@ public class TrieTest {
 
 	@Test
 	public void testRetainAll() {
-		 fail("Not yet implemented");
+		 trieAdd("test");
+		 trieAdd("test2");
+		 listAdd("test");
+		 assertTrue(trie.retainAll(list));
+		 assertTrue(trieContains("test"));
+		 assertFalse(trieContains("test2"));
+		 list.clear();
+		 listAdd("test");
+		 assertFalse(trie.retainAll(list));
+		 list.clear();
+		 listAdd("test3");
+		 assertTrue(trie.retainAll(list));
+		 assertTrue(trie.size()==0);
 	}
 
 	@Test

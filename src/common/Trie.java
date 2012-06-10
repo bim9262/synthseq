@@ -309,8 +309,6 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 		}
 	}
 
-
-
 	@Override
 	public boolean add(List<E> word) {
 		if (!word.isEmpty() && !contains(word)) {
@@ -339,25 +337,25 @@ public class Trie<E> implements Set<List<E>>, Cloneable {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<List<E>> iterator() {
-		return (Iterator<List<E>>) ((List<E>)getAllMutations()).iterator();
+		return (Iterator<List<E>>) ((List<E>) getAllMutations()).iterator();
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean retainAll(Collection<?> words) {
-		boolean toReturn = equals(words) && !words.containsAll(this);
-		if (!toReturn) {
-			clear();
-			addAll((Collection<? extends List<E>>) words);
+		Trie<E> clone = clone();
+		clear();
+		for (List<E> word : clone){
+			if (words.contains(word)){
+				add(word);
+			}
 		}
-		return toReturn;
+		return !clone.equals(this);
 	}
 
 	@Override
 	public <T> T[] toArray(T[] a) {
 		return getAllMutations().toArray(a);
 	}
-
 
 }

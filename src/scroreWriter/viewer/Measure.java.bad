@@ -1,6 +1,9 @@
-package scroreWriter;
+package scroreWriter.viewer;
 
-import scroreWriter.MusicalObject.Duration;
+import scroreWriter.model.Clef;
+import scroreWriter.model.MusicalObject;
+import scroreWriter.model.Note;
+import scroreWriter.model.MusicalObject.Duration;
 
 import java.awt.Point;
 import java.awt.event.MouseListener;
@@ -19,7 +22,6 @@ public class Measure extends JPanel implements MouseListener {
 
 	private Clef clef = Clef.BASS;
 	private Note center = clef.getCenter();
-	private ArrayList<ArrayList<MusicalObject>> musicalObjects = new ArrayList<ArrayList<MusicalObject>>();
 
 	Measure() {
 		setBackground(Color.gray);
@@ -28,13 +30,7 @@ public class Measure extends JPanel implements MouseListener {
 
 	}
 
-	public boolean isFull() {
-		double time = 0;
-		for (ArrayList<MusicalObject> m : musicalObjects) {
-			time += m.get(0).duration.getLength();
-		}
-		return time == 1.0;
-	}
+
 
 	public void paint(Graphics g) {
 		super.paint(g);

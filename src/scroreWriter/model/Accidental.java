@@ -1,4 +1,4 @@
-package scroreWriter;
+package scroreWriter.model;
 
 public enum Accidental {
 

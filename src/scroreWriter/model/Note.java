@@ -1,8 +1,10 @@
-package scroreWriter;
+package scroreWriter.model;
 
 import java.util.ArrayList;
 
 import java.awt.Point;
+
+
 
 public class Note extends MusicalObject {
 
@@ -17,11 +19,6 @@ public class Note extends MusicalObject {
 	private char note;
 	private int octave;
 	private ArrayList<Accidental> accidentals = new ArrayList<Accidental>() ;
-
-	@Override
-	public Point getHotspot() {
-		return new Point(image.getWidth()/2, 25);
-	}
 
 	public int getMIDIOffset(){
 		int sum = 0;

@@ -2,8 +2,7 @@ package scroreWriter;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
-
+import scroreWriter.viewer.ScoreViewer;
 import common.TextPane;
 import java.awt.Dimension;
 import javax.swing.event.UndoableEditEvent;
@@ -47,7 +46,7 @@ public class ScoreWriter {
 				file.setSaved(false);
 			}});
 
-		final Score score = new Score();
+		final ScoreViewer score = new ScoreViewer();
 
 		file.setFrame(j);
 		file.setInputSource(textPane);

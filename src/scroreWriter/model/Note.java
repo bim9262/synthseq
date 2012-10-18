@@ -8,7 +8,7 @@ import java.awt.Point;
 
 public class Note extends MusicalObject {
 
-	Note(){
+	public Note(){
 		super();
 	}
 

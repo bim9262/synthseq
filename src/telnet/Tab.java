@@ -1,15 +1,11 @@
 package telnet;
 
-import java.util.List;
-import java.util.ArrayList;
-import common.Trie;
-
 public abstract class Tab {
 
-	protected static Trie<Character> trie = new Trie<Character>();
+	protected static StringTrie trie = new StringTrie();
 
 	public static void addDefinition(String def) {
-		trie.add(stringToArrayList(def));
+		trie.add(def);
 	}
 
 	abstract String autoComplete(String s, int caretPos);
@@ -55,28 +51,5 @@ public abstract class Tab {
 		}
 	}
 
-	protected static ArrayList<Character> stringToArrayList(String word) {
-		ArrayList<Character> toReturn = new ArrayList<Character>();
-		for (Character c : word.toCharArray()) {
-			toReturn.add(c);
-		}
-		return toReturn;
-	}
-
-	protected static ArrayList<String> multiArrayListToString(
-			List<ArrayList<Character>> pos) {
-		ArrayList<String> toReturn = new ArrayList<String>();
-		for (ArrayList<Character> w : pos) {
-			toReturn.add(arrayListToString(w));
-		}
-		return toReturn;
-	}
-
-	protected static String arrayListToString(ArrayList<Character> w) {
-		String word = "";
-		for (Character c : w) {
-			word += c;
-		}
-		return word;
-	}
+	
 }

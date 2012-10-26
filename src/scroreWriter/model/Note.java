@@ -8,17 +8,13 @@ import java.awt.Point;
 
 public class Note extends MusicalObject {
 
-	public Note(){
-		super();
-	}
-
-	Note(String s) {
-		super(s);
-	}
-
 	private char note;
 	private int octave;
 	private ArrayList<Accidental> accidentals = new ArrayList<Accidental>() ;
+
+	public Note(String center) {
+		super(center);
+	}
 
 	public int getMIDIOffset(){
 		int sum = 0;

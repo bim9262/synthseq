@@ -1,13 +1,16 @@
 package scroreWriter.model;
 
-abstract class MusicalObject {
+public abstract class MusicalObject {
 
+	protected int posistion;
 	protected Duration duration;
+	private String center;
 
 	public MusicalObject() {
 	}
-
-	public MusicalObject(String s) {
+	
+	public MusicalObject(String center) {
+		this.setCenter(center);
 	}
 
 	public final Duration getDuration(){
@@ -20,6 +23,14 @@ abstract class MusicalObject {
 
 	public final String toString(){
 		return duration.toString() + " " + getClass().getName();
+	}
+
+	public final String getCenter() {
+		return center;
+	}
+
+	public final void setCenter(String center) {
+		this.center = center;
 	}
 
 }

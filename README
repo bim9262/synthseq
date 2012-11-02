@@ -8,7 +8,7 @@ To do:
 				decreasing sampling rate inside a modifier
 				and interpolating linearly between sampled values
 			Companding
-			Speed, [Pitch, Timbre](filters?)
+			Speed, [Pitch, Timbre]
 			Smooth Clipping
 	Wave Analysis
-		Spectrogram (frequency domain over time)
+		Spectrogram

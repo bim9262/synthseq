@@ -38,15 +38,14 @@ public class InputAreaListener extends KeyAdapter {
 	}
 
 	public void keyTyped(KeyEvent e) {
+		int caretPos = inputArea.getCaretPosition();
+		String text = inputArea.getText();
+		int textLength = text == null ? 0 : text.length();
 		switch ((int) e.getKeyChar()) {
 		// tab key
-		case 9:
-			e.consume();
+		case 9: {
 			tabCount++;
-			int caretPos = inputArea.getCaretPosition();
-			String text = inputArea.getText();
-			int textLength = 0;
-			if (text != null && (textLength = text.length()) != 0) {
+			if (text != null && textLength != 0) {
 				switch (text.charAt(caretPos == 0 ? 0 : caretPos - 1)) {
 				case '\n':
 				case '\t':
@@ -65,22 +64,38 @@ public class InputAreaListener extends KeyAdapter {
 					break;
 				}
 			}
-			caretPos += text.length() - textLength;
-			inputArea.setText(text);
-			inputArea.setCaretPosition(caretPos);
 			break;
+		}
 		// enter key
-		case 10:
+		case 10: {
 			// if shift is on
 			if (e.getModifiersEx() == 64) {
 				eval(inputArea.getText());
+			} else {
+				if (text != null && textLength != 0) {
+					String insert = "";
+					char c;
+					for (int i = caretPos - 2; i >= 0
+							&& (c = text.charAt(i)) != '\n'; i--) {
+						if (c == '\t') {
+							insert += "\t";
+						}
+					}
+					text = text.substring(0, caretPos) + insert
+							+ text.substring(caretPos);
+				}
+
+				tabCount = 0;
 			}
-			tabCount = 0;
 			break;
+		}
 		default:
 			tabCount = 0;
 			break;
 		}
+		caretPos += text.length() - textLength;
+		inputArea.setText(text);
+		inputArea.setCaretPosition(caretPos);
 	}
 
 	private void eval(String text) {

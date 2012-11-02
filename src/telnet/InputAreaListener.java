@@ -45,23 +45,25 @@ public class InputAreaListener extends KeyAdapter {
 			tabCount++;
 			int caretPos = inputArea.getCaretPosition();
 			String text = inputArea.getText();
-			int textLength = text.length();
-			switch (text.charAt(caretPos == 0 ? 0 : caretPos - 1)) {
-			case '\n':
-			case '\t':
-				text = text.substring(0, caretPos) + '\t'
-						+ text.substring(caretPos);
-				break;
-			default:
-				if (text != null && Telnet.getTab() != null) {
-					if (tabCount == 1) {
-						text = Telnet.getTab().autoComplete(text, caretPos);
-					} else if (tabCount == 2) {
-						outputArea.append(Telnet.getTab().suggestions(text,
-								caretPos));
+			int textLength = 0;
+			if (text != null && (textLength = text.length()) != 0) {
+				switch (text.charAt(caretPos == 0 ? 0 : caretPos - 1)) {
+				case '\n':
+				case '\t':
+					text = text.substring(0, caretPos) + '\t'
+							+ text.substring(caretPos);
+					break;
+				default:
+					if (text != null && Telnet.getTab() != null) {
+						if (tabCount == 1) {
+							text = Telnet.getTab().autoComplete(text, caretPos);
+						} else if (tabCount == 2) {
+							outputArea.append(Telnet.getTab().suggestions(text,
+									caretPos));
+						}
 					}
+					break;
 				}
-				break;
 			}
 			caretPos += text.length() - textLength;
 			inputArea.setText(text);

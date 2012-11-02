@@ -16,8 +16,7 @@ public abstract class Tab {
 		caretPos--;
 		if (s.length() != 0 && containsSeparator(s, caretPos)) {
 			caretPos--;
-		} else if (caretPos > 0) {
-
+			} else if (caretPos > 0) {
 			int front;
 			int end;
 			do {
@@ -27,13 +26,14 @@ public abstract class Tab {
 				end = caretPos++;
 			} while (caretPos != s.length() && !containsSeparator(s, caretPos));
 			end++;
-			return new SuperString(s.substring(front, end), end);
+			s = s.substring(front, end);
+			return new SuperString(s, end);
 		}
 		return null;
 	}
 
 	private static boolean containsSeparator(String s, int caretPos) {
-		String toCheck = " \n().";
+		String toCheck = " \n\t().";
 		for (char c : toCheck.toCharArray()) {
 			if (s.charAt(caretPos) == c)
 				return true;
@@ -51,5 +51,4 @@ public abstract class Tab {
 		}
 	}
 
-	
 }

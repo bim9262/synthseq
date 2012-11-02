@@ -1,12 +1,10 @@
 package telnet;
 
-
 import common.TextPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
 import javax.swing.undo.UndoManager;
-
 
 public class InputAreaListener extends KeyAdapter {
 
@@ -16,7 +14,7 @@ public class InputAreaListener extends KeyAdapter {
 	private int tabCount = 0;
 	protected UndoManager undoManager;
 
-	InputAreaListener(TextPane inputArea){
+	InputAreaListener(TextPane inputArea) {
 		this.inputArea = inputArea;
 		undoManager = inputArea.getUndoManager();
 
@@ -27,14 +25,14 @@ public class InputAreaListener extends KeyAdapter {
 		if (e.getModifiersEx() == 128) {
 			switch (e.getKeyCode()) {
 			// l key
-				case 76 :
-					outputArea.setText("");
-					break;
-				// e key
-				case 69 :
-					e.consume();
-					eval(inputArea.getSelectedText());
-					break;
+			case 76:
+				outputArea.setText("");
+				break;
+			// e key
+			case 69:
+				e.consume();
+				eval(inputArea.getSelectedText());
+				break;
 			}
 		}
 	}
@@ -42,41 +40,47 @@ public class InputAreaListener extends KeyAdapter {
 	public void keyTyped(KeyEvent e) {
 		switch ((int) e.getKeyChar()) {
 		// tab key
-			case 9 :
-				tabCount++;
-				// TODO: Fix tabbing and add auto indentation
-				if (Telnet.getTab() != null) {
-					inputArea
-							.setText(inputArea.getText().replaceAll("\\t", ""));
+		case 9:
+			e.consume();
+			tabCount++;
+			int caretPos = inputArea.getCaretPosition();
+			String text = inputArea.getText();
+			int textLength = text.length();
+			switch (text.charAt(caretPos == 0 ? 0 : caretPos - 1)) {
+			case '\n':
+			case '\t':
+				text = text.substring(0, caretPos) + '\t'
+						+ text.substring(caretPos);
+				break;
+			default:
+				if (text != null && Telnet.getTab() != null) {
 					if (tabCount == 1) {
-						String autoCompleted = Telnet.getTab().autoComplete(
-								inputArea.getText(),
-								inputArea.getCaretPosition());
-						if (!autoCompleted.equals(inputArea.getText())) {
-							inputArea.setText(autoCompleted);
-
-						}
+						text = Telnet.getTab().autoComplete(text, caretPos);
 					} else if (tabCount == 2) {
-						String results = Telnet.getTab().suggestions(
-								inputArea.getText(),
-								inputArea.getCaretPosition());
-						outputArea.append(results);
+						outputArea.append(Telnet.getTab().suggestions(text,
+								caretPos));
 					}
 				}
 				break;
-			// enter key
-			case 10 :
-				// if shift is on
-				if (e.getModifiersEx() == 64) {
-					eval(inputArea.getText());
-				}
-				tabCount = 0;
-				break;
-			default :
-				tabCount = 0;
-				break;
+			}
+			caretPos += text.length() - textLength;
+			inputArea.setText(text);
+			inputArea.setCaretPosition(caretPos);
+			break;
+		// enter key
+		case 10:
+			// if shift is on
+			if (e.getModifiersEx() == 64) {
+				eval(inputArea.getText());
+			}
+			tabCount = 0;
+			break;
+		default:
+			tabCount = 0;
+			break;
 		}
 	}
+
 	private void eval(String text) {
 		if (text != null) {
 			outputArea.append(text);

@@ -47,7 +47,7 @@ public class InputAreaListener extends KeyAdapter {
 			String text = inputArea.getText();
 			int textLength = text.length();
 			switch (text.charAt(caretPos == 0 ? 0 : caretPos - 1)) {
-			case '\n:
+			case '\n':
 			case '\t':
 				text = text.substring(0, caretPos) + '\t'
 						+ text.substring(caretPos);

@@ -1,6 +1,8 @@
 package common;
 
 import static java.lang.Math.*;
+
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.Frame;
@@ -8,8 +10,11 @@ import javax.swing.undo.UndoManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.Vector;
+
+import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
+import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -48,6 +53,11 @@ public class TextPane extends JTextPane
 		setFont(new Font("Courier New", Font.PLAIN, 12));
 		setText("\n");
 		setText(getText().substring(0, getText().length() - 1));
+		getInputMap().put(KeyStroke.getKeyStroke("TAB"), new AbstractAction() {  
+		    public void actionPerformed(ActionEvent e) {  
+		    	replaceSelection("");
+		    }
+		});
 	}
 
 	public synchronized void append(String s) {

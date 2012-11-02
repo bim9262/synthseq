@@ -27,24 +27,26 @@ public class ClojureTab extends Tab {
 	public String autoComplete(String s, int caretPos) {
 		SuperString string = findWordAndPos(s, caretPos);
 		if (string != null) {
+			String word = trie.autoComplete(string.string);
 			return s.substring(0, string.end)
-					+ trie.autoComplete(string.string)
+					+ word
 					+ s.substring(string.end, s.length());
 		}
 		return s;
 	}
 
 	public String suggestions(String s, int caretPos) {
-		SuperString string = findWordAndPos(s, caretPos);
 		String toReturn = "";
-		if (string != null) {
-			toReturn = "Sugestions for " + string.string + ": ";
-			ArrayList<String> posibilities = trie.getMutations(string.string);
+		SuperString str = findWordAndPos(s, caretPos);
+		if (str != null) {
+			s = str.string;
+			toReturn = "Sugestions for " + s + ": ";
+			ArrayList<String> posibilities = trie.getMutations(s);
 			if (posibilities.size() == 0) {
 				toReturn += "NONE FOUND";
 			} else if (posibilities.size() == 1
-					&& posibilities.get(0).equals(string.string)) {
-				toReturn = "(doc " + string.string + ")";
+					&& posibilities.get(0).equals(s)) {
+				toReturn = "(doc " + s + ")";
 				Telnet.getSocketInput().println(toReturn);
 			} else {
 				for (int i = 0; i < posibilities.size(); i++) {

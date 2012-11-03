@@ -10,7 +10,6 @@ import javax.swing.undo.UndoManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.Vector;
-
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
@@ -53,11 +52,13 @@ public class TextPane extends JTextPane
 		setFont(new Font("Courier New", Font.PLAIN, 12));
 		setText("\n");
 		setText(getText().substring(0, getText().length() - 1));
+
 		getInputMap().put(KeyStroke.getKeyStroke("TAB"), new AbstractAction() {  
 		    public void actionPerformed(ActionEvent e) {  
 		    	replaceSelection("");
 		    }
 		});
+
 	}
 
 	public synchronized void append(String s) {

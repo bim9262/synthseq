@@ -33,6 +33,7 @@ public class InputAreaListener extends KeyAdapter {
 				e.consume();
 				eval(inputArea.getSelectedText());
 				break;
+
 			}
 		}
 	}

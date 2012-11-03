@@ -26,7 +26,7 @@ public class StringTrie extends Trie<Character> {
 		}
 		return toReturn;
 	}
-	
+
 	private ArrayList<String> multiArrayListToString(
 			List<ArrayList<Character>> pos) {
 		ArrayList<String> toReturn = new ArrayList<String>();
